@@ -1,0 +1,116 @@
+﻿@model Kingflix.Models.ShoppingCart
+@{
+    ViewBag.Title = "Thanh Toán";
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
+}
+
+<div class="bg-light" style="min-height: 75vh">
+    <div class="container mb-4">
+        <div class="top-checkout row">
+            <div class="top-checkout-list col-md-4 col-12">
+                <p><i class="number">1</i>Giỏ hàng của bạn</p>
+            </div>
+            <div class="top-checkout-list col-md-4 d-none d-md-inline active">
+                <p><i class="number">2</i>Thông tin &amp; Thanh toán</p>
+            </div>
+            <div class="top-checkout-list col-md-4 d-none d-md-inline">
+                <p id="nk-hoan-tat-don-hang"><i class="number">3</i>Hoàn tất đơn hàng</p>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-md-8 col-md-8 col-lg-8 col-lg-8 col-xs-12">
+                <div class="card card-shadow card-information">
+                    <div class="card-body cart-content" id="cartContent" data-value="step1">
+                        <h5 class="card-title">Giỏ hàng của bạn</h5>
+                        <hr>
+                        <div class="cartInformation" id="cartDetails">
+                            @if (Model.Items.Count != 0)
+                            {
+                                @Html.Action("GetPaymentMethod")
+                            }
+                            else
+                            {
+                                <div class="text-center">
+                                    <p>Bạn chưa có sản phẩm nào trong giỏ hàng</p>
+                                    <a href="~/" class="btn btn-success btn-sm">Trang chủ</a>
+                                    <a href="@Url.Action("Index")" class="btn btn-primary btn-sm">Cửa hàng</a>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-md-4 col-lg-4 col-md-4 col-xs-12">
+                <div class="card card-shadow mb-4">
+                    <div class="card-body box-payment" id="cartTotal">
+                        <table style="width: 100%">
+                            <tbody>
+                                <tr>
+                                    <td class="pb-3" style="text-align:left;font-size: 20px;font-weight: 500;" colspan="2">Tóm tắt đơn hàng</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-1" width="50%">Tạm tính (Chưa VAT):</td>
+                                    <td id="totalListedPrice" class="py-1 text-right" width="50%">@Model.TotalPriceShow</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-1">Giảm giá:</td>
+                                    <td class="py-1 text-right" id="cartDiscount">0 ₫</td>
+                                </tr>
+                                <tr style="border-top:solid 1px #e7e7e7; line-height: 45px;">
+                                    <td>Thành tiền:</td>
+                                    <td style="font-size:20px; color:#e82429;font-weight:bold" id="preTotalPrice" class=" text-right">
+                                        @Model.TotalPriceShow
+                                    </td>
+                                </tr>
+                                <tr class="chonhinhthuc">
+                                    <td colspan="2" style="text-align:right">(Đã bao gồm VAT)</td>
+                                </tr>
+                                <tr class="shonhinhthuc" style="border-bottom:none; display: none;">
+                                    <td></td>
+                                    <td>(Đã bao gồm VAT)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(".payment-api").click(function () {
+            var paymentMethod = $(this).data("payment");
+            var Type = "Orther";
+            $.ajax({
+                method: "POST",
+                url: "/Order/ConfirmPayment",
+                data: {
+                    paymentMethod: paymentMethod,
+                    Type: Type
+                },
+                beforeSend: function () {
+                    loadSpinner();
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        window.location.href = data.redirect_url;
+                    }
+                    else
+                        window.location.href = data.redirect_url;
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu. Vui lòng thử lại.")
+                },
+                complete: function () {
+                    exitSpinner()
+                }
+            })
+        })
+    </script>
+}

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Kingflix.Models.Image>
+
+
+<div class="modal-header border-0 pb-0">
+    <h4 class="card-title font-weight-bold mb-0">Thư viện hình ảnh</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" class="mdi mdi-close"></span>
+    </button>
+</div>
+<div class="modal-body p-0" id="bodyImageModal">
+    <hr />
+    <ul class="nav nav-pills mb-3 px-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link btn-rounded active" id="pills-library-tab" data-toggle="pill" href="#pills-library-image" role="tab" aria-controls="pills-home" aria-selected="true">Thư viện hình ảnh</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn-rounded" id="pills-upload-tab" data-toggle="pill" href="#pills-upload-image" role="tab" aria-controls="pills-profile" aria-selected="false">Upload hình ảnh</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane show active" id="pills-library-image" role="tabpanel" aria-labelledby="pills-library-tab">
+            <div class="row mx-0" id="libraryImageList" style="overflow: auto !important;">
+                @Html.Partial("_ImageLibraryPartial", Model)
+            </div>
+
+        </div>
+        <div class="tab-pane" id="pills-upload-image" role="tabpanel" aria-labelledby="pills-upload-tab">
+            <div class="row mx-0 my-5 px-3">
+                <div class="col-md-6 col-sm-12">
+                    <!-- Our markup, the important part here! -->
+                    <div id="drag-and-drop-zone" class="dm-uploader p-5">
+                        <h4 class="mb-5 mt-5 text-muted">Nhấn vào "Chọn một hoặc nhiều hình" hoặc kéo và thả hình ảnh của bạn vào đây</h4>
+
+                        <div class="btn btn-gradient-info btn-block btn-rounded mb-5">
+                            <span>Chọn một hoặc nhiều hình</span>
+                            <input class="h-100" type="file" multiple="">
+                        </div>
+                    </div><!-- /uploader -->
+
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            Thông tin upload
+                        </div>
+
+                        <ul class="list-unstyled p-2 d-flex flex-column col" id="files">
+                            <li class="text-muted text-center empty">Bạn chưa chọn hình nào cả.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="files-template">
+    <li class="media">
+        <div class="image-box ratio-1-1 mr-2" style="width: 50px;">
+            <img class="img-fluid rounded image preview-img" src="/Content/image/No_Picture.jpg">
+        </div>
+
+        <div class="media-body mb-1">
+            <p class="mb-2">
+                <strong>%%filename%%</strong> - Trạng thái: <span class="text-muted">Đang tiến hành ...</span>
+            </p>
+            <div class="progress mb-2">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                     role="progressbar"
+                     style="width: 0%"
+                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                </div>
+            </div>
+
+            <hr class="mt-1 mb-1" />
+        </div>
+    </li>
+</script>
+<script type="text/html" id="debug-template">
+    <li class="list-group-item text-%%color%%"><strong>%%date%%</strong>: %%message%%</li>
+</script>
+<script src="~/Scripts/upload/upload-file.js"></script>

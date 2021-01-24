@@ -1,0 +1,420 @@
+﻿@using Kingflix.Domain.Enumerables
+@using Kingflix.Utilities
+@model IEnumerable<Kingflix.Domain.DomainModel.Product>
+
+@{
+    ViewBag.Title = "Quản lý khách hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var i = 0;
+}
+@section head {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mt-2">@ViewBag.Title</h4>
+        <hr />
+        <div class="clearfix">
+            <div class="position-relative float-left">
+                <p class="d-inline-block">Chọn danh sách: </p>
+                <div class="d-inline-block ml-2">
+                    <ul class="nav-custom mt-2 mb-0 pl-0">
+                        <li><a class="@(ViewBag.CategoryId == Const.NETFLIX0?"active":"")" href="@Url.Action("Index", new { categoryId = Const.NETFLIX0})"><i class="mdi mdi-slack mr-1"></i>Siêu tiết kiệm</a></li>
+                        <li><a class="@(ViewBag.CategoryId == Const.NETFLIX1?"active":"")" href="@Url.Action("Index", new { categoryId = Const.NETFLIX1})"><i class="mdi mdi-slack mr-1"></i>Dùng thử</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="@(ViewBag.CategoryId == Const.NETFLIX2?"active":"" ) nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="mdi mdi-slack mr-1"></i>Đặc biệt
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="@Url.Action("Index", new {categoryId = Const.NETFLIX2, cycle = Cycle.King})">King (Chu kỳ 1)</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", new {categoryId = Const.NETFLIX2, cycle = Cycle.Avenger})">Avenger (Chu kỳ 2)</a>
+                                <a class="dropdown-item" dropdown-item" href="@Url.Action("Index", new {categoryId = Const.NETFLIX2, cycle = Cycle.Mouse})">Mouse (Chu kỳ 3)</a>
+                            </div>
+                        </li>
+                        <li><a class="@(ViewBag.CategoryId == Const.NETFLIX3?"active":"")" href="@Url.Action("Index", new { categoryId = Const.NETFLIX3})"><i class="mdi mdi-slack mr-1"></i>Family (Gia đình)</a></li>
+                        <li><a class="@(ViewBag.CategoryId == "CHANGEACCOUNT"?"active":"")" href="@Url.Action("Index", new { categoryId = "CHANGEACCOUNT"})"><i class="mdi mdi-slack mr-1"></i>Tài khoản thay thế</a></li>
+                        <li><a class="@(ViewBag.CategoryId == "OTHER"?"active":"")" href="@Url.Action("Index", new { categoryId = "OTHER"})"><i class="mdi mdi-slack mr-1"></i>Khác</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="float-right">
+                <a href="@Url.Action("Create","Product")" class="btn btn-gradient-primary btn-sm btn-rounded create-product">Thêm tài khoản</a>
+                <a href="@Url.Action("DeleteUser", "UserManage")" class="btn btn-gradient-warning btn-sm btn-rounded create-product text-dark">Xóa người dùng</a>
+                <a href="@Url.Action("DeleteProduct", "UserManage")" class="btn btn-danger btn-sm btn-rounded create-product">Xóa tài khoản hết hạn</a>
+            </div>
+        </div>
+        <div id="productList">
+            @if (Model.Count() != 0)
+            {
+                <table class="table table-bordered table-hover position-relative"
+                       id="tableSort"
+                       data-toggle="table"
+                       data-detail-view="true"
+                       data-detail-formatter="getProfileList"   
+                       data-detail-view-icon="true"
+                       data-search="true"
+                       data-sort-name="name"
+                       data-sort-order="desc"
+                       data-pagination="true"
+                       data-search-text="@ViewBag.TargetAccount"
+                       data-page-size="10">
+                    <thead class="text-white">
+                        <tr>
+                            <th class="font-weight-bold" data-sortable="true" data-field="Group" data-detail-formatter="getProfileList">Nhóm</th>
+                            <th class="font-weight-bold d-none" style="cursor: pointer" data-sortable="true" data-field="productId"> Email </th>
+                            <th class="font-weight-bold" style="cursor: pointer" data-sortable="true"> Email </th>
+                            <th class="font-weight-bold" data-sortable="true" data-detail-formatter="getProfileList"> Mật khẩu </th>
+                            <th class="text-center font-weight-bold" data-sortable="true"> Ngày tạo </th>
+                            <th class="text-center font-weight-bold" data-sortable="true"> Ngày hết hạn </th>
+                            <th class="text-center font-weight-bold" data-sortable="true"> Loại tài khoản </th>
+                            <th class="text-center font-weight-bold" data-sortable="true"> Số người sử dụng </th>
+                            <th class="text-center font-weight-bold" data-sortable="true"> Trạng thái </th>
+                            <th class="text-center font-weight-bold" data-sortable="true"> Hành động </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var date = (item.DateEnd.Date - DateTime.Today.Date).Days + 1;
+                            <tr>
+                                <td>
+                                    @(item.Categories.Name+item.GroupId)
+                                </td>
+                                <td style="display: none">
+                                    @item.ProductId
+                                </td>
+                                <td style="cursor: pointer">
+                                    <i class="mdi mdi-file-multiple clipboard mr-2" style="z-index: 10000; cursor: pointer" data-clipboard-target="#productCopy-@i"></i>
+                                    <a href="#" class="edit-product text-success" data-id="@item.ProductId" data-toggle="modal" data-target="#EditProductModal" id="productCopy-@i">
+                                        @item.ProductId <br /> <span class="text-warning font-weight-light">@(item.Parent!=null?"("+item.Parent.ProductId+")":"")</span>
+                                    </a>
+                                </td>
+                                <td>
+                                    @item.Password
+                                </td>
+                                <td class="text-center">
+                                    @item.DateCreated.ToString("dd/MM/yyyy")
+                                </td>
+                                <td class="text-center">
+                                    @if ((item.DateEnd.Date - DateTime.Today).Days < 0)
+                                    {
+                                        @item.DateEnd.ToString("dd/MM/yyyy") <span class="text-primary font-weight-bold">(hết hạn @((DateTime.Today - item.DateEnd.Date).Days) ngày)</span>
+                                    }
+                                    else
+                                    {
+                                        @item.DateEnd.ToString("dd/MM/yyyy") <span class="text-warning font-weight-bold">(còn @((item.DateEnd - DateTime.Now).Days) ngày)</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @item.Categories.Name
+                                </td>
+                                <td class="text-center">
+                                    @item.UserProfileCount
+                                </td>
+                                <td class="text-center">
+                                    @if (item.IsProfileError)
+                                    {
+                                        <p class="m-0 badge badge-outline-warning">Khách báo lỗi</p>
+                                    }
+                                    else if (item.Status == ProductStatus.Replace)
+                                    {
+                                        <p class="m-0 badge badge-outline-light">@ProductStatus.Replace.GetEnumDisplayName()</p>
+                                    }
+                                    else if (item.Status == ProductStatus.Private)
+                                    {
+                                        <p class="m-0 badge badge-outline-light">@ProductStatus.Private.GetEnumDisplayName()</p>
+                                    }
+                                    else if (item.DateEnd.Date < DateTime.Now.Date)
+                                    {
+                                        <p class="m-0 badge badge-dark">Hết hạn</p>
+                                    }
+                                    else if (item.Status == ProductStatus.Active)
+                                    {
+                                        <p class="m-0 badge badge-success">@ProductStatus.Active.GetEnumDisplayName()</p>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <p class="badge badge-success m-0 edit-product" data-id="@item.ProductId" data-toggle="modal" data-target="#EditProductModal" style="cursor: pointer">
+                                        <i class="mdi mdi-lead-pencil"></i>
+                                    </p>
+                                    <a href="#remove-product" class="badge badge-danger remove-product" data-id="@item.ProductId" data-name="@item.ProductId" data-toggle="tooltip" title="Xóa">
+                                        <i class="mdi mdi-delete"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-center">Không có dữ liệu</p>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EditProductModal" aria-hidden="true" tabindex='-1'>
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content" style="min-height: 100px">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="card-title font-weight-bold mb-0">Chỉnh sửa thông tin tài khoản</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="mdi mdi-close"></span>
+                </button>
+            </div>
+
+            @using (Ajax.BeginForm("EditProductConfirm", "UserManage", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "loadSpinner",
+                OnComplete = "exitSpinner",
+                OnSuccess = "EditProductSuccess"
+            }))
+            {
+                <div class="modal-body px-5 mt-5" id="EditProductModalBody">
+
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function getProfileList(index, row) {
+            var s = "<div>Lỗi</div>";
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetProfileList")",
+                data: {
+                    productId: row.productId
+                },
+                success: function (data) {
+                    s = data;
+                },
+                async: false
+            });
+            return s;
+        }
+        function EditProductSuccess(data) {
+            if (data.status == "success") {
+                toastr.success(data.message);
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            }
+            else {
+                toastr.error(data.message);
+            }
+        }
+        $(document).on("click", ".edit-product", function () {
+            var productId = $(this).data("id");
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("EditProduct","UserManage")",
+                data: {
+                    productId: productId
+                },
+                beforeSend: function () {
+                    loadSpinner();
+                },
+                success: function (data) {
+                    $("#EditProductModalBody").html(data);
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu")
+                },
+                complete: function () {
+                    exitSpinner();
+                }
+            })
+        })
+
+
+        $(document).on("click", ".remove-product", function () {
+            var productId = $(this).data("id");
+            var r = confirm("Bạn có muốn xóa tài khoản '" + $(this).data("name") + "' hoàn toàn không?");
+            if (r == true) {
+                loadSpinner();
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("Delete","Product")",
+                    data: { productId: productId },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            toastr.success(data.message);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        }
+                        else {
+                            toastr.error(data.message);
+                            exitSpinner();
+                        }
+                    },
+                    error: function () {
+                        exitSpinner();
+                        toastr.error("Có lỗi xảy ra. Vui lòng thử lại");
+                    }
+                })
+            }
+        })
+
+        var arr;
+        $('#changeStatus').click(function () {
+            arr = $('#tableSort tbody').find('[type="checkbox"]:checked').map(function () {
+                return $(this).closest('tr').find('td:nth-child(2)').text();
+            }).get();
+            var status = $("#productStatus").val();
+            if (arr.length != 0) {
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("ChangeProductStatus")",
+                    data: {
+                        productList: arr,
+                        status: status,
+                    },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            toastr.success(data.message);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        }
+                        else {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function () {
+                        toastr.error("Có lỗi khi gửi dữ liệu. Vui lòng thử lại");
+                    }
+                })
+            }
+        });
+        $("#dataFile").change(function () {
+            $("#fileName").html($(this).val())
+        })
+
+        $("#CreateProductForm").submit(function (e) {
+            e.preventDefault();
+            var vcfData = new FormData($('#CreateProductForm')[0]);
+            var form = $(this);
+            var url = form.attr('action');
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: vcfData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu. Vui lòng thử lại");
+                }
+            });
+        });
+
+        //Create product
+        $(document).on("click", ".create-product", function () {
+            $.ajax({
+                method: "GET",
+                url: "@Url.Action("Create","Product")",
+                beforeSend: function () {
+                    loadSpinner();
+                },
+                success: function (data) {
+                    $("#modalContentLg").html(data);
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu")
+                },
+                complete: function () {
+                    exitSpinner();
+                }
+            })
+        })
+
+    $(document).on("click", ".remove-profile", function () {
+        var profileId = $(this).data("id");
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("RemoveProfile")",
+                data: {
+                    profileId: profileId
+                },
+                beforeSend: function () {
+                    loadSpinner();
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        $(".profile-tr-" + profileId).html("");
+                    }
+                    else {
+                        toastr.error(data.message)
+                    }
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu")
+                },
+                complete: function () {
+                    exitSpinner();
+                }
+            })
+        })
+    $(document).on("click", ".add-profile", function () {
+        var productId = $(this).data("productid");
+        var tableId = $(this).data("tableid");
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("CreateProfile","UserManage")",
+                data: {
+                    productId: productId
+                },
+                beforeSend: function () {
+                    loadSpinner();
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        $.ajax({
+                            method: "POST",
+                            url: "@Url.Action("LoadNewProfile")",
+                            data: {
+                                productId: productId
+                            },
+                            beforeSend: function () {
+                                loadSpinner();
+                            },
+                            success: function (data) {
+                                $("#" + tableId).append(data)
+                            },
+                            error: function () {
+                                toastr.error("Có lỗi khi gửi dữ liệu, vui lòng thử lại")
+                            }
+                        })
+                    }
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu")
+                },
+                complete: function () {
+                    exitSpinner();
+                }
+            })
+        })
+
+    </script>
+}

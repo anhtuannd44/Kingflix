@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Price>
+
+@if (Model.Count() != 0)
+{
+    foreach (var item in Model)
+    {
+        <option value="@item.Month">@item.Month tháng (@string.Format("{0:0,0 đ}", item.SetPrice))</option>
+    }
+}
+else
+{
+    <option value="0">Không có giá trị phù hợp</option>
+}
+

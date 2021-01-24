@@ -1,0 +1,61 @@
+﻿@model Kingflix.Domain.ViewModel.OrderInformationViewModel
+
+<input type="hidden" value="@Model.Total" name="Total" id="Total" /> 
+<div class="row mt-3">
+    <div class="col-md-6">
+        <div class="voucher p-3 border rounded shadow h-100">
+            <strong><i class="mdi mdi-tag align-middle"></i> Khuyến mãi:</strong>
+            <div class="row mt-3">
+                <div class="col-md-8 col-8">
+                    <input id="voucher" class="form-control" name="promoCode" placeholder="Voucher hoặc mã Giới thiệu" value="@Model.VoucherInformation.VoucherId">
+                </div>
+                <div class="col-md-4 col-4">
+                    <button class="btn px-md-3 btn-rounded btn-primary form-submit px-1 btn-block" id="formSubmit" type="submit">Áp dụng</button>
+                </div>
+            </div>
+            <p id="voucher-notice" class="mt-3 text-success">@Model.Message</p>
+            @if (Model.Status == "Success")
+            {
+                <div class="card" id="voucherArea">
+                    <div class="card-body rounded p-3 position-relative" style="background: #f72d2d">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center position-relative">
+                                <div class="">
+                                    <img class="img-fluid image" style="border-radius: 99%" src="~/Content/image/netflix-logo-white.png" />
+                                </div>
+                            </div>
+                            <div class="col-md-9" style="border-left: 1px dashed #f5f5f5">
+                                <div class="text-white">
+                                    <p>@Model.VoucherInformation.VoucherName</p>
+                                    <p>@Html.Raw(Model.VoucherInformation.VoucherPolicy)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 20px; height: 20px; border-radius: 99px; background:#fff; position: absolute; top: -10px; left: 23%"></div>
+                        <div style="width: 20px; height: 20px; border-radius: 99px; background:#fff; position: absolute; bottom: -10px; left: 23%"></div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-md-6 mt-3 mt-md-0">
+        <div class="py-3 px-5 rounded shadow border">
+            <h5 class="text-black">Tóm tắt đơn hàng</h5>
+            <hr />
+            <div class="row">
+                <div class="col-md-6 col-6">Tiền tạm tính:</div>
+                <div class="col-md-6 col-6" id="tienTamTinh">@string.Format("{0:C0}", Model.Price)</div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-6 col-6">Giảm giá:</div>
+                <div class="col-md-6 col-6" id="giamGia">-@string.Format("{0:C0}", Model.PriceSale)</div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-md-6 col-6 font-weight-bold">TỔNG CỘNG:</div>
+                <div class="col-md-6 col-6 font-weight-bold text-primary" id="tongTien" data-value="@Model.Total">@string.Format("{0:C0}", Model.Total)</div>
+            </div>
+        </div>
+    </div>
+</div>

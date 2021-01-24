@@ -1,0 +1,399 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Homepage>
+@{
+    ViewBag.Title = "Cài đặt Slider Shop";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row justify-content-center">
+    <div class="col-md-2 text-center banner-item">
+        @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER5").FirstOrDefault().ImageId))
+        {
+            <img class="img-fluid image" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER5").FirstOrDefault().ImageId">
+        }
+        else
+        {
+            <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+        }
+        <button class="btn btn-primary btn-sm btn-block add-banner-item"
+                data-toggle="modal"
+                data-target="#AddBanner"
+                data-id="@Model.Where(a => a.Title == "BANNER5").FirstOrDefault().Id"
+                data-image="@Model.Where(a => a.Title == "BANNER5").FirstOrDefault().ImageId"
+                data-link="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER5").FirstOrDefault().Link) ? "#" : Model.Where(a => a.Title == "BANNER5").FirstOrDefault().Link)">
+            Thay đổi Banner 5
+        </button>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="clearfix">
+                    <h4 class="card-title mt-2 float-left">@ViewBag.Title <span class="font-weight-light">(Tỉ lệ 2:1, ưu tiên 800x400 px)</span></h4>
+                    <button class="btn btn-sm btn-gradient-success btn-rounded float-right add-slider" data-toggle="modal" data-target="#AddSlider">Thêm hình vào Slider</button>
+                </div>
+                <hr />
+                @if (Model.Where(a => a.Type == Kingflix.Domain.Enumerables.PictureHomeType.SliderCategory).Count() != 0)
+                {
+                    <div class="row">
+                        @foreach (var item in Model.Where(a => a.Type == Kingflix.Domain.Enumerables.PictureHomeType.SliderCategory))
+                        {
+                            <div class="col-md-3">
+                                <div class="image-box ratio-4-3">
+                                    <img class="img-fluid rounded-top image" src="~/Content/Upload/Images/@item.ImageId">
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a href="#" class="btn btn-primary btn-sm btn-rounded delete" data-id="@item.Id">Xóa</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-center">Chưa có dữ liệu</p>
+                }
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="clearfix">
+                    <h4 class="card-title mt-2 float-left">Tùy chọn Banner trang cửa hàng <span class="font-weight-light">(Tỉ lệ 2:1, ưu tiên 400x200 px)</span></h4>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-8 p-0">
+                        <div class="slider h-100">
+                            <div class="slider-shop position-relative h-100">
+                                @if (Model.Where(a => a.Type == Kingflix.Domain.Enumerables.PictureHomeType.SliderCategory).Count() != 0)
+                                {
+                                    foreach (var item in Model.Where(a => a.Type == Kingflix.Domain.Enumerables.PictureHomeType.SliderCategory))
+                                    {
+                                        <div class="image-box ratio-16-8">
+                                            <img class="img-fluid image" src="~/Content/image/@item.ImageId">
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="image-box ratio-16-8">
+                                        <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+                                    </div>
+                                }
+                            </div>
+                            <div class="slider-controls w-100" id="customize-controls">
+                                <button class="btn float-left btn-slider tns-prev" style="top: 42%; left: 1rem;"><i class="mdi mdi-arrow-left"></i></button>
+                                <button class="btn float-right btn-slider tns-next " style="top: 42%; right: 1rem"><i class="mdi mdi-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 pl-2 pr-0">
+                        <div class="image-box ratio-16-8 banner-item">
+                            @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER1").FirstOrDefault().ImageId))
+                            {
+                                <img class="img-fluid image" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER1").FirstOrDefault().ImageId">
+                            }
+                            else
+                            {
+                                <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+                            }
+                            <button class="position-absolute btn btn-primary btn-sm add-banner add-banner-item"
+                                    data-toggle="modal"
+                                    data-target="#AddBanner"
+                                    data-id="@Model.Where(a => a.Title == "BANNER1").FirstOrDefault().Id"
+                                    data-image="@Model.Where(a => a.Title == "BANNER1").FirstOrDefault().ImageId"
+                                    data-link="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER1").FirstOrDefault().Link) ? "#" : Model.Where(a => a.Title == "BANNER1").FirstOrDefault().Link)">
+                                Thay đổi Banner 1
+                            </button>
+                        </div>
+                        <div class="image-box ratio-16-8 banner-item" style="margin-top: .55rem">
+                            @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER2").FirstOrDefault().ImageId))
+                            {
+                                <img class="img-fluid image" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER2").FirstOrDefault().ImageId">
+                            }
+                            else
+                            {
+                                <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+                            }
+                            <button class="position-absolute btn btn-primary btn-sm add-banner add-banner-item"
+                                    data-toggle="modal"
+                                    data-target="#AddBanner"
+                                    data-id="@Model.Where(a => a.Title == "BANNER2").FirstOrDefault().Id"
+                                    data-image="@Model.Where(a => a.Title == "BANNER2").FirstOrDefault().ImageId"
+                                    data-link="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER2").FirstOrDefault().Link) ? "#" : Model.Where(a => a.Title == "BANNER2").FirstOrDefault().Link)">
+                                Thay đổi Banner 2
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-0 pr-2 mt-2">
+                        <div class="image-box ratio-16-8 banner-item">
+                            @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER3").FirstOrDefault().ImageId))
+                            {
+                                <img class="img-fluid image" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER3").FirstOrDefault().ImageId">
+                            }
+                            else
+                            {
+                                <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+                            }
+                            <button class="position-absolute btn btn-primary btn-sm add-banner add-banner-item"
+                                    data-toggle="modal"
+                                    data-target="#AddBanner"
+                                    data-id="@Model.Where(a => a.Title == "BANNER3").FirstOrDefault().Id"
+                                    data-image="@Model.Where(a => a.Title == "BANNER3").FirstOrDefault().ImageId"
+                                    data-link="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER3").FirstOrDefault().Link) ? "#" : Model.Where(a => a.Title == "BANNER3").FirstOrDefault().Link)">
+                                Thay đổi Banner 3
+                            </button>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 pl-2 pr-0 mt-2">
+                        <div class="image-box ratio-16-8 banner-item">
+                            @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER4").FirstOrDefault().ImageId))
+                            {
+                                <img class="img-fluid image" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER4").FirstOrDefault().ImageId">
+                            }
+                            else
+                            {
+                                <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+                            }
+                            <button class="position-absolute btn btn-primary btn-sm add-banner add-banner-item"
+                                    data-toggle="modal"
+                                    data-target="#AddBanner"
+                                    data-id="@Model.Where(a => a.Title == "BANNER4").FirstOrDefault().Id"
+                                    data-image="@Model.Where(a => a.Title == "BANNER4").FirstOrDefault().ImageId"
+                                    data-link="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER4").FirstOrDefault().Link) ? "#" : Model.Where(a => a.Title == "BANNER4").FirstOrDefault().Link)">
+                                Thay đổi Banner 4
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 text-center banner-item">
+        @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER6").FirstOrDefault().ImageId))
+        {
+            <img class="img-fluid image" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER6").FirstOrDefault().ImageId">
+        }
+        else
+        {
+            <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+        }
+        <button class="btn btn-primary btn-sm btn-block add-banner-item"
+                data-toggle="modal"
+                data-target="#AddBanner"
+                data-id="@Model.Where(a => a.Title == "BANNER6").FirstOrDefault().Id"
+                data-image="@Model.Where(a => a.Title == "BANNER6").FirstOrDefault().ImageId"
+                data-link="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER6").FirstOrDefault().Link) ? "#" : Model.Where(a => a.Title == "BANNER6").FirstOrDefault().Link)">
+            Thay đổi Banner 6
+        </button>
+    </div>
+</div>
+
+
+<div class="modal fade" id="AddSlider" aria-hidden="true" tabindex='-1'>
+    <div class="modal-dialog modal-lg mb-0" style="min-height: 100px">
+        <div class="modal-content px-3" id="AddSliderContent">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="card-title font-weight-bold mb-0">Thêm hình vào Slider</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <hr />
+            @using (Ajax.BeginForm("AddSliderShop", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "loadSpinner",
+                OnComplete = "exitSpinner",
+                OnSuccess = "AddSliderSuccess"
+            }))
+            {
+                <div class="modal-body py-3">
+                    <div class="card-body shadow">
+                        <div class="preview-image w-100">
+                            <div class="image-box ratio-4-3">
+                                <img id="previewCover" class="img-fluid rounded-top image" src="~/Content/image/No_Picture.jpg">
+                            </div>
+                        </div>
+                        <input type="text" hidden id="ImageId" name="ImageId" data-toggle="modal" data-target="#ModalTemplate-Img" />
+                        <label for="ImageId" class="btn btn-gradient-info btn-rounded mt-3 btn-block btn-sm">Chọn Hình</label>
+                        <div class="form-group mt-4">
+                            <label for="Link" class="text-white">Đường dẫn tĩnh (https://...)</label>
+                            <input type="text" class="form-control" name="Link" id="Link" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <button class="btn btn-danger btn-sm btn-rounded" type="button" data-dismiss="modal">Hủy</button>
+                    <button class="btn btn-success btn-sm btn-rounded add-slider-submit" type="submit">Hoàn tất</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="AddBanner" aria-hidden="true" tabindex='-1'>
+    <div class="modal-dialog modal-lg mb-0" style="min-height: 100px">
+        <div class="modal-content px-3" id="AddBannerContent">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="card-title font-weight-bold mb-0">Thêm hình vào Slider</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <hr />
+            @using (Ajax.BeginForm("AddBannerShop", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "loadSpinner",
+                OnComplete = "exitSpinner",
+                OnSuccess = "AddSliderSuccess"
+            }))
+            {
+                <input type="hidden" value="" id="Id" name="Id" />
+                <div class="modal-body py-3">
+                    <div class="card-body shadow">
+                        <div class="preview-image w-100">
+                            <div class="image-box ratio-4-3">
+                                <img id="previewBanner" class="img-fluid rounded-top image" src="~/Content/image/No_Picture.jpg">
+                            </div>
+                        </div>
+                        <input type="text" hidden id="imageId" name="imageId" data-toggle="modal" data-target="#ModalTemplate-Img" />
+                        <label for="imageId" class="btn btn-gradient-info btn-rounded mt-3 btn-block btn-sm">Chọn Hình</label>
+                        <div class="form-group mt-4">
+                            <label for="link" class="text-white">Đường dẫn tĩnh (https://...)</label>
+                            <input type="text" class="form-control" name="link" id="link" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <button class="btn btn-danger btn-sm btn-rounded" type="button" data-dismiss="modal">Hủy</button>
+                    <button class="btn btn-success btn-sm btn-rounded add-slider-submit" type="submit">Hoàn tất</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $("#ImageId").click(function () {
+            var cover = $(this).val().split(",");
+            loadLibraryImage(false, cover, false);
+            $("#submitModalImage").attr('data-target-id', 'ImageId');
+        });
+        $("#imageId").click(function () {
+            var cover = $(this).val().split(",");
+            loadLibraryImage(false, cover, false);
+            $("#submitModalImage").attr('data-target-id', 'imageId');
+        });
+        $("#submitModalImage").click(function () {
+            if ($(this).data("is-multi")) {
+                renderSelectedImage(getListImageSelect());
+            }
+            else {
+                var image = getSingleImageSelect();
+                if ($(this).data("textarea")) {
+                    if (image != "" && image != undefined) {
+                        addToTextArea(image);
+                    }
+                }
+                else {
+                    if (image != "" && image != undefined) {
+                        if ($(this).data("target-id") == "ImageId") {
+                            $("#ImageId").val(image);
+                            $("#previewCover").attr("src", "../../Content/Upload/Images/" + image);
+                        }
+                        else {
+                            $("#imageId").val(image);
+                            $("#previewBanner").attr("src", "../../Content/Upload/Images/" + image);
+                        }
+                    }
+                    else {
+                        if ($(this).data("target-id") == "ImageId") {
+                            $("#ImageId").val(null);
+                            $("#previewCover").attr("src", "../../Content/image/No_Picture.JPG");
+                        } else {
+                            $("#imageId").val(null);
+                            $("#previewBanner").attr("src", "../../Content/image/No_Picture.JPG");
+                        }
+                    }
+                }
+            }
+            $("#ModalTemplate-Img").modal('hide');
+        });
+
+        $('#AddSlider').on('hidden.bs.modal', function (e) {
+            $("#ImageId").val(null);
+            $("#Link").val(null);
+            $("#previewCover").attr("src", "../../Content/image/No_Picture.JPG");
+        })
+        $('#AddBanner').on('hidden.bs.modal', function (e) {
+            $("#Id").val(null);
+            $("#imageId").val(null);
+            $("#link").val(null);
+            $("#previewBanner").attr("src", "../../Content/image/No_Picture.JPG");
+        })
+
+        function AddSliderSuccess(data) {
+            if (data.status == "success") {
+                toastr.success(data.message);
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+            }
+            else {
+                toastr.error(data.message);
+                $("#AddSlider").modal('hide');
+            }
+        }
+         $(document).on("click", ".delete", function () {
+            var id = $(this).data("id");
+            var r = confirm("Bạn có muốn xóa slider này hoàn toàn không?");
+            if (r == true) {
+                loadSpinner();
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("DeleteSlider")",
+                    data: { id: id },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            toastr.success(data.message);
+                            window.location.reload();
+                        }
+                    },
+                    error: function () {
+                        exitSpinner();
+                        toastr.error("Có lỗi xảy ra. Vui lòng thử lại");
+                    }
+                })
+            }
+         })
+        var slider = tns({
+            container: '.slider-shop',
+            items: 1,
+            mouseDrag: true,
+            slideBy: 'page',
+            autoplay: true,
+            nav: false,
+            autoplayButtonOutput: false,
+            arrowKeys: true,
+            controlsContainer: "#customize-controls",
+        });
+        $(".banner-item").hover(function () {
+            $(this).children("button").css("opacity",1);
+        }, function () {
+            $(this).children("button").css("opacity",0);
+        })
+        $(".add-banner-item").click(function () {
+            var image = $(this).data("image");
+            $("#Id").val($(this).data("id"));
+            $("#imageId").val(image);
+            $("#link").val($(this).data("link"));
+            if (image != "" && image != undefined) {
+                $("#previewBanner").attr("src", "../../Content/Upload/Images/" + image);
+            }
+            else {
+                $("#previewBanner").attr("src", "../../Content/Image/No_Picture.JPG");
+            }
+        })
+    </script>
+}

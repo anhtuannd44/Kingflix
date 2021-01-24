@@ -1,0 +1,38 @@
+﻿@model Kingflix.Models.RevieViewModel
+
+<div class="row align-items-center py-2 m-0 rounded shadow mb-4">
+    <div class="col-md-3 col-12 text-center">
+        @if (Model.StarAvg == 0)
+        {
+            <h1 class="" style="color: orange; font-weight: 600; font-size: 1.6rem">Chưa có đánh giá</h1>
+
+        }
+        else
+        {
+            <h1 class="" style="color: orange; font-weight: 600; font-size: 4rem">@Model.StarAvg <i class="mdi mdi-star"></i></h1>
+
+        }
+    </div>
+    <div class="col-md-6 col-12 border-left border-right">
+        @foreach (var item in Model.Data.OrderByDescending(a => a.StarType))
+        {
+            <div class="row align-items-center px-2">
+                <div class="col-md-2 col-2 p-0 text-center">
+                    <h5 class="m-0">@item.StarType <i class="mdi mdi-star" style="color: orange"></i></h5>
+                </div>
+                <div class="col-md-7 col-7 p-0">
+                    <div class="progress" style="height: 9px !important;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: @(item.ReviewPercent.ToString().Replace(",","."))%"></div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-3 pr-0" style="font-size: 0.95rem">
+                    <p class="m-0">@item.ReviewCount đánh giá</p>
+                </div>
+            </div>
+        }
+
+    </div>
+    <div class="col-md-3 col-12 mt-3 mt-md-0">
+        <button type="button" class="btn btn-info btn-block @(User.Identity.IsAuthenticated?"show":"login")-review-block">Gửi đánh giá của bạn</button>
+    </div>
+</div>

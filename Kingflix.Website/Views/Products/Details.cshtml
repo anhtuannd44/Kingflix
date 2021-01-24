@@ -1,0 +1,336 @@
+﻿@model Kingflix.Domain.DomainModel.Category
+
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
+    DateTime time = DateTime.Now.AddDays(-100);
+    if (Model.FlashSale != null)
+    {
+        time = Model.FlashSale.TimeEnd;
+    }
+}
+<link href="~/Content/plugin/jquerycountdown/jquery.coundown.css" rel="stylesheet" />
+<div class="container pt-2">
+    <ol class="breadcrumb p-0 mb-0" style="opacity: .8">
+        <li class="breadcrumb-item"><a href="/">Trang Chủ</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index")">Cửa hàng</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+    </ol>
+</div>
+<section class="py-4">
+    <div class="container">
+        <div class="clearfix pt-2">
+            <div class="product-title float-left">
+                <h4 class="mb-0 d-inline-block mr-3 font-weight-normal text-black">@Model.Name</h4>
+                <div class="product-review d-inline-block">
+                    <span class="product-star">
+                        <i class="mdi mdi-star"></i>
+                        <i class="mdi mdi-star"></i>
+                        <i class="mdi mdi-star"></i>
+                        <i class="mdi mdi-star"></i>
+                        <i class="mdi mdi-star"></i>
+                        <a href="#" class="scrollto text-info">(147 đánh giá)</a>
+                    </span>
+                </div>
+            </div>
+            <div class="social-button float-right">
+                <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Ffacebook.com%2Fthegioiamthanh.vn&amp;width=151&amp;layout=button_count&amp;action=like&amp;size=small&amp;share=true&amp;height=46&amp;appId=2347493918804034" width="151" height="25" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="position-relative shadow rounded">
+                    <div class="image-box ratio-1-1">
+                        @if (string.IsNullOrEmpty(Model.ImageId))
+                        {
+                            <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+                        }
+                        else
+                        {
+                            <img class="img-fluid image" src="~/Content/Upload/Images/@Model.ImageId">
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <input type="hidden" value="@Model.CategoryId" id="categoryId" />
+                <input type="hidden" value="@Model.TypeOfAccount" id="typeOfAccount" />
+                <div class="product-order">
+                    @if (Model.Prices.Count != 0)
+                    {
+                        <h4 class="m-0" style="color:#bf081f" id="Price"></h4>
+                    }
+                    else
+                    {
+                        <h6 class="m-0">Tạm ngưng bán</h6>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.PromotionInfo))
+                    {
+                        <div class="product-promotion border-dark-50 py-4 px-2 rounded border position-relative mt-4">
+                            <div class="position-absolute product-promotion-label bg-primary rounded text-white py-1 px-2" style="top: -16px">
+                                <p class="m-0"><i class="mdi mdi-gift mr-2"></i>Khuyến Mãi</p>
+                            </div>
+                            <div class="product-promotion-picture">
+                                @Html.Raw(Model.PromotionInfo)
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Prices.Count != 0)
+                    {
+                        if (Model.FlashSale != null)
+                        {
+                            <div class="py-3 px-0 text-center">
+                                <img src="~/Content/image/flashsale.png" height="30" />
+                                <span class="h5 text-dark"><i class="mdi mdi-clock text-primary"></i>Kết thúc trong</span><div id="getStart"></div>
+                            </div>
+                        }
+                        <div class="row align-items-center my-4">
+                            <div class="col-md-5 col-6">
+                                <h6 class="m-0">Chọn số tháng</h6>
+                            </div>
+                            <div class="col-md-7 col-6">
+                                <select name="Month" id="Month" class="form-control select2-hidden-search">
+                                    @{ bool selected = true;}
+                                    @foreach (var item in Model.Prices.OrderBy(a => a.Month))
+                                    {
+                                        <option value="@item.Month" @(selected ? "selected" : "")>@item.Month tháng</option>
+                                        selected = false;
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-4">
+                            <div class="col-md-5 col-6">
+                                <h6 class="m-0">Số lượng</h6>
+                            </div>
+                            <div class="col-md-7 col-6">
+                                <div class="qty">
+                                    <span class="minus">-</span>
+                                    <input type="text" class="count" name="qty" id="qty" value="1">
+                                    <span class="plus">+</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-4">
+                            <div class="col-md-5">
+                                <h6 class="m-0">Tổng cộng</h6>
+                            </div>
+                            <div class="col-md-7">
+                                <h4 class="text-success m-0"><span id="Total"></span></h4>
+                            </div>
+                        </div>
+                        if (Model.TypeOfAccount == Kingflix.Domain.Enumerables.TypeOfAccount.UserAccount)
+                        {
+                            <div class="row align-items-center mb-4 bg-light py-1 rounded">
+                                <div class="col-md-5">
+                                    <h6 class="m-0">Tài khoản của bạn</h6>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <input class="form-control form-control border-primary" type="text" placeholder="Tên đăng nhập" required id="user">
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <input class="form-control form-control border-primary" type="text" placeholder="Mật khẩu" required id="pass">
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="order-submit mb-4">
+                            <button class="btn btn-gradient-primary btn-rounded px-4 add-to-cart">Thêm vào giỏ</button>
+                            <a class="btn btn-gradient-success btn-rounded px-4" href="@Url.Action("CheckOut")">Thanh toán</a>
+                        </div>
+                    }
+                </div>
+                <hr />
+                <div class="share-icon">
+                    @Html.Partial("_ShareSocialIconPartial")
+                </div>
+            </div>
+            <div class="col-md-3">
+                @if (!string.IsNullOrEmpty(Model.Service))
+                {
+                    <div class="product-promotion border-dark-50 py-4 px-2 rounded border position-relative mt-4">
+                        <div class="position-absolute product-promotion-label bg-success rounded text-white py-1 px-2" style="top: -16px">
+                            <p class="m-0"><i class="mdi mdi-shield mr-2"></i>Yên tâm mua sắm</p>
+                        </div>
+                        <div class="product-promotion-picture">
+                            @Html.Raw(Model.Service)
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="spevi-title">
+            <h5 class="font-weight-bold">Mô tả sản phẩm</h5>
+        </div>
+        <hr class="w-25 mt-1 mb-4 ml-0" />
+        <div class="spevi-details">
+            @Html.Raw(Model.Details)
+        </div>
+    </div>
+</section>
+
+@section scripts {
+    <script src="~/Content/plugin/jquerycountdown/jquery.countdown.js"></script>
+    @if (Model.FlashSale != null)
+    {
+        <script type="text/javascript">
+        $(function () {
+            var note = $('#note'),
+                        newYear = true;
+                    $('#getStart').countdown({
+                timestamp: new Date(@time.Year, @time.Month-1,@time.Day, @time.Hour, @time.Minute),
+                        callback: function (days, hours, minutes, seconds) {
+
+                    var message = "";
+
+                    message += days + " day" + (days == 1 ? '' : 's') + ", ";
+                    message += hours + " hour" + (hours == 1 ? '' : 's') + ", ";
+                    message += minutes + " minute" + (minutes == 1 ? '' : 's') + " and ";
+                    message += seconds + " second" + (seconds == 1 ? '' : 's') + " <br />";
+
+                    note.html(message);
+                }
+            })
+        });
+        </script>
+    }
+    <script>
+        $(document).ready(function () {
+            var Month = $("#Month").val();
+            var categoryId = $("#categoryId").val();
+            var qty = $("#qty").val();
+            getPriceAndTotal(categoryId, Month, qty);
+        })
+        $("#Month").change(function () {
+                    var Month = $(this).val();
+                    var categoryId = $("#categoryId").val();
+                    var qty = $("#qty").val();
+                    getPriceAndTotal(categoryId, Month, qty);
+                })
+
+        function getPriceAndTotal(categoryId, Month, qty) {
+            $.ajax({
+                    method: "POST",
+                url: "@Url.Action("GetPriceAndTotal")",
+                data: {
+                    categoryId: categoryId,
+                    Month: Month,
+                    qty: qty
+                },
+                success: function (data) {
+                    $("#Price").html(data.PriceShow);
+                    $("#Total").html(data.TotalShow);
+                    },
+                error: function () {
+                        toastr.error("Chưa cập nhật được. Vui lòng thử lại");
+                    }
+                })
+        }
+
+        $(document).on("click", ".add-to-cart", function () {
+            var qty = $("#qty").val();
+            var categoryId = $("#categoryId").val();
+            var Month = $("#Month").val();
+            var typeOfAccount = $("#typeOfAccount").val();
+            if (typeOfAccount == "UserAccount") {
+                var user = $("#user").val();
+                var pass = $("#pass").val();
+                if (user == "" || pass == "") {
+                    toastr.error("Bạn chưa nhập tên đăng nhập và mật khẩu của bạn!");
+                }
+                else {
+                    loadSpinner();
+                    addToCart(categoryId, Month, qty, typeOfAccount, user, pass);
+                }
+            }
+            else {
+                loadSpinner();
+                addToCart(categoryId, Month, qty, typeOfAccount, null, null);
+            }
+        })
+        function addToCart(categoryId, Month, count, typeOfAccount, user, pass) {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("AddToCart")",
+                data: {
+                    categoryId: categoryId,
+                    Month: Month,
+                    count: count,
+                    typeOfAccount: typeOfAccount,
+                    user: user,
+                    pass: pass
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        loadMiniCart();
+                    }
+                    else {
+                        toastr.error(data.message)
+                    }
+                },
+                error: function () {
+                    toastr.error("Thất bại! Có lỗi khi gửi dữ liệu, xin vui lòng thử lại");
+                },
+                complete: function () {
+                    exitSpinner()
+                }
+            })
+        }
+        $(document).ready(function () {
+            $('.count').prop('disabled', true);
+            $(document).on('click', '.plus', function () {
+                $('.count').val(parseInt($('.count').val()) + 1);
+                var qty = $("#qty").val();
+                var categoryId = $("#categoryId").val();
+                var Month = $("#Month").val();
+                getPriceAndTotal(categoryId, Month, qty);
+            });
+            $(document).on('click', '.minus', function () {
+                $('.count').val(parseInt($('.count').val()) - 1);
+                if ($('.count').val() == 0) {
+                    $('.count').val(1);
+                }
+                else {
+                    var qty = $("#qty").val();
+                    var categoryId = $("#categoryId").val();
+                    var Month = $("#Month").val();
+                    getPriceAndTotal(categoryId, Month, qty);
+                }
+            });
+        });
+        $(document).on("click", ".remove-from-cart", function () {
+            var categoryId = $(this).data("id");
+            var Month = $(this).data("month");
+            loadSpinner();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("RemoveFromCart")",
+                data: {
+                    categoryId: categoryId,
+                    Month: Month
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success("Đã xóa khỏi giỏ hàng");
+                        loadMiniCart();
+                    }
+                },
+                error: function () {
+                    toastr.error("Không thể xóa khỏi giỏ hàng. Vui lòng thử lại")
+                },
+                complete: function () {
+                    exitSpinner();
+                }
+            })
+        })
+    </script>
+}

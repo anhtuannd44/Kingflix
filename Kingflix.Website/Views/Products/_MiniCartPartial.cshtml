@@ -1,0 +1,53 @@
+﻿@model Kingflix.Models.ShoppingCart
+
+@if (Model.Items.Count != 0)
+{
+    foreach (var item in Model.Items)
+    {
+        <div class="dropdown-item border-bottom px-3 py-2 item-@(item.CategoryId)-@item.Month">
+            <div class="row align-items-center">
+                <div class="col-md-2 p-1">
+                    @if (string.IsNullOrEmpty(item.ImageId))
+                    {
+                        <img class="img-fluid image rounded" src="~/Content/image/No_Picture.jpg">
+                    }
+                    else
+                    {
+                        <img class="img-fluid image rounded" src="~/Content/Upload/Images/@item.ImageId">
+                    }
+                </div>
+                <div class="col-md-7 p-1 border-left border-right">
+                    <a href="@Url.Action("Details", new { id = item.CategoryId })">
+                        <p class="font-weight-bold mb-1 text-dark" style="white-space: normal; font-size: 90%">@item.Name (@item.Month tháng)</p>
+                        <p class="mb-0 text-dark" style="white-space: normal; font-size: 90%;">@item.Count x @item.PriceShow</p>
+                    </a>
+                </div>
+                <div class="col-md-3 p-1 text-right">
+                    <p class="m-0" style="font-size: 95%; font-weight: 600">@item.TotalPrice</p>
+                    <p class="badge badge-danger p-1 m-0 remove-from-cart" data-toggle="tooltip" data-title="Xóa khỏi giỏ hàng" data-id="@item.CategoryId" data-month="@item.Month" style="cursor: pointer;"><i class="mdi mdi-delete" style="font-size: .7rem"></i></p>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="dropdown-item border-bottom py-2">
+        <div class="row align-items-center">
+            <div class="col-md-9 text-right">
+                <p class="font-weight-bold mb-0" style="white-space: normal; font-size: 90%">TỔNG CỘNG</p>
+            </div>
+            <div class="col-md-3 text-right">
+                <p class="m-0" style="font-size: 95%; font-weight: 600">@Model.TotalPriceShow</p>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <p class="my-3">Chưa có sản phẩm</p>
+    </div>
+}
+
+<p class="d-none" id="miniCartCountReturn">@Model.Items.Count</p>
+<script>
+    $('[data-toggle="tooltip"]').tooltip();
+</script>

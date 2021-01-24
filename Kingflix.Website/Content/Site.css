@@ -1,0 +1,18 @@
+﻿body {
+    font-family: "Open Sans", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: "Open Sans", sans-serif;
+}
+#categoryList {
+    max-height: 370px;
+    overflow-x: auto;
+}
+.list-table ul, .list-table li {
+    list-style: none;
+}
+.list-table-li .clearfix {
+    border-bottom: 1px solid #e0e0e0;
+}

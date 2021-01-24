@@ -1,0 +1,521 @@
+﻿@using Kingflix.Domain.Enumerables
+@using Kingflix.Utilities
+@model Kingflix.Domain.ViewModel.Step1ViewModel
+@{ ViewBag.Title = "Đăng ký gói";
+                Layout = "~/Views/Shared/_OrderLayout.cshtml";
+                var i = 1; }
+@foreach (var item in Model.NetflixList)
+{
+    var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
+<style>
+    .active.label-badge {
+        background: @item.Color;
+    }
+    .netflix-plan-@dem {
+        background: @item.ColorSecondary;
+        box-shadow: 0 0px 6px @item.ColorShadow;
+    }
+    .active.netflix-plan-@dem {
+        background: @item.Color;
+    }
+    .active.plan-@dem i, .active.plan-@dem .check-text, .plan-@dem .select.price-list {
+        color: @item.Color;
+    }
+</style>}
+<section>
+    <div class="container order">
+        <div class="head sticky-top">
+            <h1 class="text-black font-weight-bold order-title">Chọn gói Netflix của bạn</h1>
+            <p class="text-dark">Tất cả các gói <strong>đều được bảo hành</strong>. Nhận tài khoản xem phim với <strong>3 bước đơn giản</strong></p>
+            <div class="">
+                <h4 class="step-button d-inline-block p-1 p-md-2">Bước 1</h4>
+                <h4 class="step-content d-inline-block"> Chọn gói phù hợp với bạn</h4>
+            </div>
+            <p style="color: #000;" class="d-none d-md-block">Tất cả các gói đều xem phim chất lượng cao, phong phú, hỗ trợ khách hàng và có bảo hành đầy đủ</p>
+        </div>
+    </div>
+    <div class="container order" id="plans">
+        <div class="row">
+            <div class="@(Model.NetflixList.Count == 4?"offset-md-3 col-md-9 col-12": Model.NetflixList.Count == 3?"offset-md-4 col-md-8 col-12":"offset-md-6 col-md-6 col-12")">
+                <div class="row product-category" style="padding: 0 2px;">
+                    @foreach (var item in Model.NetflixList)
+                    {
+                        var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
+        <div class="col plan plan-@dem" data-plan="plan-@dem">
+            <div class="netflix-plan text-center mx-auto position-relative rounded netflix-plan-@dem">
+                <div class="position-absolute netflix-plan-area">
+                    <p class="m-0">@item.Name</p>
+                </div>
+            </div>
+            <div class="position-absolute label-badge"></div>
+        </div>}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container order" style="display: none" id="plans2">
+        <div class="row">
+            <div class="offset-md-3 col-md-9 col-12">
+                <div class="row product-category" style="padding: 0 2px;">
+                    @foreach (var item in Model.NetflixList)
+                    {
+                        var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
+        <div class="col plan plan-@dem" data-plan="plan-@dem">
+            <div class="netflix-plan text-center mx-auto position-relative rounded netflix-plan-@dem">
+                <div class="position-absolute netflix-plan-area">
+                    <p class="m-0">@item.Name</p>
+                </div>
+            </div>
+            <div class="position-absolute label-badge"></div>
+        </div>}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container order">
+        <div class="body">
+            <hr />
+            <div class="row justify-content-center align-items-center">
+                <div class="@(Model.NetflixList.Count == 4?"col-md-3 col-12":Model.NetflixList.Count == 3?"col-md-4 col-12":"col-md-6 col-12")">
+                    <p class="mt-2 mb-0 d-none d-md-block text-dark">Bạn chọn mấy tháng</p>
+                    <p class="mt-2 mb-0 d-md-none text-center mb-1">Chọn tháng</p>
+                </div>
+                <div class="@(Model.NetflixList.Count == 4?"col-md-9 col-12":Model.NetflixList.Count == 3?"col-md-8 col-12":"col-md-6 col-12")">
+                    <div class="row justify-content-center" id="priceList">
+                        @foreach (var item in Model.NetflixList)
+                        {
+                            var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
+            <div class="col price-col plan-@dem" data-plan="plan-@dem">
+                <div class="netflix-price text-center">
+                    @{ var j = 0;}
+                    @foreach (var price in item.Prices.Where(a => a.IsShow).OrderBy(a => a.Month))
+                    {
+
+    <p class="price-list @(dem != 2 ? "" : j == 0 ? "select" : "") @(j>2?"price-list-orther":"")" style="display:@(j>2?"none":"block")" data-month="@price.Month" data-category="@item.CategoryId">
+        <span class="d-none d-md-block" style="font-size: 1rem">
+            @string.Format("{0:0,0 ₫}", price.SetPrice)/<span style="font-size: .85rem">@price.Month tháng</span> <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
+            <br />
+            @if (price.Prices.HasValue)
+            {
+<del style="font-size: .95rem">@string.Format("{0:0,0 ₫}", price.Prices)</del>
+                        <br />}
+            @if (!string.IsNullOrEmpty(price.TextFixed))
+            {
+<span class="badge badge-primary">@price.TextFixed</span>}
+        </span>
+        <span class="d-block d-md-none" style="font-size: 1rem; line-height: 1rem">
+            @string.Format("{0:0,0 ₫}", price.SetPrice)
+            <br />
+            <span style="font-size: .75rem; color:#7e8082; font-weight: 400">(@price.Month tháng)</span> <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
+            <br />
+            @if (price.Prices.HasValue)
+            {
+<del style="font-size: .75rem">@string.Format("{0:0,0 ₫}", price.Prices)</del>
+                        <br />}
+        </span>
+    </p>j++;
+                    }
+                </div>
+            </div>i++;
+                        }
+
+                    </div>
+                    <div class="text-center">
+                        <p class="price-list-show-more font-weight-bold text-primary d-block" id="showMore" style="cursor: pointer" value="NotActive">
+                            Xem thêm
+                            <i class="mdi mdi-chevron-down mt-1" id="iconPriceShow" style="font-size: 1.25rem; vertical-align: middle"></i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            @{i = 0;}
+            @foreach (var item in Model.ListCategoryDetails)
+            {
+<div class="row align-items-center border-top py-3">
+    <div class="@(Model.NetflixList.Count == 4?"col-md-3 col-12":Model.NetflixList.Count == 3?"col-md-4 col-12":"col-md-6 col-12")">
+        <p class="text-black m-0">@item.Name</p>
+    </div>
+    <div class="@(Model.NetflixList.Count == 4?"col-md-9 col-12":Model.NetflixList.Count == 3?"col-md-8 col-12":"col-md-6 col-12")">
+        <div class="row align-items-center">
+            @if (item.Type != CategoryDetailsType.Support && item.Type != CategoryDetailsType.TimeAcceptOrder && item.Type != CategoryDetailsType.ScreenCount)
+            {
+                foreach (var category in Model.NetflixList)
+                {
+                    var dem = category.CategoryId == Const.NETFLIX0 ? 0 : category.CategoryId == Const.NETFLIX1 ? 1 : category.CategoryId == Const.NETFLIX2 ? 2 : category.CategoryId == Const.NETFLIX3 ? 3 : 4;
+<div class="col text-center plan plan-@dem" data-plan="plan-@dem">
+    @if (item.CheckNetflix1.Value)
+    {
+<i class="mdi mdi-check"></i> }
+                        else
+                        {
+<i class="mdi mdi-close"></i>}
+</div> }
+                }
+                else
+                {
+                    foreach (var category in Model.NetflixList)
+                    {
+                        var dem = category.CategoryId == Const.NETFLIX0 ? 0 : category.CategoryId == Const.NETFLIX1 ? 1 : category.CategoryId == Const.NETFLIX2 ? 2 : category.CategoryId == Const.NETFLIX3 ? 3 : 4;
+<div class="col text-center plan plan-@dem" data-plan="plan-@dem">
+    @if (item.ContentNetflix1 == "True")
+    {
+<i class="mdi mdi-check"></i> }
+                        else if (item.ContentNetflix1 == "False")
+                        {
+<i class="mdi mdi-close"></i> }
+                        else
+                        {
+<p class="mt-2 mb-0 check-text">@item.ContentNetflix1</p>}
+</div>}
+                }
+        </div>
+    </div>
+</div> if (i == 3)
+                {
+<div class="row align-items-center border-top py-2">
+    <div class="col-md-4 col-12">
+        <p class="text-black m-0 d-none d-md-block product-title">Chọn số profile muốn mua</p>
+        <p class="text-black d-block d-md-none text-center product-title">Số profile</p>
+    </div>
+    <div class="col-md-8 col-12 text-center">
+        <div class="qty d-inline-block">
+            <span class="minus">-</span>
+            <input type="text" class="count" name="netflixProfile" id="netflixProfile" value="1" disabled="">
+            <span class="plus">+</span>
+        </div>
+    </div>
+</div>                }
+                i++;
+            }
+            <div id="EndFix"></div>
+            @Html.Action("GetCombo")
+
+            @using (Html.BeginForm("CheckPromotion", null, FormMethod.Post, new { @id = "promoCodeForm", @class = "h-100" }))
+            {
+@Html.AntiForgeryToken()
+                @Html.Hidden("categoryId")
+                                @Html.Hidden("month")
+                                                @Html.Hidden("profile")
+                                                                @Html.Hidden("combo")
+                                                                                @Html.Hidden("total")
+                                                                                                <div id="orderInformation">
+                                                                                                    @Html.Partial("_OrderInformationPartial", Model.OrderInformation)
+                                                                                                </div>            }
+        </div>
+        <div class="order-footer text-center my-4">
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+                    <button class="btn btn-primary order-submit-step1 btn-block">TIẾP TỤC</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script>
+
+        //Scroll Fix Top Netfix
+        window.onscroll = function () { fixTop() };
+        var plans = $("#plans");
+        var sticky = plans.offset().top;
+        function fixTop() {
+            if (window.pageYOffset >= sticky + 100 && window.pageYOffset < $("#EndFix").offset().top - 100) {
+                plans.addClass("fixed-top mt-2");
+                $("#plans2").show();
+            } else {
+                plans.removeClass("fixed-top mt-2");
+                $("#plans2").hide();
+            }
+        }
+
+        //Chọn Số Profile
+        $(document).ready(function () {
+            $('.count').prop('disabled', true);
+            $(document).on('click', '.plus', function () {
+                $('.count').val(parseInt($('.count').val()) + 1);
+                submitForm();
+            });
+            $(document).on('click', '.minus', function () {
+                $('.count').val(parseInt($('.count').val()) - 1);
+                if ($('.count').val() == 0) {
+                    $('.count').val(1);
+                }
+                else {
+                    submitForm();
+                }
+            });
+        });
+
+        $("#showMore").click(function () {
+            var elm = $(this);
+            if (elm.val() == "NotActive") {
+                $(".price-list-orther").hide();
+                $("#showMore").val("Active");
+                $("#iconPriceShow").removeClass("mdi-chevron-up");
+                $("#iconPriceShow").addClass("mdi-chevron-down");
+            }
+            else {
+                $(".price-list-orther").show();
+                $("#showMore").val("NotActive");
+                $("#iconPriceShow").removeClass("mdi-chevron-down");
+                $("#iconPriceShow").addClass("mdi-chevron-up");
+            }
+        })
+        $(document).on("click", ".combo-order", function () {
+            submitForm();
+        })
+
+        $(document).ready(function () {
+            $(".combo-details").each(function () {
+                var height = $(this).height();
+                if (height > 80) {
+                    $(this).addClass("show-more");
+                }
+                else {
+                    $(this).parent().children(".btn-show-more").remove();
+                }
+            })
+        })
+        $(document).on("click", ".btn-show-more", function () {
+            var elm = $(this).parent().children(".combo-details");
+            elm.toggleClass("show-more");
+            $(this).toggleClass("add-shadow");
+            if (elm.hasClass("show-more")) {
+                $(this).html("Xem thêm")
+            }
+            else {
+                $(this).html("Rút gọn")
+            }
+        })
+
+
+        $(".plan").click(function () {
+            if (!$(this).hasClass("active")) {
+                var plan = $(this).data("plan");
+                $(".plan").removeClass('active');
+                $(".price-col").removeClass('active');
+                $("." + plan).addClass("active");
+                $("#priceList .price-list").removeClass("select");
+                $("." + plan + " .price-list").first().addClass("select");
+            };
+            submitForm();
+        })
+
+        $(".price-list").click(function () {
+            $(".price-list").removeClass('select');
+            $(this).addClass("select");
+            if (!$(this).parent().parent().hasClass("active")) {
+                var plan = $(this).parent().parent().data("plan");
+                $(".plan").removeClass('active');
+                $(".price-col").removeClass('active');
+                $("." + plan).addClass("active");
+            }
+            submitForm();
+        })
+
+
+        $(function () {
+            $(".plan-2").addClass("active");
+            AddDataToForm();
+        })
+
+        $("#promoCodeForm").submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr('action');
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                success: function (data) {
+                    $("#orderInformation").html(data);
+                }
+            });
+        });
+        function AddDataToForm() {
+
+            var CategoryId, Month;
+            $(".price-list").each(function () {
+                if ($(this).hasClass("select")) {
+                    CategoryId = $(this).data("category");
+                    Month = $(this).data("month");
+                    return false;
+                }
+            })
+            var combo = "";
+            $(".combo-item").each(function () {
+                if ($(this).hasClass("active")) {
+                    var comboId = $(this).data("combo-id");
+                    $(".combo-option-" + comboId).each(function () {
+                        if ($(this).hasClass("active")) {
+                            combo += $(this).data("combo-category-id") + "-" + $(this).data("combo-month") + "-";
+                        }
+                    });
+                    $(".combo-guarantee-" + comboId).each(function () {
+                        if ($(this).hasClass("active")) {
+                            combo += $(this).data("guarantee") + "-";
+                        }
+                    })
+                    $(".combo-account-" + comboId).each(function () {
+                        if ($(this).hasClass("active")) {
+                            combo += $(this).data("account-client");
+                            if ($(this).data("account-client") == 1) {
+                                //Check input Tài khoản người dùng
+                                if ($("#userClient_" + comboId).val().length == 0 || $("#passClient_" + comboId).length == 0) {
+                                    toastr.error("Vui lòng kiểm tra Tên đăng nhập và Tài khoản của bạn trước khi gửi đơn hàng!");
+                                    isDone = false;
+                                }
+                                else {
+                                    combo += "-" + $("#userClient_" + comboId).val() + "-" + $("#passClient_" + comboId).val();
+                                }
+                            }
+                            combo += ",";
+                        }
+                    })
+                }
+            });
+            console.log(combo);
+            $("#categoryId").val(CategoryId);
+            $("#month").val(Month);
+            $("#profile").val($("#netflixProfile").val());
+            $("#combo").val(combo);
+
+        }
+
+        function submitForm() {
+            AddDataToForm();
+            $('#promoCodeForm').trigger('submit', true);
+        }
+
+        $(".order-submit-step1").click(function () {
+            var isDone = true;
+            var CategoryId, Month;
+            $(".price-list").each(function () {
+                if ($(this).hasClass("select")) {
+                    CategoryId = $(this).data("category");
+                    Month = $(this).data("month");
+                    return false;
+                }
+            })
+            var combo = "";
+            $(".combo-item").each(function () {
+                if ($(this).hasClass("active")) {
+                    var comboId = $(this).data("combo-id");
+                    $(".combo-option-" + comboId).each(function () {
+                        if ($(this).hasClass("active")) {
+                            combo += $(this).data("combo-category-id") + "-" + $(this).data("combo-month") + "-";
+                        }
+                    });
+                    $(".combo-guarantee-" + comboId).each(function () {
+                        if ($(this).hasClass("active")) {
+                            combo += $(this).data("guarantee") + "-";
+                        }
+                    })
+                    $(".combo-account-" + comboId).each(function () {
+                        if ($(this).hasClass("active")) {
+                            combo += $(this).data("account-client");
+                            if ($(this).data("account-client") == 1) {
+                                //Check input Tài khoản người dùng
+                                if ($("#userClient_" + comboId).val().length == 0 || $("#passClient_" + comboId).length == 0) {
+                                    toastr.error("Vui lòng kiểm tra Tên đăng nhập và Tài khoản của bạn trước khi gửi đơn hàng!");
+                                    isDone = false;
+                                }
+                                else {
+                                    combo += "-" + $("#userClient_" + comboId).val() + "-" + $("#passClient_" + comboId).val();
+                                }
+                            }
+                            combo += ",";
+                        }
+                    })
+                }
+            });
+            if (isDone)
+                $.ajax({
+                    method: "POST",
+                    url: "/Order/ConfirmStep1",
+                    beforeSend: function () {
+                        loadSpinner();
+                    },
+                    data: {
+                        categoryId: CategoryId,
+                        month: Month,
+                        profile: $("#netflixProfile").val(),
+                        Total: $("#Total").val(),
+                        promoCode: $("#voucher").val(),
+                        combo: combo
+                    },
+                    success: function (data) {
+                        window.location.href = data;
+                    },
+                    error: function () {
+                        toastr.error("Có lỗi khi gửi dữ liệu, vui lòng thử lại");
+                    }
+                })
+        })
+        $(document).on("click", ".combo-select", function () {
+            $(this).parent().children(".combo-select").removeClass("active");
+            $(this).addClass("active");
+            //Check các option khác đã chọn chưa!
+            var comboId = $(this).data("combo-id");
+            CheckOptionSelected(comboId);
+        })
+        $(document).on("click", ".combo-account-client", function () {
+            if ($(this).data("account-client") == 1) {
+                $(this).parent().parent().children(".account-client").show();
+            }
+            else {
+                $(this).parent().parent().children(".account-client").hide();
+            }
+        })
+        $(document).on("click", ".combo-check", function () {
+            var categoryId = $(this).data("category-id");
+            if ($(this).children("input").first().is(":checked")) {
+                $(".combo-item-" + categoryId).addClass("active");
+                CheckOptionSelected($(this).data("combo-id"));
+            } else {
+                $(".combo-item-" + categoryId).removeClass("active");
+            }
+        })
+
+        //Check các option select
+        function CheckOptionSelected(comboId) {
+            //Check Guarantee
+            var isGuaranteeSelected = false;
+            $(".combo-guarantee-" + comboId).each(function () {
+                if ($(this).hasClass("active")) {
+                    isGuaranteeSelected = true;
+                    return;
+                }
+            })
+            if (isGuaranteeSelected == false) {
+                $(".combo-guarantee-" + comboId).first().addClass("active")
+            }
+            //Check ComboOptionMonth
+            var isComboOptionSelected = false;
+            $(".combo-option-" + comboId).each(function () {
+                if ($(this).hasClass("active")) {
+                    isComboOptionSelected = true;
+                    return;
+                }
+            })
+            if (isComboOptionSelected == false) {
+                $(".combo-option-" + comboId).first().addClass("active")
+            }
+            //Check AccountClient
+            var isAccountSeleted = false;
+            $(".combo-account-" + comboId).each(function () {
+                if ($(this).hasClass("active")) {
+                    isAccountSeleted = true;
+                    return;
+                }
+            })
+            if (isAccountSeleted == false) {
+                $(".combo-account-" + comboId).first().addClass("active")
+            }
+        }
+        $(document).on("click", ".check-promotion", function () {
+            submitForm();
+        })
+    </script>
+}

@@ -1,0 +1,75 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model IPagedList<Kingflix.Domain.DomainModel.Blog>
+
+@{
+    ViewBag.Title = ViewBag.CategoryName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="py-5 bg-gradient-primary">
+    <div class="container text-white text-center">
+        <h3 class="font-weight-bold">@ViewBag.CategoryName</h3>
+    </div>
+</section>
+<section class="py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="clearfix">
+                    <div class="float-right">
+                        <ul class="house-sort">
+                            <li><p class="">Sắp xếp theo:</p></li>
+                            <li><a class="" href="#">Mới nhất</a></li>
+                            <li><a class="" href="#">Tên từ A->Z</a></li>
+                            <li><a class="" href="#">Nhiều lượt xem nhất</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="blog-list" id="blogList">
+                    @if (Model.Count != 0)
+                    {
+                        <div class="row">
+                            @foreach (var item in Model)
+                            {
+                                <div class="col-md-6 blog-content-list mb-3">
+                                    <a href="~/tuyen-dung/chi-tiet/@item.Url" class="blog-item">
+                                        <div class="image-box ratio-16-9 my-auto">
+                                            @if (string.IsNullOrEmpty(item.ImageId))
+                                            {
+                                                <img class="image image-big blog-list-image" src="~/Content/img/No_Picture.jpg" />
+                                            }
+                                            else
+                                            {
+                                                <img class="image image-big blog-list-image" src="~/Content/Upload/Images/@item.ImageId" />
+                                            }
+                                        </div>
+                                        <h5 class="blog-list-title my-2">@item.Title</h5>
+                                        <p class="blog-time-created text-dark">@item.DateCreated.ToString("dd/MM/yyyy")</p>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                        <div class="text-center px-4">
+                            @Html.PagedListPager(Model, indexPage => Url.Action("Index", "Blog", new { page = indexPage }))
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="my-3 text-center">Chuyên mục "@ViewBag.CategoryName" chưa có bài viết nào</p>
+                    }
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body" id="Category">
+                        <div class="categoryList">
+                          
+                                @Html.Action("GetBlogCategory")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

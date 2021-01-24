@@ -1,0 +1,189 @@
+﻿@model Kingflix.Models.ViewModel.ReferralReportViewModel
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="chart-title mb-3">
+                    <h5 class="text-white">
+                        <i class="mdi mdi-calendar-check mr-2"></i>
+                        HÔM NAY
+                    </h5>
+                </div>
+                <hr />
+                <div class="row text-center">
+                    <div class="col-md-4 border-right">
+                        <p class="">Lượt Click (hoặc dùng mã)</p>
+                        <h4 class="text-danger">@Model.ClickCountDay</h4>
+                    </div>
+                    <div class="col-md-4 border-right">
+                        <p class="">Đang chờ duyệt</p>
+                        <h4 class="text-warning">@Model.ClickPendingDay</h4>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="">Thành công</p>
+                        <h4 class="text-success">@Model.ClickSuccessDay</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="chart-title mb-3">
+                    <h5 class="text-white">
+                        <i class="mdi mdi-calendar-multiple mr-2"></i>
+                        THÁNG NÀY
+                    </h5>
+                </div>
+                <hr />
+                <div class="row text-center">
+                    <div class="col-md-4 border-right">
+                        <p class="">Lượt Click (hoặc dùng mã)</p>
+                        <h4 class="text-danger">@Model.ClickCountMonth</h4>
+                    </div>
+                    <div class="col-md-4 border-right">
+                        <p class="">Đang chờ duyệt</p>
+                        <h4 class="text-warning">@Model.ClickPendingMonth</h4>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="">Thành công</p>
+                        <h4 class="text-success">@Model.ClickSuccessMonth</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="chart-title text-center mb-3">
+                    <div class="clearfix">
+                        <h5 class="text-white float-left">
+                            <i class="mdi mdi-cursor-default-outline mr-2"></i>
+                            CLICK
+                        </h5>
+                        <div class="float-right chart-select">
+                            <select id="clickSelect" class="select2-hidden-search">
+                                <option value="0">1 tuần</option>
+                                <option value="1">Tháng này</option>
+                                <option value="">Tất cả</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="position-relative char-container-line">
+                    <canvas id="clickChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="chart-title text-center mb-3">
+                    <div class="clearfix">
+                        <h5 class="text-white float-left">
+                            <i class="mdi mdi-bank mr-2"></i>
+                            Doanh thu
+                        </h5>
+                        <div class="float-right chart-select">
+                            <select id="revenueSelect" class="select2-hidden-search">
+                                <option value="0">1 tuần</option>
+                                <option value="1">Tháng này</option>
+                                <option value="">Tất cả</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="position-relative char-container-line">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>*@
+</div>
+
+
+    <script>
+        $(function () {
+            GetClickReport(0);
+        })
+        $('#clickSelect').change(function () {
+            var timeView = $(this).val();
+            if (timeView != null) {
+                GetClickReport(timeView);
+            }
+        })
+        function updateChart(chart, data) {
+            chart.data = data;
+            chart.update();
+        }
+
+        function GetClickReport(timeView) {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetRevenue")",
+                data: {
+                    timeView: timeView
+                },
+                success: function (data) {
+                    updateChart(clickChart,data);
+                }
+            })
+        }
+
+        var click = $("#clickChart").get(0).getContext("2d");
+        var clickChart = new Chart(click, {
+            type: 'line',
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            min: 0,
+                            stepSize: 1
+                        },
+                        gridLines: {
+                            color: "#9da1a0",
+                            lineWidth: 1,
+                            zeroLineColor: "#ffffff",
+                            zeroLineWidth: 1
+                        },
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            display: true,
+                            color: "#2b2b2b",
+                            lineWidth: 1,
+                            zeroLineColor: "#ffffff",
+                            zeroLineWidth: 0
+                        },
+                    }]
+                },
+                title: {
+                    display: true
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                },
+                elements: {
+                    point: {
+                        radius: 4
+                    }
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                }
+            }
+        });
+    </script>

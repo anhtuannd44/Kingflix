@@ -1,0 +1,69 @@
+﻿@model Kingflix.Domain.DomainModel.Support
+
+@{
+    ViewBag.Title = "Hỗ trợ";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-9 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="clearfix">
+                    <h3 class="float-left mb-0 card-title">Thêm mới yêu cầu</h3>
+                    @*<div class="float-right">
+                            <p class="btn btn-gradient-info mb-0 btn-sm btn-rounded px-2" data-toggle="modal" data-target="#UserInformationModal">Chỉnh sửa thông tin</p>
+                            <p class="btn btn-gradient-success mb-0 btn-sm btn-rounded" data-toggle="modal" data-target="#ChangePassword">Đổi mật khẩu</p>
+                        </div>*@
+                </div>
+                <hr />
+                @using (Html.BeginForm("CreateSupport", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="mt-2">
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label" })
+                        <select class="form-control select2" id="ProductId" name="ProductId">
+                            @foreach (var item in Model.ProductList)
+                            {
+                                <option value="@item.ProductId">@item.ProductId</option>
+                            }
+                        </select>
+                        <div class="mt-2">
+                            @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Content, new { @class = "form-control", @Rows = "15" })
+                        <div class="mt-2">
+                            @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="file" name="ImageUpload" value="" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Gửi" class="btn btn-gradient-success btn-rounded" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

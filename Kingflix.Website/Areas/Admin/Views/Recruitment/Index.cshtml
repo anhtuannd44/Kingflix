@@ -1,0 +1,141 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Blog>
+
+@{
+    ViewBag.Title = "Tuyển Dụng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="clearfix">
+            <h4 class="card-title mt-2 float-left">@ViewBag.Title</h4>
+            <a href="@Url.Action("Create")" class="btn btn-sm btn-gradient-success btn-rounded float-right">Thêm tin tuyển dụng</a>
+        </div>
+        <hr />
+        @if (Model.Count() != 0)
+        {
+            <table class="table table-bordered table-hover"
+                   data-toggle="table"
+                   data-search="true"
+                   data-sort-name="name"
+                   data-sort-order="desc"
+                   data-pagination="true"
+                   data-page-size="10">
+                <thead class="">
+                    <tr>
+                        <th class="text-left font-weight-bold" data-sortable="true"> Tên bài viết </th>
+                        <th class="text-center font-weight-bold" data-sortable="true"> Danh mục </th>
+                        <th class="text-center font-weight-bold" data-sortable="true"> Ngày khởi tạo </th>
+                        <th class="text-center font-weight-bold" data-sortable="true"> Trạng thái </th>
+                        <th class="text-center font-weight-bold" data-sortable="true"> Hành động </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-left">
+                                <a href="@Url.Action("Edit", new { id = item.BlogId})" class="text-success">@item.Title</a>
+                            </td>
+                            <td class="text-center">
+                                @(item.BlogCategoryId==null?"Chưa phân loại":item.BlogCategory.Name)
+                            </td>
+                            <td class="text-center">
+                                @item.DateCreated.ToString("dd/MM/yyyy")
+                            </td>
+                            <td class="text-center">
+                                @if (item.Status == Kingflix.Domain.Enumerables.Status.Public)
+                                {
+                                    <p class="m-0 badge badge-success">Đã đăng</p>
+                                }
+                                else if (item.Status == Kingflix.Domain.Enumerables.Status.Private)
+                                {
+                                    <p class="m-0 badge badge-warning">Chưa đăng</p>
+                                }
+                                else if (item.Status == Kingflix.Domain.Enumerables.Status.Trash)
+                                {
+                                    <p class="m-0 badge badge-dark">Thùng rác</p>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Edit", new { id = item.BlogId })" class="badge badge-warning" data-toggle="tooltip" title="Chỉnh sửa">
+                                    <i class="mdi mdi-lead-pencil"></i>
+                                </a>
+                                @if (item.Status != Kingflix.Domain.Enumerables.Status.Trash)
+                                {
+                                    <p class="badge badge-danger move-to-trash" style="cursor:pointer" data-id="@item.BlogId" data-name="@item.Title" data-toggle="tooltip" title="Thùng rác">
+                                        <i class="mdi mdi-delete"></i>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="badge badge-dark remove-blog" style="cursor:pointer" data-id="@item.BlogId" data-name="@item.Title" data-toggle="tooltip" title="Xóa hoàn toàn">
+                                        <i class="mdi mdi-delete"></i>
+                                    </p>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-center">Không có dữ liệu</p>
+            <div class="text-center">
+                <a href="@Url.Action("Create")" class="btn btn-gradient-primary btn-sm btn-rounded">Thêm tin tuyển dụng</a>
+            </div>
+
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).on("click", ".move-to-trash", function () {
+            var id = $(this).data("id");
+            var r = confirm("Bạn có muốn đưa bài viết '" + $(this).data("name") + "' vào thùng rác không?");
+            if (r == true) {
+                loadSpinner();
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("MoveToTrash")",
+                    data: { id: id },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            toastr.success(data.message);
+                            location.reload();
+                        }
+                    },
+                    error: function () {
+                        exitSpinner();
+                        toastr.error("Có lỗi xảy ra. Vui lòng thử lại");
+                    }
+                })
+            }
+        })
+
+        $(document).on("click", ".remove-blog", function () {
+            var id = $(this).data("id");
+            var r = confirm("Bạn có muốn xóa bài viết '" + $(this).data("name") + "' hoàn toàn không?");
+            if (r == true) {
+                loadSpinner();
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("Delete")",
+                    data: { id: id },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            toastr.success(data.message);
+                            location.reload();
+                        }
+                    },
+                    error: function () {
+                        exitSpinner();
+                        toastr.error("Có lỗi xảy ra. Vui lòng thử lại");
+                    }
+                })
+            }
+        })
+    </script>
+}

@@ -1,0 +1,63 @@
+﻿@model Kingflix.Domain.DomainModel.Blog
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card card-shadow">
+                    <div class="card-body">
+                        <nav class="breadcrumb-custom">
+                            <ol>
+                                <li>
+                                    <a href="~/">
+                                        Trang chủ
+                                        <i class="mdi mdi-chevron-right"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Danh Mục
+                                        <i class="mdi mdi-chevron-right"></i>
+                                    </a>
+                                </li>
+                                <li class="active">@Model.Title</li>
+                            </ol>
+                        </nav>
+                        <div class="text-center mb-3">
+                            <h4 class="page-title mb-1">@Model.Title</h4>
+                            <p class="mb-1">Ngày đăng: @Model.DateCreated.ToString("dd/MM/yyyy")</p>
+                            <div class="social-sharing-button">
+                                <a href="#" class="btn btn-social btn-social-facebook"><i class="mdi mdi-facebook"></i></a>
+                                <a href="#" class="btn btn-social btn-social-pinterest"><i class="mdi mdi-pinterest"></i></a>
+                                <a href="#" class="btn btn-social btn-social-linkedin"><i class="mdi mdi-linkedin"></i></a>
+                            </div>
+                        </div>
+                        @if (Model.ImageId != null)
+                        {
+                            <div class="page-cover text-center">
+                                <div class="image-box ratio-16-9">
+                                    <img src="~/Content/Upload/Images/@Model.ImageId" class="img-fluid rounded image" />
+                                </div>
+
+                            </div>
+                        }
+                        <div class="page-content mt-5">
+                            @Html.Raw(Model.BlogContent)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-shadow">
+                    <div class="card-body">
+                        @Html.Action("GetBlogCategory")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

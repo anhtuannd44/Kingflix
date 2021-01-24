@@ -1,0 +1,113 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.Profile>
+
+@{
+    ViewBag.Title = "Người dùng hết hạn";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mt-2">@ViewBag.Title</h4>
+        <hr />
+        <div class="clearfix">
+            <div class="position-relative float-left">
+                <button class="btn btn-primary px-3 btn-rounded btn-sm" id="deleteUser">Xóa người dùng khỏi tài khoản</button>
+            </div>
+        </div>
+        <div id="productList">
+            @if (Model.Count() != 0)
+            {
+                <table class="table table-bordered table-hover"
+                       id="tableSort"
+                       data-toggle="table"
+                       data-search="true"
+                       data-sort-name="name"
+                       data-sort-order="desc"
+                       data-pagination="true"
+                       data-id-field="ProductId"
+                       data-select-item-name="ProductId"
+                       data-page-size="10">
+                    <thead>
+                        <tr>
+                            <th class="font-weight-bold" style="width: 40px" data-field="state" data-checkbox="true"></th>
+                            <th class="font-weight-bold d-none" data-field="ProfileId"></th>
+                            <th class="font-weight-bold" data-sortable="true" data-field="ProductId"> Email </th>
+                            <th class="font-weight-bold" data-sortable="true"> Profile </th>
+                            <th class="text-center font-weight-bold" data-sortable="true"> Gói tài khoản </th>
+                            <th class="text-center font-weight-bold"> Ngày hết hạn </th>
+                            <th class="font-weight-bold" data-sortable="true"> Người dùng </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                </td>
+                                <td>@item.ProfileId
+                                </td>
+                                <td>
+                                    @item.ProductId
+                                </td>
+                                <td>
+                                    @item.Name
+                                <td class="text-center">
+                                    @item.Products.Categories.Name
+                                </td>
+                                <td class="text-center">
+                                    @item.DateEnd.ToString("dd/MM/yyyy")
+                                </td>
+                                <td class="">
+                                    @item.UserInformation.Email
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-dark text-center">Không có dữ liệu</p>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        var arr;
+        $('#deleteUser').click(function () {
+            arr = $('#tableSort tbody').find('[type="checkbox"]:checked').map(function () {
+                return $(this).closest('tr').find('td:nth-child(2)').text();
+            }).get();
+
+            if (arr.length != 0) {
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("DeleteUser")",
+                    data: {
+                        profileList: arr
+                    },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            toastr.success(data.message);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        }
+                        else {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function () {
+                        toastr.error("Có lỗi khi gửi dữ liệu. Vui lòng thử lại");
+                    }
+                })
+            }
+            else {
+                toastr.error("Bạn chưa chọn tài khoản để xóa");
+            }
+        });
+    </script>
+}

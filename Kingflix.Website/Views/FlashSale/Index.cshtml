@@ -1,0 +1,105 @@
+﻿@using Kingflix.Domain.DomainModel;
+@model Kingflix.Domain.DomainModel.FlashSale
+
+@{
+    ViewBag.Title = "Flash Sale - Giá tốt, ưu đãi khủng";
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
+    DateTime time = Model.TimeEnd;
+    if (Model.TimeStart > DateTime.Now)
+    {
+        time = Model.TimeStart;
+    }
+}
+<link href="~/Content/plugin/jquerycountdown/jquery.coundown.css" rel="stylesheet" />
+<div class="py-3 px-0 text-center">
+    <img src="~/Content/image/flashsale.png" height="30" />
+    <span class="h5 text-dark"><i class="mdi mdi-clock text-primary"></i> @(Model.TimeStart<=DateTime.Now?"Kết thúc trong":"Bắt đầu sau")</span><div id="getStart"></div>
+</div>
+@if (Model.Cover != null)
+{
+    <div class="cover">
+        <img style="width: 100%" src="~/Content/Upload/Images/@Model.Cover" />
+    </div>
+}
+
+<div class="row m-0">
+    @foreach (var item in (List<FlashSale>)ViewData["TopFlashSale"])
+    {
+        <a class="col text-center text-white border py-2 @(Model.FlashSaleId == item.FlashSaleId?"bg-primary ":"bg-dark")" href="@Url.Action("Index","FlashSale", new { flashsaleid=item.FlashSaleId })">
+            <h4 class="mb-0">@item.TimeStart.ToString("HH:mm")</h4>
+            <p class="m-0 small text-light">@item.TimeStart.ToString("dd/MM/yyyy")</p>
+            <p class="m-0">@(item.TimeStart<=DateTime.Now?"Đang diễn ra":"Sắp diễn ra")</p>
+        </a>
+    }
+</div>
+<div class="bg-white mt-3" style="min-height: 75vh; margin: 2rem -15px 0 -15px">
+    <div class="title p-3">
+        <h5 class="text-dark m-0 font-weight-bold">TẤT CẢ SẢN PHẨM ĐANG FLASH SALE</h5>
+    </div>
+    <div class="row border-top h-100" style="margin: 15px;">
+        @foreach (var item in Model.FlashSaleCategories)
+        {
+            <div class="col-md-3 p-0 h-100">
+                <div class="product-item" style="border-radius: 0">
+                    <div class="product-item-area">
+                        <a href="@Url.Action("Details","Products", new { id = item.CategoryId })">
+                            <div class="p-3">
+                                <div class="image-box ratio-4-3">
+                                    @if (string.IsNullOrEmpty(item.Prices.Categories.ImageId))
+                                    {
+                                        <img data-src="~/Content/image/No_Picture.jpg" class="img-fluid image lazy" src="~/Content/image/No_Picture.jpg">
+                                    }
+                                    else
+                                    {
+                                        <img data-src="~/Content/Upload/Images/@item.Prices.Categories.ImageId" class="img-fluid image lazy" src="~/Content/Upload/Images/@item.Prices.Categories.ImageId">
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                        <div class="product-item-content px-3 text-center mb-3">
+                            <a class="product-item-title mt-3 pt-3" href="@Url.Action("Details", new { id = item.CategoryId })">@item.Prices.Categories.Name (@item.Month tháng)</a>
+                            <p class="product-item-price font-weight-bold">
+                                <del>@string.Format("{0:C0}", item.Prices.SetPrice)</del>
+                                <span>@string.Format("{0:C0}",item.PriceSale)</span>
+                            </p>
+                            <a href="@Url.Action("Details","Products", new { id = item.CategoryId })" class="btn btn-gradient-primary btn-sm btn-rounded">Mua ngay</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Content/plugin/jquerycountdown/jquery.countdown.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var note = $('#note'),
+                newYear = true;
+            $('#getStart').countdown({
+                timestamp: new Date(@time.Year, @time.Month-1,@time.Day, @time.Hour, @time.Minute),
+                callback: function (days, hours, minutes, seconds) {
+
+                    var message = "";
+
+                    message += days + " day" + (days == 1 ? '' : 's') + ", ";
+                    message += hours + " hour" + (hours == 1 ? '' : 's') + ", ";
+                    message += minutes + " minute" + (minutes == 1 ? '' : 's') + " and ";
+                    message += seconds + " second" + (seconds == 1 ? '' : 's') + " <br />";
+
+                    if (newYear) {
+                        message += "left until the new year!";
+                    }
+                    else {
+                        message += "left to 10 days from now!";
+                    }
+                    note.html(message);
+                }
+            });
+
+        });
+    </script>
+}

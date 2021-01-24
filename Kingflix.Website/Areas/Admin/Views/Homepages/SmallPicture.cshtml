@@ -1,0 +1,193 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Homepage>
+@{
+    ViewBag.Title = "Chỉnh sửa Hình nhỏ";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css" integrity="sha512-wuFRnk4KiQftPmBWRd5TmmgnuMEMVSySF4EsQJ50FemRIHIF5JkwD57UdcWqtGwamThUWHgXf8tSiiJitWnD0w==" crossorigin="anonymous" />
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <div class="clearfix">
+                    <h4 class="card-title mt-2 float-left">@ViewBag.Title</h4>
+                </div>
+                <hr />
+                @if (Model.Count() != 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <div class="card h-100">
+                            <div class="card-body p-1 shadow h-100">
+                                <div class="row align-items-center mb-2">
+                                    <div class="col-md-4">
+                                        <div class="image-box ratio-4-3">
+                                            @if (item.ImageId != null)
+                                            {
+                                                <img class="img-fluid rounded-top image" src="~/Content/Upload/Images/@item.ImageId">
+                                            }
+                                            else
+                                            {
+                                                <img class="img-fluid rounded-top image" src="~/Content/Image/No_Picture.jpg">
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <h4 class="mb-1 text-white">@item.Title</h4>
+                                        <p class="">@item.Content</p>
+                                        <a href="#" class="btn btn-success btn-sm btn-rounded edit" data-toggle="modal" data-target="#EditSmallPicture" data-id="@item.Id" data-title="@item.Title" data-content="@item.Content" data-image="@item.ImageId" data-background="@item.BackgroundColor">Chỉnh sứa</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-center">Chưa có dữ liệu</p>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="EditSmallPicture" aria-hidden="true" tabindex='-1'>
+    <div class="modal-dialog modal-lg mb-0" style="min-height: 100px">
+        <div class="modal-content px-3" id="EditSliderContent">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="card-title font-weight-bold mb-0">Chỉnh sửa Content Homepage</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <hr />
+            @using (Ajax.BeginForm("EditSmallPicture", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "loadSpinner",
+                OnComplete = "exitSpinner",
+                OnSuccess = "editSmallPictureSuccess"
+            }))
+            {
+                @Html.AntiForgeryToken()
+                <input hidden name="id" id="id" value="" type="text" />
+                <div class="modal-body py-3">
+                    <div class="card-body shadow">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="preview-image-edit w-100">
+                                    <div class="image-box ratio-4-3">
+                                        <img id="previewCoverEdit" class="img-fluid rounded-top image" src="~/Content/image/No_Picture.jpg">
+                                    </div>
+                                </div>
+                                <input type="text" hidden id="imageId" name="imageId" data-toggle="modal" data-target="#ModalTemplate-Img" />
+                                <label for="imageId" class="btn btn-gradient-info btn-rounded mt-3 btn-block btn-sm">Chọn Hình</label>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="title" class="text-white">Tiêu đề lớn</label>
+                                    <input type="text" class="form-control" name="title" id="title" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="backgroundColor" class="text-white">Màu nền</label>
+                                    <div id="backgroundColorArea" class="input-group">
+                                        <input type="text" class="form-control" id="backgroundColor" name="backgroundColor" />
+                                        <span class="input-group-append">
+                                            <span class="input-group-text colorpicker-input-addon px-4 py-1"><i></i></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content" class="text-white">Nội dung thêm</label>
+                                    <textarea class="form-control" name="content" id="content" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <button class="btn btn-danger btn-sm btn-rounded" type="button" data-dismiss="modal">Hủy</button>
+                    <button class="btn btn-success btn-sm btn-rounded edit-slider-submit" type="submit">Hoàn tất</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js" integrity="sha512-INXxqXxcP6zawSei7i47Xmu+6ZIBRbsYN1LHAy5H1gzl1XIfTbI/OLjUcvBnDD8F3ZSVB6mf8asEPTMxz4VNjw==" crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            $('#backgroundColorArea').colorpicker();
+        });
+        $("#imageId").click(function () {
+            var cover = $(this).val().split(",");
+            loadLibraryImage(false, cover, false);
+        });
+        $("#submitModalImage").click(function () {
+            if ($(this).data("is-multi")) {
+                renderSelectedImage(getListImageSelect());
+            }
+            else {
+                var image = getSingleImageSelect();
+                if ($(this).data("textarea")) {
+                    if (image != "" && image != undefined) {
+                        addToTextArea(image);
+                    }
+                }
+                else {
+                    if (image != "" && image != undefined) {
+                        $("#imageId").val(image);
+                        $("#previewCoverEdit").attr("src", "../../Content/Upload/Images/" + image);
+                    }
+                    else {
+                        $("#imageId").val(null);
+                        $("#previewCoverEdit").attr("src", "../../Content/image/No_Picture.JPG");
+                    }
+                }
+            }
+            $("#ModalTemplate-Img").modal('hide');
+        });
+
+        $('#EditSmallPicture').on('hidden.bs.modal', function (e) {
+            $("#imageId").val(null);
+            $("#title").val(null);
+            $("#content").val(null);
+            $("#backgroundColor").val(null);
+            $("#previewCoverEdit").attr("src", "../../Content/image/No_Picture.JPG");
+        })
+
+        $(".edit").click(function () {
+            var title = $(this).data("title");
+            var content = $(this).data("content");
+            var background = $(this).data("background");
+            var id = $(this).data("id");
+            var imageId = $(this).data("image");
+            $("#id").val(id);
+            $("#title").val(title);
+            $("#content").val(content);
+            $('#backgroundColorArea').colorpicker('setValue', background);
+            $("#backgroundColor").val(background);
+            if (imageId == "") {
+                $("#previewCoverEdit").attr("src", "../../Content/image/No_Picture.JPG");
+                $("#imageId").val(null);
+            }
+            else {
+                $("#previewCoverEdit").attr("src", "../../Content/Upload/Images/" + imageId);
+                $("#imageId").val(imageId);
+            }
+        })
+
+        function editSmallPictureSuccess(data) {
+            if (data.status == "success") {
+                toastr.success(data.message);
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
+            else {
+                toastr.error(data.message);
+                $("#EditSlider").modal('hide');
+            }
+        }
+    </script>
+}

@@ -1,0 +1,66 @@
+﻿@model Kingflix.Domain.DomainModel.CardTemplate
+
+@{
+    ViewBag.Title = "Tạo mẫu thiệp";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using (Html.BeginForm("Create", "CardTemplates", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-white mb-4">Tạo mẫu thiệp mới</h5>
+                    <div class="form-group mb-4 mt-0">
+                        <label for="Title" class="control-form-label">Tiêu đề mẫu thiệp</label>
+                        @Html.TextBoxFor(model => model.Title, new { @class = "form-control bg-white", @placeholder = "Tiêu đề" })
+                        <div class="mt-1">
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group mt-0">
+                        <label for="Content" class="control-form-label">Nội dung thiệp</label>
+                        @Html.TextAreaFor(model => model.Content, new { @class = "form-control textarea text-area-0" })
+
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-rounded btn-success" type="submit">Hoàn tất</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("#submitModalImage").click(function () {
+            if ($(this).data("is-multi")) {
+                renderSelectedImage(getListImageSelect());
+            }
+            else {
+                var image = getSingleImageSelect();
+                if ($(this).data("textarea")) {
+                    if (image != "" && image != undefined) {
+                        addToTextArea(image);
+                    }
+                }
+                else {
+                    if (image != "" && image != undefined) {
+                        $("#ImageId").val(image);
+                        $("#previewCover").attr("src", "../../Content/Upload/Images/" + image);
+                        $("#removeCover").removeClass("d-none");
+                    }
+                    else {
+                        $("#ImageId").val(null);
+                        $("#previewCover").attr("src", "../../Content/img/No_Picture.JPG");
+                        $("#removeCover").addClass("d-none");
+                    }
+                }
+            }
+            $("#ModalTemplate-Img").modal('hide');
+        });
+    </script>
+}

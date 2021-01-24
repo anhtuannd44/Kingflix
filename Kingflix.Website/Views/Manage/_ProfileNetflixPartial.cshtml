@@ -1,0 +1,145 @@
+﻿@using Kingflix.Utilities
+@model IEnumerable<Kingflix.Domain.DomainModel.Profile>
+
+<div class="service-netflix">
+    @if (Model.Count() != 0)
+    {
+        <h5><strong class="text-primary">Netflix</strong> - Các tài khoản đang hoạt động</h5>
+    }
+    else
+    {
+        <h5><strong class="text-primary">Netflix</strong> - @(ViewBag.IsPending != "True"?"Chưa có tài khoản nào": "Bạn có một đơn hàng đang được xử lý, vui lòng đợi")</h5>
+    }
+    <div class="mt-4">
+        <div class="row">
+            @if (Model.Count() != 0)
+            {
+                foreach (var item in Model)
+                {
+                    <div class="col-md-6">
+                        <div class="service-card shadow text-white font-weight-bold">
+                            <div class="row">
+                                <div class="col-md-4 col-5">
+                                    Tài khoản
+                                </div>
+                                <div class="col-md-8 col-7">
+                                    @item.ProductId <span class="text-warning"> - @item.Products.Categories.Name</span>
+                                </div>
+                            </div>
+                            <hr class="my-2" />
+                            <div class="row">
+                                <div class="col-md-4 col-5">
+                                    Mật khẩu
+                                </div>
+                                <div class="col-md-8 col-7">
+                                    @item.Products.Password
+                                </div>
+                            </div>
+                            <hr class="my-2" />
+                            <div class="row">
+                                <div class="col-md-4 col-5">
+                                    Profile
+                                </div>
+                                <div class="col-md-8 col-7">
+                                    @item.Name
+                                </div>
+                            </div>
+                            <hr class="my-2" />
+                            <div class="row">
+                                <div class="col-md-4 col-5">
+                                    Mã PIN
+                                </div>
+                                <div class="col-md-8 col-7">
+                                    @item.Pincode
+                                </div>
+                            </div>
+                            <hr class="my-2" />
+                            <div class="row">
+                                <div class="col-md-4 col-5">
+                                    Ngày bắt đầu
+                                </div>
+                                <div class="col-md-8 col-7">
+                                    @item.DateStart.ToString("dd/MM/yyyy")
+                                </div>
+                            </div>
+                            <hr class="my-2" />
+                            <div class="row">
+                                <div class="col-md-4 col-5">
+                                    Ngày hết hạn
+                                </div>
+                                <div class="col-md-8 col-7">
+                                    @if ((item.DateEnd.Date - DateTime.Today).Days < 0)
+                                    {
+                                        @item.DateEnd.ToString("dd/MM/yyyy") <span class="text-primary font-weight-bold ml-1">(hết hạn @((DateTime.Today - item.DateEnd.Date).Days) ngày)</span>
+                                    }
+                                    else
+                                    {
+                                        @item.DateEnd.ToString("dd/MM/yyyy") <span class="text-warning font-weight-bold ml-1">(còn @((item.DateEnd - DateTime.Now).Days) ngày)</span>
+                                    }
+                                    @if (item.Products.CategoryId != Const.NETFLIX0)
+                                    {
+                                        <button class="badge badge-primary extend ml-2" data-toggle="modal" data-target="#ModalTemplateLg" data-id="@item.ProfileId" type="button">
+                                            <i class="mdi mdi-history"></i> Gia hạn
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                            <hr class="my-2" />
+                            <div class="row">
+                                <div class="col-md-4 col-5">
+                                    Tình trạng
+                                </div>
+                                <div class="col-md-8 col-7">
+                                    @if (item.DateEnd.Date < DateTime.Today)
+                                    {
+                                        <p class="badge badge-dark m-0">Hết hạn</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="badge badge-success m-0">Đang hoạt động</p>
+                                    }
+                                </div>
+                            </div>
+                            <hr class="my-2" />
+                            <div class="row">
+                                <div class="col-md-4 col-5">
+                                    Thời gian bảo hành
+                                </div>
+                                <div class="col-md-8 col-7">
+                                    @if (item.Products.Categories.DaysGuarantee != null)
+                                    {
+                                        if (item.DateStart.Date.AddDays(item.Products.Categories.DaysGuarantee.Value) < DateTime.Today)
+                                        {
+                                            <p class="badge badge-dark m-0">Hết hạn bảo hành</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="badge badge-light m-0">Còn @((item.DateStart.Date.AddDays(item.Products.Categories.DaysGuarantee.Value+1) - DateTime.Today).TotalDays) ngày</p>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p class="badge badge-dark m-0">Không bảo hành</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="promotions">
+                    <p><i class="mdi mdi-tag align-middle mr-2 text-primary"></i>KHUYẾN MÃI: Nhận Free Spotify 3 tháng và Netflix đặc biệt 1 tháng khi giới thiệu bạn bè <a href="@Url.Action("ReferralSetting")" class="btn btn-primary btn-sm btn-rounded ml-2">Tham gia ngay</a></p>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12 mb-3">
+                    <p class="text-center mb-1">Bạn chưa có đơn hàng nào</p>
+                    <div class="text-center">
+                        <a href="@Url.Action("Step1","Order")" class="btn btn-gradient-primary btn-sm btn-rounded">Lên đơn hàng ngay</a>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>

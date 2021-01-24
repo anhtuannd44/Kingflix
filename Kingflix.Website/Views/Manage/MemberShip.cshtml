@@ -1,0 +1,222 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Models.AppUser
+@{
+    ViewBag.Title = "MemberShip";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+<style>
+        .member-area {
+            @if (Model.MemberShip == MemberShip.Standard)
+        {
+            @: background: url('../Content/image/member.png') center no-repeat;
+                                                        }
+        else if (Model.MemberShip == MemberShip.Silver)
+        {
+            @: background: url('../Content/image/member-silver.png') center no-repeat;
+                                                        }
+        else if (Model.MemberShip == MemberShip.Titanium)
+        {
+            @: background: url('../Content/image/member-titan.png') center no-repeat;
+                                                        }
+        else if (Model.MemberShip == MemberShip.Gold)
+        {
+            @: background: url('../Content/image/member-gold.png') center no-repeat;
+                                                        }
+        else if (Model.MemberShip == MemberShip.Platinum)
+        {
+            @: background: url('../Content/image/member-plat.png') center no-repeat;
+                                                        }
+        }
+</style>
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <div class="clearfix">
+                    <h3 class="float-left mb-0 card-title">Chương trình thành viên Kingflix</h3>
+                </div>
+                <hr />
+                <div class="row mb-4 align-items-center justify-content-center">
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <div class="member-area mx-auto position-relative" style="width: 478px; height: 300px; top: 0; background-size: cover">
+                            <div class="position-absolute" style="top: 40%; left: 35px; max-width: 230px;">
+                                <h5 class="text-white text-uppercase mt-4">@(string.IsNullOrEmpty(Model.FullName)?Model.FullName:Model.Email)</h5>
+                            </div>
+                            <div class="position-absolute" style="bottom: 5%; right: 35px;">
+                                <h6 class="text-white text-uppercase">MEMBER SINCE: @Model.DateCreated.ToString("dd/MM/yyyy")</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-3 text-center text-light pt-3">
+                        <hr class="mt-3 mb-2" />
+                        @if (Model.MemberShip == MemberShip.Standard)
+                        {
+                            <h4 class="mb-4">Ưu đãi cho hạng thẻ: <span class="text-light">@Model.MemberShip</span></h4>
+                            <p>Hoàn tiền 100% nếu lỗi của nhà sản xuất</p>
+                        }
+                        else if (Model.MemberShip == MemberShip.Silver)
+                        {
+                            <h4 class="mb-4">Ưu đãi cho hạng thẻ: <span class="text-white">@Model.MemberShip</span></h4>
+                            <p>Hoàn tiền 100% nếu lỗi của nhà sản xuất</p>
+                            <p>Tặng Combo trị giá 250.000 VNĐ</p>
+                        }
+                        else if (Model.MemberShip == MemberShip.Titanium)
+                        {
+                            <h4 class="mb-4">Ưu đãi cho hạng thẻ: <span class="text-info">@Model.MemberShip</span></h4>
+                            <p>Hoàn tiền 100% nếu lỗi của nhà sản xuất</p>
+                            <p>Tặng Combo trị giá 250.000 VNĐ</p>
+                            <p>Miễn phí tư vấn phim phù hợp</p>
+                        }
+                        else if (Model.MemberShip == MemberShip.Gold)
+                        {
+                            <h4>Ưu đãi cho hạng thẻ: <span class="text-warning">@Model.MemberShip</span></h4>
+                            <p>Giảm 10% toàn bộ hóa đơn</p>
+                            <p>Trở thành cộng tác viên với thu nhập ổn định</p>
+                            <p>Hoàn tiền 100% nếu lỗi của nhà sản xuất</p>
+                            <p>Miễn phí tư vấn phim phù hợp</p>
+                        }
+                        else if (Model.MemberShip == MemberShip.Platinum)
+                        {
+                            <h4>Ưu đãi cho hạng thẻ: <span class="text-white">@Model.MemberShip</span></h4>
+                            <p>Hưởng chiết khấu cao</p>
+                            <p>Tặng quà ngày sinh nhật</p>
+                            <p>Gửi quà và thiệp chúc mừng tận nơi ngày sinh nhật</p>
+                            <p>Hoàn tiền 100% nếu lỗi của nhà sản xuất</p>
+                            <p>Miễn phí tư vấn phim phù hợp</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="clearfix">
+                    <h3 class="float-left mb-0 card-title">Chi tiết các hạng thẻ thành viên</h3>
+                </div>
+                <hr />
+                <div>
+                    <div class="p-3 mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 position-relative">
+                                <img src="~/Content/image/member.png" style="width: 100%;" />
+                            </div>
+                            <div class="col-md-9 border-left">
+                                <h5>Hạng thẻ: Standard</h5>
+                                <h5>Điều kiện:</h5>
+                                <div class="ml-5">
+                                    <p>- Đăng ký thành viên</p>
+                                </div>
+                                <h5>Quyền lợi:</h5>
+                                <div class="ml-5">
+                                    <p>- Hoàn tiền 100% nếu lỗi của nhà sản xuất</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="p-3 mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 position-relative">
+                                <img src="~/Content/image/member-silver.png" style="width: 100%;" />
+                            </div>
+                            <div class="col-md-9 border-left">
+                                <h5>Hạng thẻ: <span class="text-white">Silver</span></h5>
+                                <h5>Điều kiện:</h5>
+                                <div class="ml-5">
+                                    <p class="mb-0">- Đăng ký thành viên</p>
+                                    <p>- Giới thiệu đủ 3 người theo chương trình giới thiệu</p>
+                                </div>
+                                <h5>Quyền lợi:</h5>
+                                <div class="ml-5">
+                                    <p class="mb-0">- Hoàn tiền 100% nếu lỗi của nhà sản xuất</p>
+                                    <p class="mb-0">- Tặng Combo 1 trị giá 250.000 VNĐ</p>
+                                    <p>- Được tư vấn phim miễn phí</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="p-3 mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 position-relative">
+                                <img src="~/Content/image/member-titan.png" style="width: 100%;" />
+                            </div>
+                            <div class="col-md-9 border-left">
+                                <h5>Hạng thẻ: <span class="text-info">Titanium</span></h5>
+                                <h5>Điều kiện:</h5>
+                                <div class="ml-5">
+                                    <p class="mb-0">- Đăng ký thành viên</p>
+                                    <p>- Giới thiệu đủ 6 người theo chương trình giới thiệu</p>
+                                </div>
+                                <h5>Quyền lợi:</h5>
+                                <div class="ml-5">
+                                    <p class="mb-0">- Hoàn tiền 100% nếu lỗi của nhà sản xuất</p>
+                                    <p class="mb-0">- Tặng Combo 2 trị giá 250.000 VNĐ</p>
+                                    <p>- Có Hotline tư vấn riêng</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="p-3 mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 position-relative">
+                                <img src="~/Content/image/member-gold.png" style="width: 100%;" />
+                            </div>
+                            <div class="col-md-9 border-left">
+                                <h5>Hạng thẻ: <span class="text-warning">Gold</span></h5>
+                                <h5>Điều kiện:</h5>
+                                <div class="ml-5">
+                                    <p class="mb-0">- Đăng ký thành viên</p>
+                                    <p>- Giới thiệu đủ 12 người theo chương trình giới thiệu</p>
+                                </div>
+                                <h5>Quyền lợi:</h5>
+                                <div class="ml-5">
+                                    <p class="mb-0">- Hoàn tiền 100% nếu lỗi của nhà sản xuất</p>
+                                    <p class="mb-0">- Ưu đãi giảm 10% toàn bộ hóa đơn</p>
+                                    <p>- Trở thành cộng tác viên với thu nhập ổn định</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="p-3 mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 position-relative">
+                                <img src="~/Content/image/member-plat.png" style="width: 100%;" />
+                            </div>
+                            <div class="col-md-9 border-left">
+                                <h5>Hạng thẻ: <span class="text-white">Platinum</span></h5>
+                                <h5>Điều kiện:</h5>
+                                <div class="ml-5">
+                                    <p class="mb-0">- Đăng ký thành viên</p>
+                                    <p>- Giới thiệu đủ 24 người theo chương trình giới thiệu</p>
+                                </div>
+                                <h5>Quyền lợi:</h5>
+                                <div class="ml-5">
+                                    <p class="mb-0">- Hoàn tiền 100% nếu lỗi của nhà sản xuất</p>
+                                    <p class="mb-0">- Mua đơn hàng với chiết khấu cao (Cực ưu đãi)</p>
+                                    <p class="mb-0">- Tặng quà ngày sinh nhật</p>
+                                    <p>- Quà sinh nhật và thiệp chúc mừng sẽ được gửi tận nơi</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="card">
+                <div class="card-body">
+                    <div class="clearfix">
+                        <h3 class="float-left mb-0 card-title">Thống kê giới thiệu</h3>
+                    </div>
+                    <hr />
+                    <div id="ReferralTracking">
+
+                    </div>
+                </div>
+            </div>*@
+    </div>
+</div>

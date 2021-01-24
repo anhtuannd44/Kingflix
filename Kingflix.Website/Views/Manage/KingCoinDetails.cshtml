@@ -1,0 +1,118 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Domain.DomainModel.KingCoin
+
+@{
+    ViewBag.Title = "Thông tin nạp tiền #" + Model.Id;
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+    string base64 = "", imgSrc = "";
+    if (Model.Image != null)
+    {
+        base64 = Convert.ToBase64String(Model.Image);
+        imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+    }
+}
+
+
+<div class="row justify-content-center">
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                <div class="clearfix">
+                    <h4 class="card-title mt-2 float-left">Thông tin nạp tiền</h4>
+                </div>
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })
+                    <input disabled value="@string.Format("{0:0,0 ₫}", Model.Price)" type="text" class="form-control" />
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PaymentId, htmlAttributes: new { @class = "control-label" })
+                    <input disabled value="@Model.Payments.Name" type="text" class="form-control" />
+                </div>
+                <div id="paymentDetails">
+                    <p>Thông tin tài khoản</p>
+                    <div class="clearfix border rounded p-3 border-danger">
+                        <div class="float-left mt-md-2 mt-1 mr-0 mr-md-1">
+                            <i class="mdi mdi-file-multiple clipboard bg-light py-1 px-2 px-md-1 px-md-2 shadow rounded" data-clipboard-target="#AccountNumber"></i>
+                        </div>
+                        <div class="float-left ml-3">
+                            <p class="m-0">Hình thức thanh toán: <span id="AccountNumber" class="font-weight-bold text-warning">@Model.Payments.Name</span></p>
+                            <p class="m-0">@(Model.Payments.Type==PaymentType.Bank?"Số tài khoản":"Số điện thoại"): <span id="AccountNumber" class="font-weight-bold text-success">@Model.Payments.AccountNumber</span></p>
+                            <p class="m-0">@(Model.Payments.Type ==PaymentType.Bank?"Tên chủ tài khoản":"Họ và tên"): <span>@Model.Payments.AccountName</span></p>
+                            @if (Model.Payments.Type == PaymentType.Bank)
+                            {
+                                <p class="m-0">@Model.Payments.AccountAddress</p>
+                            }
+                        </div>
+                    </div>
+                    @if (Model.Status == CoinStatus.Pending)
+                    {
+                        if (Model.Payments.Type == PaymentType.EWallet)
+                        {
+                            <div class="text-center mt-4 mb-3">
+                                <h4>Tiến hành quét mã thanh toán bên dưới và nhập đúng số tiền cần thanh toán</h4>
+                                <p>Hoặc bạn có thể chuyển tiền vào ví điện tử của chúng tôi</p>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="col-md-4">
+                                    <div class="image-box ratio-1-1">
+                                        <img class="img-fluid rounded image" src="~/Content/Upload/Images/@Model.Payments.ImageId">
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+
+                        if (string.IsNullOrEmpty(imgSrc))
+                        {
+                            using (Html.BeginForm("UploadImageKingCoin", "Manage", FormMethod.Post, new { @class = "form-horizontal pt-3", role = "form", enctype = "multipart/form-data" }))
+                            {
+                                <input hidden value="@Model.Id" type="text" id="kingCoinId" name="kingCoinId" />
+                                <div class="text-center my-5">
+                                    <p class="mt-2" id="uploadText">Bạn đã hoàn thành thanh toán chưa? Gửi hình biên lại hoặc chụp màn hình để giao dịch nhanh chóng được toàn tất nhanh hơn nhé!</p>
+                                    <input type="file" name="file" id="file" class="upload-show">
+                                    <div class="my-2">
+                                        <button type="submit" class="btn btn-success upload-show">Gửi hình</button>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <hr />
+                            <div class="text-center">
+                                <p class="mt-2">Bằng chứng thanh toán</p>
+                                <img id="previewAvatar" src="@imgSrc" alt="your image" height="200" />
+                            </div>
+                            using (Html.BeginForm("UploadImageKingCoin", "Manage", FormMethod.Post, new { @class = "form-horizontal pt-3", role = "form", enctype = "multipart/form-data" }))
+                            {
+                                <input hidden value="@Model.Id" type="text" id="kingCoinId" name="kingCoinId" />
+                                <div class="text-center my-5">
+                                    <p class="mt-2" id="uploadText">Chọn lại bằng chứng thanh toán!</p>
+                                    <input type="file" name="file" id="file" class="upload-show">
+                                    <div class="my-2">
+                                        <button type="submit" class="btn btn-success upload-show">Gửi hình</button>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                    @if (Model.Status == CoinStatus.Done)
+                    {
+                        <p class="my-3">Trạng thái: <span class="badge badge-success">@Model.Status.GetEnumDisplayName()</span></p>
+                        <p class="my-3">Thời gian duyệt: <span class="font-weight-bold text-warning">@Model.DateConfirm.Value.ToString("dd/MM/yyyy HH:mm")</span></p>
+                    }
+                    else if (Model.Status == CoinStatus.Pending)
+                    {
+                        <p class="my-3">Trạng thái: <span class="badge badge-warning">@Model.Status.GetEnumDisplayName()</span></p>
+                    }
+                    else
+                    {
+                        <p class="my-3">Trạng thái: <span class="badge badge-light">@Model.Status.GetEnumDisplayName()</span></p>
+                        <p class="my-3">Thời gian duyệt: <span class="font-weight-bold text-warning">@Model.DateConfirm.Value.ToString("dd/MM/yyyy HH:mm")</span></p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

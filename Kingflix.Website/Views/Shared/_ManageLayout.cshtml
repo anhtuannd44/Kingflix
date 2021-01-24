@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="shortcut icon" href="~/Content/image/favicon.png" />
+    <title>@ViewBag.Title - Kingflix</title>
+    @Styles.Render("~/Content/template-css")
+    @Styles.Render("~/Content/style-css")
+    @Scripts.Render("~/bundles/modernizr")
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/5f57b662f0e7167d000e8483/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+</head>
+<body class="dark-mode">
+    <div class="container-scroller">
+        <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row bg-gradient-dark">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo" href="~/"><img src="~/Content/image/logo-main.png" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini p-2" href="~/"><img src="~/Content/image/logo-mini.png" alt="logo" style="width: 100%; height: 100%" /></a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-stretch">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item d-none d-md-block"><p class="nav-link m-0">Số dư: <span class="ml-1 text-success font-weight-bold"> @Html.Action("GetKingCoin", "Manage")</span></p></li>
+                    <li class="nav-item"><a href="@Url.Action("KingCoinHistory")" class="nav-link">Nạp tiền</a></li>
+                    <li class="nav-item"><a href="@Url.Action("Step1","Order")" class="nav-link">Mua gói</a></li>
+                    <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="true">
+                            <div class="nav-profile-img float-left mr-2" style="margin-top: -5px;">
+                                <img src="~/Content/image/vietcombank.jpg" style="height: 35px; width: 35px; border-radius: 99%;" id="avatarImage" />
+                            </div>
+                            <div class="nav-profile-text float-left">
+                                <p class="mb-0">@User.Identity.Name</p>
+                            </div>
+                            <i class="mdi mdi-arrow-down-drop-circle-outline ml-1"></i>
+                        </a>
+                        <div class="dropdown-menu navbar-dropdown mr-3" aria-labelledby="profileDropdown">
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+                                    <i class="mdi mdi-logout mr-2 text-primary"></i> Đăng xuất
+                                </a>
+                            }
+                        </div>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+            </div>
+        </nav>
+        <div class="container-fluid page-body-wrapper">
+            <nav class="sidebar sidebar-offcanvas bg-dark" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("UserInformation","Manage")">
+                            <i class="mdi mdi-account-convert menu-icon"></i>
+                            <span class="menu-title">Thông tin tài khoản</span>
+                        </a>
+                    </li>
+                    @*<li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Promotion","Manage")">
+                                    <i class="mdi mdi-tag menu-icon"></i>
+                                    <span class="menu-title">Chương trình khuyến mãi</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("ReferralSetting","Manage")">
+                                    <i class="mdi mdi-book-open menu-icon"></i>
+                                    <span class="menu-title">Chương trình giới thiệu</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("MemberShip","Manage")">
+                                    <i class="mdi mdi-account-card-details menu-icon"></i>
+                                    <span class="menu-title">Chương trình Thành viên</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("GiftCodeList","Manage")">
+                                    <i class="mdi mdi-gift menu-icon"></i>
+                                    <span class="menu-title">GIFTCODE</span>
+                                </a>
+                            </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Renew","Manage")">
+                            <i class="mdi mdi-coin menu menu-icon"></i>
+                            <span class="menu-title">Gia hạn</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("OrderHistory","Manage")">
+                            <i class="mdi mdi mdi-history menu menu-icon"></i>
+                            <span class="menu-title">Lịch sử đơn hàng</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("ExtendHistory","Manage")">
+                            <i class="mdi mdi mdi-history menu menu-icon"></i>
+                            <span class="menu-title">Lịch sử gia hạn</span>
+                        </a>
+                    </li>
+                    @*<li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("KingCoinHistory","Manage")">
+                                <i class="mdi mdi-coin menu menu-icon"></i>
+                                <span class="menu-title">Nạp tiền</span>
+                            </a>
+                        </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Support","Manage")">
+                            <i class="mdi mdi-headset menu-icon"></i>
+                            <span class="menu-title">Hộp thư hỗ trợ</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="spinnerLoading" class="spinner-loading" style="display: none;">
+        <img src="~/Content/image/logo.png" style="opacity: .15" />
+        <img src="~/Content/image/loading.svg" alt="Loading..." />
+    </div>
+
+    <div class="modal fade" id="ModalTemplate-Img" aria-hidden="true" tabindex='-1'>
+        <div class="modal-dialog modal-xl mb-0" style="min-height: 100px; max-width: 90%">
+            <div class="modal-content">
+                <div id="modalContent-Img">
+
+                </div>
+                <div class="modal-footer p-3 bg-light">
+                    <div class="">
+                        <a class="btn btn-gradient-success btn-rounded btn-sm" id="submitModalImage" data-is-multi="" data-textarea="">Hoàn tất</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @Html.Partial("ModalTemplate/_ModalImagePartial")
+    @Html.Partial("ModalTemplate/_ModalPartial")
+
+    <div id="spinnerLoading" class="spinner-loading" style="display: none;">
+        <img src="~/Content/image/logo.png" style="opacity: .15" />
+        <img src="~/Content/image/loading.svg" alt="Loading..." />
+    </div>
+
+    @Scripts.Render("~/bundles/template-js")
+    @Scripts.Render("~/bundles/home-js")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        NProgress.start();
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetAvatar","Manage")",
+                success: function (data) {
+                    $("#avatarImage").attr('src', data);
+                }
+            });
+            var clipboard = new ClipboardJS('.clipboard');
+            clipboard.on('success', function (e) {
+                toastr.success("Đã sao chép vào bộ nhớ tạm");
+            });
+        })
+
+        $('.select2').select2({
+            language: "vi"
+        });
+
+        $('.select2-hidden-search').select2({
+            minimumResultsForSearch: -1,
+            language: "vi"
+        });
+
+        var interval = setInterval(function () { NProgress.inc(); }, 1000);
+
+        // Trigger finish when page fully loaded
+        $(window).on("load", function () {
+            clearInterval(interval);
+            NProgress.done();
+        });
+        jQuery(window).on("unload", function () {
+            NProgress.start();
+        });
+
+    </script>
+</body>
+</html>

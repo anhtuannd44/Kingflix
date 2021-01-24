@@ -1,0 +1,79 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.Product>
+
+@if (Model.Count() != 0)
+{
+    <table class="table table-bordered table-hover"
+           id="tableSort"
+           data-toggle="table"
+           data-search="true"
+           data-sort-name="name"
+           data-sort-order="desc"
+           data-pagination="true"
+           data-id-field="ProductId"
+           data-select-item-name="ProductId"
+           data-page-size="10">
+        <thead>
+            <tr>
+                <th class="font-weight-bold" style="width: 40px" data-field="state" data-checkbox="true"></th>
+                <th class="font-weight-bold" data-sortable="true" data-field="ProductId"> Email </th>
+                <th class="font-weight-bold" data-sortable="true"> Gói tài khoản </th>
+                <th class="text-center font-weight-bold" data-sortable="true"> Trạng thái </th>
+                <th class="text-center font-weight-bold"> Ngày hết hạn </th>
+                <th class="text-center font-weight-bold" data-sortable="true"> Số người sử dụng </th>
+                <th class="text-center font-weight-bold" data-sortable="true"> Hành động </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        @item.ProductId
+                    </td>
+                    <td>
+                        @item.Categories.Name
+                    <td class="text-center">
+                        @if (item.Status == ProductStatus.Private)
+                        {
+                            <p class="m-0 badge badge-outline-light">@ProductStatus.Private.GetEnumDisplayName()</p>
+                        }
+                        else if (item.DateEnd.Date < DateTime.Now.Date)
+                        {
+                            <p class="m-0 badge badge-dark">Hết hạn</p>
+                        }
+                        else if (item.Status == ProductStatus.Active)
+                        {
+                            <p class="m-0 badge badge-success">@ProductStatus.Active.GetEnumDisplayName()</p>
+                        }
+                    </td>
+                    <td class="text-center">
+                        @item.DateEnd.ToString("dd/MM/yyyy")
+                    </td>
+                    <td class="text-center">
+                        @item.UserProfileCount
+                    </td>
+                    <td class="text-center">
+                        <a href="@Url.Action("Edit", new { productId = item.ProductId })" class="badge badge-success" data-toggle="tooltip" title="Chỉnh sửa">
+                            <i class="mdi mdi-lead-pencil"></i>
+                        </a>
+                        <a href="#remove-product" class="badge badge-danger remove-product" data-id="@item.ProductId" data-name="@item.ProductId" data-toggle="tooltip" title="Xóa">
+                            <i class="mdi mdi-delete"></i>
+                        </a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-dark text-center">Không có dữ liệu</p>
+    <div class="text-center">
+        <a href="@Url.Action("Create")" class="btn btn-gradient-primary btn-sm btn-rounded">Thêm tài khoản</a>
+    </div>
+
+}

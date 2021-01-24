@@ -1,0 +1,43 @@
+﻿@model Kingflix.Domain.DomainModel.Page
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card card-shadow">
+                    <div class="card-body">
+                        <nav class="breadcrumb-custom">
+                            <ol>
+                                <li>
+                                    <a href="~/">
+                                        Trang chủ
+                                        <i class="mdi mdi-chevron-right"></i>
+                                    </a>
+                                </li>
+                                <li class="active">@Model.Title</li>
+                            </ol>
+                        </nav>
+                        <div class="text-center mb-3">
+                            <h4 class="page-title mb-1">@Model.Title</h4>
+                            <p class="mb-1">Ngày đăng: @Model.DateCreated.ToString("dd/MM/yyyy")</p>
+                        </div>
+                        <div class="page-content mt-5">
+                            @Html.Raw(Model.PageContent)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-shadow">
+                    <div class="card-body">
+                        @Html.Action("GetBlogCategory","Blog")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

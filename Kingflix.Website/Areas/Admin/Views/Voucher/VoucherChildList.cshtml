@@ -1,0 +1,115 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.VoucherChild>
+
+@{
+    ViewBag.Title = "Danh sách Voucher";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mt-2">@ViewBag.Title</h4>
+                <hr />
+                @if (Model.Count() != 0)
+                {
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="font-weight-bold"> Mã Voucher </th>
+                                <th class="text-center"> Số lần sử dụng </th>
+                                <th class="text-center"> Hành động </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <p class="text-success m-0">@item.VoucherChildId</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="m-0">@item.UseCount</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="" class="badge badge-danger" data-toggle="tooltip" title="Xóa">
+                                            <i class="mdi mdi-delete"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-center">Không có dữ liệu</p>
+
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body py-0">
+                <h6 class=" my-4">Thêm mã con</h6>
+                <hr />
+                <h6 class=" my-4">Chọn số lượng muốn tạo</h6>
+                <div class="form-group row">
+                    <div class="col-md-7">
+                        <select class="select2-hidden-search form-control" id="voucherChildCount" data-voucherid="@ViewBag.VoucherId">
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <button type="button" id="createVoucherChild" class="btn btn-gradient-primary btn-rounded btn-block px-1">Hoàn tất</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <a href="@Url.Action("Index")" class="btn btn-danger btn-rounded btn-block btn-sm">Quay lại</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $("#createVoucherChild").click(function () {
+            var voucherChildSelect = $("#voucherChildCount");
+            var count = voucherChildSelect.val();
+            var voucherId = voucherChildSelect.data("voucherid");
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("CreateChildVoucher")",
+                data: {
+                    count: count,
+                    voucherId: voucherId
+                },
+                beforeSend: function () {
+                    loadSpinner();
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        setTimeout(function () { location.reload() }, 1000);
+                    }
+                    else {
+                        toastr.error(data.message);
+                        exitSpinner();
+                    }
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu. Vui lòng liên hệ quản trị viên");
+                    exitSpinner();
+                },
+            })
+        })
+    </script>
+}

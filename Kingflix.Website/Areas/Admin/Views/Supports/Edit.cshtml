@@ -1,0 +1,90 @@
+﻿@model Kingflix.Domain.DomainModel.Support
+
+@{
+    ViewBag.Title = "Thông tin hỗ trợ";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    string base64 = "", imgSrc = "";
+    if (Model.Image != null)
+    {
+        base64 = Convert.ToBase64String(Model.Image);
+        imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+    }
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(a => a.SupportId)
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mt-2">Thông tin yêu cầu hỗ trợ</h4>
+                    <hr />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+                        <input type="text" value="@Model.Title" class="form-control" disabled />
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label", @style = "vertical-align: sub;" })
+                        <a href="@Url.Action("Index","UserManage", new { targetAccount= Model.ProductId })" class=" ml-2 btn btn-primary btn-sm btn-rounded">Đi đến tài khoản lỗi</a>
+                        <input type="text" value="@Model.ProductId" class="form-control mt-2" disabled />
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "control-label", @style = "vertical-align: sub;" })
+                        <a href="@Url.Action("Edit","User", new { id= Model.UserId })" class=" ml-2 btn btn-primary btn-sm btn-rounded">Thông tin người dùng</a>
+                        <input type="text" value="@Model.UserInformation.Email" class="form-control mt-2" disabled />
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label" })
+                        <textarea type="text" class="form-control" disabled>@Model.Content</textarea>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DateCreate, htmlAttributes: new { @class = "control-label" })
+                        <input type="text" value="@Model.DateCreate.ToString("dd/MM/yyyy HH:mm")" class="form-control" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="control-label">Người báo lỗi (Email)</label>
+                        <input type="text" value="@Model.UserInformation.Email" class="form-control" disabled />
+                    </div>
+                    @if (Model.Image != null)
+                    {
+                        <div class="form-group">
+                            <label for="" class="control-label">Hình ảnh</label>
+                            <img height="300" src="@imgSrc" />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="">Loại phương thức thanh toán</h6>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group row">
+                        <div class="col-md-7">
+                            @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        </div>
+                        <div class="col-md-5">
+                            <button type="submit" id="submitFormButton" class="btn btn-gradient-primary btn-rounded btn-block">Hoàn tất</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Reply, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Reply, new { @class = "form-control", @rows = "5" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

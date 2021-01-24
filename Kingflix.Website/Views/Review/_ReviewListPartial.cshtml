@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Review>
+
+@if (Model.Count() != 0)
+{
+    <div class="shadow p-3">
+        @foreach (var item in Model)
+        {
+            string base64 = "", imgSrc = "";
+            if (item.UserInformation.Avatar != null)
+            {
+                base64 = Convert.ToBase64String(item.UserInformation.Avatar);
+                imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+            }
+            if (item.ReplyFor == null)
+            {
+
+                <div class="p-2 mb-2 review-items" id="review_@item.ReviewId">
+                    <div class="clearfix">
+                        <div class="float-left">
+                            @if (string.IsNullOrEmpty(imgSrc))
+                            {
+                                <img id="previewAvatar" src="~/Content/image/No_Picture.jpg" style="border-radius: 99px;" alt="your image" height="50" width="50" />
+                            }
+                            else
+                            {
+                                <img id="previewAvatar" src="@imgSrc" style="border-radius: 99px;" alt="your image" height="50" width="50" />
+                            }
+                        </div>
+                        <div class="float-left ml-2">
+                            <h6 class="mb-1">
+                                <span style="color: #000">@(string.IsNullOrEmpty(item.UserInformation.FullName)?item.UserInformation.Email:item.UserInformation.FullName)</span> <span class="ml-2 text-success font-weight-normal">
+                                    @if (item.IsBought)
+                                    {
+                                        <i class="mdi mdi-check-circle"></i><span style="font-size: .85rem"> Đã mua hàng tại Kingflix</span>
+                                    }
+                                </span>
+                            </h6>
+                            <p class="m-0" style="font-size: .85rem; color: #969696">Đã nhận xét vào lúc @item.DateCreated.ToString("HH:mm - dd/MM/yyyy")</p>
+                        </div>
+                    </div>
+                    @if (item.Star != 0)
+                    {
+                        <div class="star mt-2" style="font-size: 1.25rem; line-height: 1rem">
+                            <i class="mdi mdi-star" style="color: orange;"></i>
+                            @for (int i = 2; i <= 5; i++)
+                            {
+                                if (item.Star >= i)
+                                {
+                                    <i class="mdi mdi-star" style="color: orange; margin-left: -7px"></i>
+                                }
+                                else
+                                {
+                                    <i class="mdi mdi-star" style="color: #c4c4c4; margin-left: -7px"></i>
+                                }
+                            }
+                        </div>
+                    }
+                    <div class="mt-2">
+                        @if (item.Star == 5)
+                        {
+                            <h6 class="font-weight-bold">Cực kỳ hài lòng</h6>
+                        }
+                        else if (item.Star == 4)
+                        {
+                            <h6 class="font-weight-bold">Hài lòng</h6>
+                        }
+                        else if (item.Star == 3)
+                        {
+                            <h6 class="font-weight-bold">Bình thường</h6>
+                        }
+                        else if (item.Star == 2)
+                        {
+                            <h6 class="font-weight-bold">Rất không hài lòng</h6>
+                        }
+                        else if (item.Star == 1)
+                        {
+                            <h6 class="font-weight-bold">Cực kỳ hài lòng</h6>
+                        }
+                        <p class="m-0" style="font-size: .95rem; color: #333;">@item.Content</p>
+                        <button class="btn btn-outline-facebook rounded px-3 btn-sm huu-ich" data-id="@item.ReviewId"><i class="mdi mdi-thumb-up"></i> Hữu ích (@item.Like)</button>
+                        <button class="btn btn-outline-facebook btn-sm reyly-for" data-id="@item.ReviewId" style="cursor: pointer">
+                            <i class="mdi mdi-comment-processing-outline"></i> Thảo luận (@item.ReplyList.Count trả lời)
+                        </button>
+                        <div style="display: none" id="replyFor_@item.ReviewId">
+                            <div class="replyList pl-4 ml-1 mt-3 border-left">
+                                @foreach (var i in item.ReplyList.OrderBy(a => a.DateCreated))
+                                {
+                                    <div class="clearfix">
+                                        <div class="float-left">
+                                            @if (string.IsNullOrEmpty(imgSrc))
+                                            {
+                                                <img id="previewAvatar" src="~/Content/image/No_Picture.jpg" style="border-radius: 99px;" alt="your image" height="50" width="50" />
+                                            }
+                                            else
+                                            {
+                                                <img id="previewAvatar" src="@imgSrc" style="border-radius: 99px;" alt="your image" height="50" width="50" />
+                                            }
+                                        </div>
+                                        <div class="float-left ml-2">
+                                            <h6 class="mb-1">
+                                                <span style="color: #000">@(string.IsNullOrEmpty(item.UserInformation.FullName)?item.UserInformation.Email:item.UserInformation.FullName)</span> <span class="ml-2 text-success font-weight-normal">
+                                                    @if (item.IsBought)
+                                                    {
+                                                        <i class="mdi mdi-check-circle"></i><span style="font-size: .85rem"> Đã mua hàng tại Kingflix</span>
+                                                    }
+                                                </span>
+                                            </h6>
+                                            <p class="m-0" style="font-size: .85rem; color: #969696">Đã nhận xét vào lúc @item.DateCreated.ToString("HH:mm - dd/MM/yyyy")</p>
+                                        </div>
+                                    </div>
+                                    <p class="mb-3" style="font-size: .95rem; color: #333;">@i.Content</p>
+
+                                }
+                                <div class="form-group w-50 mt-1">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Nhập trả lời của bạn" id="replyForContent_@item.ReviewId" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm btn-gradient-success px-4 reply-submit" style="border-bottom-right-radius: 6rem; border-top-right-radius: 6rem;" type="button" data-id="@item.ReviewId">Gửi</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+            }
+        }
+        <div class="clearfix">
+                <button class="prev btn btn-outline-primary btn-sm rounded float-left" type="button">Trang trước</button>
+                <button class="next btn btn-outline-primary btn-sm rounded float-right" type="button">Trang sau</button>
+            </div>
+    </div>
+}
+

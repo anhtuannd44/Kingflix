@@ -1,0 +1,127 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Domain.DomainModel.Product
+
+@{
+    ViewBag.Title = Model.ProductId;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "Product", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(a => a.ProductId)
+    @Html.HiddenFor(a => a.DateCreated)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mt-2 mb-4">Thông tin tài khoản</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.ProductId, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DateEnd, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.DateEnd, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label" })
+                                @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control select2" })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="CycleArea" style="display: @(Model.CategoryId == NETFLIX2?"block":"none")">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Cycle, htmlAttributes: new { @class = "control-label" })
+                                @Html.EnumDropDownListFor(model => model.Cycle, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.Cycle, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-body py-0">
+                    <h6 class=" my-4">Trạng thái tài khoản</h6>
+                    <div class="form-group row">
+                        <div class="col-md-7">
+                                @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        </div>
+                        <div class="col-md-5">
+                            <button type="submit" id="submitFormButton" class="btn btn-gradient-primary btn-rounded btn-block px-1">Hoàn tất</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $.validator.methods.date = function (value, element) {
+                return this.optional($("#DateEnd")) || moment(value, "L", true).isValid();
+            }
+
+            $('#DateEnd').datetimepicker({
+                format: "L",
+                locale: moment.locale("vi"),
+                icons: {
+                    previous: 'mdi mdi-chevron-left',
+                    next: 'mdi mdi-chevron-right',
+                },
+            })
+
+        });
+
+        $(document).on("change", "#Status", function () {
+            if ($("#Status option:selected").text() == "Tạm khóa") {
+                $("#replaceProduct").show();
+            }
+            else {
+                $("#replaceProduct").hide();
+            }
+        });
+        $(document).on("change", "#CategoryId", function () {
+            if ($(this).val() == NETFLIX2) {
+                $("#CycleArea").show();
+            }
+            else {
+                $("#CycleArea").hide();
+            }
+        })
+    </script>
+}

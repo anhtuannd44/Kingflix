@@ -1,0 +1,15 @@
+﻿@model Kingflix.Models.ViewModel.EmailViewModel
+
+<label for="EmailList" class="control-label">Chọn Email người dùng</label>
+<select class="form-control select2" multiple="multiple" id="EmailList" name="EmailList" required>
+    @foreach (var item in Model.EmailList)
+    {
+        <option value="@item">@item</option>
+    }
+</select>
+
+<script>
+    $('#EmailList').select2({
+        language: "vi"
+    });
+</script>

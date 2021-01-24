@@ -1,0 +1,85 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Domain.DomainModel.Page
+@{
+    ViewBag.Title = "Thêm sản bài viết";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using (Html.BeginForm("Edit", "PageAdmin", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(a => a.PageId)
+    @Html.HiddenFor(a => a.DateCreated)
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group mb-4 mt-0">
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control bg-white", @placeholder = "Tiêu đề" })
+                <div class="mt-1">
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Tóm tắt bài viết</h3>
+                </div>
+                <div class="card-body pt-0">
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Nội dung bài viết</h3>
+                </div>
+                <div class="card-body pt-0">
+                    @Html.TextAreaFor(model => model.PageContent, new { @class = "textarea text-area-1" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Đăng</h3>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group row">
+                        <div class="col-md-7">
+                            @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        </div>
+                        <div class="col-md-5">
+                            <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-block">Hoàn tất</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Cấu hình SEO</h3>
+                </div>
+                <div class="card-body">
+                    <h5>Đường dẫn URL</h5>
+                    <div class="form-group mt-0">
+                        @Html.TextBoxFor(model => model.Url, new { @class = "form-control", @placeholder = "VD: ten-bai-viet-12345" })
+                    </div>
+                    <h5>Thẻ Description (2 - 4 câu)</h5>
+                    <div class="form-group mt-0">
+                        @Html.TextAreaFor(model => model.MetaDescription, new { @class = "form-control", @placeholder = "Mục này sẽ hiển thị khi tìm kiếm google, dán link facebook, ..." })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $('form').each(function () {
+            if ($(this).data('validator'))
+                $(this).data('validator').settings.ignore = ".note-editor *";
+        });
+    </script>
+
+}

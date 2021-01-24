@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Profile>
+
+<div class="row mb-4">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="form-group mb-0">
+                <div class="form-check form-check-success mb-0">
+                    <label class="form-check-label text-white mb-0">
+                        <input type="checkbox" class="form-check-input profile-id" name="ProfileId" id="ProfileId" value="@item.ProfileId"> @item.Name <i class="input-helper"></i>
+                        @if ((item.DateEnd.Date - DateTime.Today).Days < 0)
+                        {
+                            <span class="text-primary font-weight-bold">(hết hạn @((DateTime.Today - item.DateEnd.Date).Days) ngày)</span>
+                        }
+                        else
+                        {
+                            <span class="text-warning font-weight-bold">(còn @((item.DateEnd - DateTime.Now).Days) ngày)</span>
+                        }
+                    </label>
+                </div>
+            </div>
+        </div>
+    }
+</div>

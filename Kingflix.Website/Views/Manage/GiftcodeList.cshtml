@@ -1,0 +1,152 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.Order>
+@{
+    ViewBag.Title = "Danh sách GifCode";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="clearfix">
+            <h4 class="card-title mt-2 float-left">@ViewBag.Title</h4>
+            <a href="@Url.Action("Giftcode")" class="btn btn-sm btn-gradient-success btn-rounded float-right">Mua thêm GiftCode</a>
+        </div>
+        <hr />
+        @if (Model.Count() != 0)
+        {
+            <table class="table table-bordered table-hover"
+                   id="tableSort"
+                   data-toggle="table"
+                   data-search="true"
+                   data-sort-name="name"
+                   data-sort-order="desc"
+                   data-pagination="true"
+                   data-page-size="20">
+                <thead>
+                    <tr>
+                        <th class="font-weight-bold" data-sortable="true"> Mã Giftcode </th>
+                        <th class="font-weight-bold" data-sortable="true"> Chi tiết </th>
+                        <th class="text-center font-weight-bold" data-sortable="true"> Thời gian đặt</th>
+                        <th class="text-center font-weight-bold" data-sortable="true"> Tổng cộng </th>
+                        <th class="text-center font-weight-bold" data-sortable="true"> Trạng thái </th>
+                        <th class="text-center font-weight-bold"> Hành động </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <p class="text-success mb-0">@item.OrderId</p>
+                            </td>
+                            <td class="">
+                                @foreach (var details in item.OrderDetails)
+                                {
+                                    <p class="m-0 font-weight-normal"><i class="mdi mdi-check-decagram text-success"></i> @details.CategoryName (@details.Month tháng)</p>
+                                }
+                                @if (item.IsDelivery)
+                                {
+                                    <p class="m-0 font-weight-normal"><i class="mdi mdi-check-decagram text-warning"></i> Giao thiệp tận nơi @*<span class="edit-delivery text-danger" style="cursor: pointer" data-order-id="@item.OrderId">(Chỉnh sửa)</span>*@</p>
+                                    <p class="m-0 font-weight-normal">- Người nhận: @item.DeliveryName</p>
+                                    <p class="m-0 font-weight-normal">- Địa chỉ: @item.DeliveryAddress </p>
+                                    <p class="m-0 font-weight-normal">- Thời gian: @item.DeliveryTime.Value.ToString("dd/MM/yyyy")</p>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @string.Format("{0:dd/MM/yyyy HH:mm }", item.DateCreated)
+                            </td>
+                            <td class="text-center">
+                                <p class="m-0">
+                                    @string.Format("{0:0,0 ₫}", item.Price)
+                                </p>
+                                <p class="m-0 text-info font-weight-bold">@(item.PaymentId != null?item.Payments.Name:"Chưa thanh toán")</p>
+                            </td>
+                            <td class="text-center">
+                                @if (item.stat == "p")
+                                {
+                                    <span class="badge badge-warning"> Chưa thanh toán </span>
+                                }
+                                else if (item.stat == "c")
+                                {
+                                    if (item.IsUserGiftCode)
+                                    {
+                                        <span class="badge badge-danger">Đã sử dụng</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-success">Chưa sử dụng</span>
+                                    }
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (item.stat == "p")
+                                {
+
+                                    <p class="badge badge-success payment-again" style="cursor: pointer" data-order-id="@item.OrderId">Thanh toán ngay</p>
+                                    <p class="badge badge-danger orde-cancel" style="cursor: pointer" data-order-id="@item.OrderId">Hủy đơn</p>
+                                }
+                                else if (item.Status == OrderStatus.Done)
+                                {
+                                    <p style="cursor: pointer" class="badge badge-warning cancel-note-details" data-toggle="tooltip" title="Chi tiết đơn hàng">
+                                        <i class="mdi mdi-eye"></i>
+                                    </p>
+
+                                }
+                                else if (item.Status == OrderStatus.Cencelled)
+                                {
+                                    <a href="@Url.Action("Edit", new { orderId = item.OrderId })" class="badge badge-warning" data-toggle="tooltip" title="Chi tiết đơn hàng">
+                                        <i class="mdi mdi-eye"></i>
+                                    </a>
+                                    <p class="badge badge-danger cancel-details" style="cursor: pointer" data-toggle="tooltip" title="Lý do hủy đơn" data-details="@item.CancelNote" data-order-id="@item.OrderId">
+                                        <i class="mdi mdi-comment-question-outline"></i>
+                                    </p>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-center">Không có dữ liệu</p>
+            <div class="text-center">
+                <a href="@Url.Action("Giftcode")" class="btn btn-gradient-primary btn-sm btn-rounded">Mua ngay</a>
+            </div>
+
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).on("click", ".payment-again", function () {
+            var orderId = $(this).data("order-id");
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("PaymentAgain","API")",
+                data: {
+                    orderId: orderId
+                },
+                beforeSend: function () {
+                    loadSpinner();
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        window.location.href = data.redirect_url;
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu. Vui lòng thử lại.")
+                },
+                complete: function () {
+                    exitSpinner()
+                }
+            })
+        })
+    </script>
+    }

@@ -1,0 +1,7 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Homepage>
+
+<div class="social-information mt-2">
+    <a href="@Model.Where(a=>a.Title=="FACEBOOK").FirstOrDefault().Link" class="btn btn-social-icon btn-facebook btn-rounded" target="_blank"><i class="mdi mdi-facebook"></i></a>
+    <a href="@Model.Where(a=>a.Title=="YOUTUBE").FirstOrDefault().Link" class="btn btn-social-icon btn-youtube btn-rounded" target="_blank"><i class="mdi mdi-youtube"></i></a>
+    <a href="@Model.Where(a=>a.Title=="INSTAGRAM").FirstOrDefault().Link" class="btn btn-social-icon btn-instagram btn-rounded" target="_blank"><i class="mdi mdi-instagram"></i></a>
+</div>

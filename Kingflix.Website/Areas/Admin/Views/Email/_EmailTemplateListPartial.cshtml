@@ -1,0 +1,12 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.EmailTemplate>
+
+
+<div class="form-group" id="emailTemplateList" style="display: none;">
+    <label for="EmailTemplateList" class="control-label">Chọn Mẫu Email</label>
+    <select class="form-control select2" id="EmailTemplateId" name="EmailTemplateId" required>
+        @foreach (var item in Model)
+        {
+            <option value="@item.Id">@item.Title</option>
+        }
+    </select>
+</div>

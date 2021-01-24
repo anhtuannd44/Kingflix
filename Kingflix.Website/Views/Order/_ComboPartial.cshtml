@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Category>
+
+@if (Model.Count() != 0)
+{
+    <div class="row my-4">
+        <div class="col-md-12 mt-3 mt-md-0">
+            <div class="p-3 rounded shadow border">
+                <h5 class="text-black text-center mb-4">Chọn thêm COMBO, hưởng nhiều ưu đãi</h5>
+                <div class="row">
+                    @{ var i = 1;}
+                    @foreach (var item in Model.Where(a => a.Prices.Count != 0))
+                    {
+                        <div class="col-md-6">
+                            <div class="shadow p-3 bg-light mb-3 combo-item combo-item-@item.CategoryId" data-combo-id="@i">
+                                <div class="row justify-content-md-center align-items-center">
+                                    <div class="col-md-12 col-12">
+                                        <div class="row justify-content-md-center align-items-center">
+                                            <div class="col-md-4 col-12">
+                                                @if (item.ImageId == null)
+                                                {
+                                                    <img id="previewCover" class="img-fluid rounded image" src="~/Content/image/No_Picture.jpg" />
+                                                }
+                                                else
+                                                {
+                                                    <img id="previewCover" class="img-fluid rounded image" src="~/Content/Upload/Images/@item.ImageId" />
+                                                }
+                                            </div>
+                                            <div class="col-md-8 col-12 border-left mt-2">
+                                                <h5 class="text-center">@item.Name</h5>
+                                                <div class="d-block position-relative text-center" style="min-height: 30px;">
+                                                    <div class="form-check mt-0" style="margin: auto; width: 30px;">
+                                                        <label class="form-check-label text-muted form-check-success combo-check check-promotion" data-category-id="@item.CategoryId" data-combo-id="@i">
+                                                            <input type="checkbox" class="form-check-input"><i class="input-helper text-success"></i>
+                                                        </label>
+                                                        <span class="h6 font-weight-normal" style="margin-left: 30px; vertical-align: middle">Có</span>
+                                                    </div>
+                                                </div>
+                                                <div class="combo-details">
+                                                    @Html.Raw(item.Guarantee)
+                                                </div>
+                                                <p class="text-center text-success btn-show-more add-shadow">Xem thêm</p>   
+                                                <hr class="my-1" />
+                                                <div id="combo_@item.CategoryId">
+                                                    <p class="mb-1">Chọn gói</p>
+                                                    @foreach (var price in item.Prices)
+                                                    {
+                                                        <div class="combo-option row py-2 align-items-center combo-select check-promotion combo-option-@i" id="combo_option_@i" data-combo-id="@i" data-combo-category-id="@price.CategoryId" data-combo-month="@price.Month">
+                                                            <div class="col-md-6 col-6">
+                                                                <p class="m-0">@price.Month tháng</p>
+                                                            </div>
+                                                            <div class="col-md-6 col-6 text-right">
+                                                                @if (price.Prices.HasValue)
+                                                                {
+                                                                    <span class="text-black">@string.Format("{0:C0}", price.Prices)</span>
+                                                                    <span class="font-weight-normal small"><del>@string.Format("{0:C0}", price.SetPrice)</del></span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="text-black">@string.Format("{0:C0}", price.SetPrice)</span>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <hr class="my-1" />
+                                                <div class="guarantee">
+                                                    <p class="mb-0 mt-2">Chọn bảo hành <span class="font-weight-bold text-primary">( +@string.Format("{0:C0}", item.GuaranteePrice) )</span></p>
+                                                    <div class="combo-guarantee combo-select-area">
+                                                        <div class="p-2 combo-guarantee-option combo-option-select combo-select check-promotion combo-guarantee-@i" data-guarantee="1" data-combo-id="@i">Bảo hành</div>
+                                                        <div class="p-2 combo-guarantee-option combo-option-select combo-select check-promotion combo-guarantee-@i" data-guarantee="0" data-combo-id="@i">Không bảo hành</div>
+                                                    </div>
+                                                </div>
+                                                <hr class="my-1" />
+                                                <div class="combo-account-client-area">
+                                                    <p class="mb-0 mt-2">Chọn tài khoản</p>
+                                                    <div class="combo-account">
+                                                        <div class="p-2 combo-account-client combo-option-select combo-select combo-account-@i" data-account-client="0" data-combo-id="@i">Kingflix cấp</div>
+                                                        <div class="p-2 combo-account-client combo-option-select combo-select combo-account-@i" data-account-client="1" data-combo-id="@i">Của bạn (Cá nhân)</div>
+                                                    </div>
+                                                    <div class="mb-1 bg-light p-3 rounded pt-1 bg-white account-client shadow" style="display:none">
+                                                        <div class="form-group mb-1">
+                                                            <input class="form-control form-control-sm border-success" type="text" placeholder="Tên đăng nhập" required id="userClient_@i">
+                                                        </div>
+                                                        <div class="form-group mb-0">
+                                                            <input class="form-control form-control-sm border-success" type="text" placeholder="Mật khẩu" required id="passClient_@i">
+                                                        </div>
+                                                        <p class="mb-0 small mt-1 text-center font-italic">Vui lòng kiểm tra chính xác tài khoản của bạn</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        i++;
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <input hidden class="combo-order" value="0" name="ComboId" id="ComboId" />
+}

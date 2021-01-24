@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Category>
+
+<div class="form-group">
+    <label for="CategoryId" class="control-label">Loại tài khoản</label>
+    <select class="form-control select2_2" id="CategoryId" name="CategoryId">
+        @foreach (var item in Model)
+        {
+            <option value="@item.CategoryId">@item.Name</option>
+        }
+    </select>
+</div>
+<script>
+    $('.select2_2').select2({
+        language: "vi"
+    });
+</script>

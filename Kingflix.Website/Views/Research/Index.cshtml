@@ -1,0 +1,17 @@
+﻿@model Kingflix.Domain.DomainModel.GoogleForm
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="py-5 bg-gradient-primary">
+    <div class="container text-white text-center">
+        <h3 class="font-weight-bold">@Model.Title</h3>
+    </div>
+</section>
+<section class="py-3">
+    <div class="container">
+        <iframe src="@Model.Url?embedded=true" style="width: 100%; min-height: 1600px;"frameborder="0" marginheight="0" marginwidth="0"></iframe>
+    </div>
+</section>

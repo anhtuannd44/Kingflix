@@ -1,0 +1,511 @@
+﻿@{
+    ViewBag.Title = "Thống kê";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="chart-title text-center mb-3">
+                    <h5 class="text-success">Thống kê các hành động của khách hàng</h5>
+                    <div class="clearfix">
+                        <div class="float-right select-chart">
+                            <select id="userActionSelect" class="select2-hidden-search select-chart">
+                                <option value="1">1 tháng</option>
+                                <option value="3">3 tháng</option>
+                                <option value="6" selected>6 tháng</option>
+                                <option value="9">9 tháng</option>
+                                <option value="12">12 tháng</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div style="height:450px;">
+                    <canvas id="userAction"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="chart-title text-center mb-3">
+                    <h5 class="text-success">Nhân khẩu học khách hàng</h5>
+                </div>
+                <div style="height:450px;">
+                    <canvas id="userInformation"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="chart-title text-center mb-3">
+                    <h5 class="text-success">Báo cáo doanh thu bán hàng</h5>
+                    <div class="clearfix">
+                        <div class="float-right select-chart mr-2">
+                            <p class="">Thời gian xem</p>
+                            <select id="timeView" class="select2-hidden-search select-chart">
+                                <option value="">Tất cả</option>
+                                <option value="0">1 tuần</option>
+                                <option value="1">1 tháng</option>
+                                <option value="3">3 tháng</option>
+                                <option value="6">6 tháng</option>
+                                <option value="9">9 tháng</option>
+                                <option value="12">12 tháng</option>
+                            </select>
+                        </div>
+                        <div class="float-right select-chart mr-2">
+                            <p class="">Số tháng</p>
+                            <select id="revenueMonthCategory" class="select2-hidden-search select-chart">
+                                <option value="">Tất cả</option>
+                                <option value="1">1 tháng</option>
+                                <option value="2">2 tháng</option>
+                                <option value="3">3 tháng</option>
+                                <option value="6">6 tháng</option>
+                                <option value="12">12 tháng</option>
+                            </select>
+                        </div>
+                        <div class="float-right select-chart mr-2">
+                            <p class="">Chọn gói tài khoản</p>
+                            <select id="revenueCategory" class="select2-hidden-search select-chart">
+                                <option value="">Tất cả</option>
+                                <option value=NETFLIX1>Ngắn hạn</option>
+                                <option value=NETFLIX2>Dài hạn</option>
+                                <option value=NETFLIX3>Gia đình</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div style="position: relative; height:500px">
+                    <canvas id="revenue"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mt-4">
+    <div class="card-body">
+        <div class="chart-title text-center mb-5">
+            <h5 class="text-success">Doanh số bán hàng</h5>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <canvas id="salesCategory"></canvas>
+                <div class="chart-title text-center mt-4">
+                    <h5 class="text-success">Doanh số theo gói</h5>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <canvas id="salesNetflix2"></canvas>
+                <div class="chart-title text-center mt-4">
+                    <h5 class="text-success">Doanh gói Đặc biệt (Dài hạn)</h5>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <canvas id="salesNetflix1"></canvas>
+                <div class="chart-title text-center mt-4">
+                    <h5 class="text-success">Doanh số Dùng thử (Ngắn hạn)</h5>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <canvas id="salesNetflix3"></canvas>
+                <div class="chart-title text-center mt-4">
+                    <h5 class="text-success">Doanh số gói Gia đình(Dài hạn)</h5>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <canvas id="salesUser"></canvas>
+                <div class="chart-title text-center mt-4">
+                    <h5 class="text-success">Doanh số theo thông tin khách hàng</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        $(function () {
+            GetUserActionChart(6);
+            GetUserInformationChart();
+            GetRevenue(null, null,0);
+            GetSales("salesCategory");
+            GetSales("salesNetflix2");
+            GetSales("salesNetflix1");
+            GetSales("salesNetflix3");
+            GetSales("salesUser");
+        })
+        function updateChart(chart, data) {
+            chart.data = data;
+            chart.update();
+        }
+
+        $('#userActionSelect').change(function () {
+            var month = $(this).val();
+            if (month != null) {
+                GetUserActionChart(month);
+            }
+        })
+
+        $('#revenueSelect').change(function () {
+            var month = $(this).val();
+            if (month != null) {
+                GetRevenue(month);
+            }
+        })
+
+
+        function GetUserActionChart(month) {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetUserActionChart")",
+                data: {
+                    month: month
+                },
+                success: function (data) {
+                    updateChart(userActionChart,data);
+                }
+            })
+        }
+
+        function GetUserInformationChart() {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetUserInformationChart")",
+                success: function (data) {
+                    updateChart(userInformationChart,data);
+                }
+            })
+        }
+        function GetRevenue(categoryId, month, timeView) {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetRevenue")",
+                data: {
+                    categoryId: categoryId,
+                    month: month,
+                    timeView: timeView
+                },
+                success: function (data) {
+                    updateChart(revenueChart,data);
+                }
+            })
+        }
+
+        function GetSales(type) {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetSales")",
+                data: {
+                    type: type
+                },
+                success: function (data) {
+                    if (type == "salesCategory") {
+                        updateChart(salesCategoryChart, data);
+                    }
+                    else if (type == "salesNetflix2") {
+                        updateChart(salesNetflix2Chart, data);
+                    }
+                    else if (type == "salesNetflix1") {
+                        updateChart(salesNetflix1Chart, data);
+                    }
+                    else if (type == "salesNetflix3") {
+                        updateChart(salesNetflix3Chart, data);
+                    }
+                    else if (type == "salesUser") {
+                        updateChart(salesUserChart, data);
+                    }
+                }
+            })
+        }
+
+            var userAction = $("#userAction").get(0).getContext("2d");
+            var userActionChart = new Chart(userAction, {
+                type: 'line',
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                            },
+                            gridLines: {
+                                color: "#5e5e5e",
+                                lineWidth: 1,
+                                zeroLineColor: "#5e5e5e",
+                                zeroLineWidth: 1
+                            },
+                        }]
+                    },
+                    title: {
+                        display: true
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                    },
+                    elements: {
+                        point: {
+                            radius: 3
+                        }
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                }
+            });
+
+
+            var userInformation = $("#userInformation").get(0).getContext("2d");
+            var userInformationChart = new Chart(userInformation, {
+                type: 'bar',
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            gridLines: {
+                                color: "#5e5e5e",
+                                lineWidth: 1,
+                                zeroLineColor: "#5e5e5e",
+                                zeroLineWidth: 1
+                            },
+                        }]
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                    },
+                    elements: {
+                        point: {
+                            radius: 0
+                        }
+                    }
+                }
+            });
+
+
+            var revenue = $("#revenue").get(0).getContext("2d");
+            var revenueChart = new Chart(revenue, {
+                type: 'bar',
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            name: '(VNĐ)',
+                            ticks: {
+                                callback: function (value, index, values) {
+                                    if (parseInt(value) >= 1000) {
+                                        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
+                                    } else {
+                                        return value + "đ";
+                                    }
+                                }
+                            },
+                            gridLines: {
+                                color: "#5e5e5e",
+                                lineWidth: 1,
+                                zeroLineColor: "#bfbfbf",
+                                zeroLineWidth: 1,
+                                offsetGridLines: false
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Doanh thu (VNĐ)',
+                            },
+                            position: 'left',
+                            id: 'Revenue',
+                        },
+                            {
+                                name: 'Số profile',
+                                gridLines: {
+                                    color: "#5e5e5e",
+                                    lineWidth: 1,
+                                    zeroLineColor: "#bfbfbf",
+                                    zeroLineWidth: 1,
+                                    offsetGridLines: false
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Số Profile',
+                                },
+                                position: 'right',
+                                id: 'Sales',
+                            }
+                        ],
+                        xAxes: [{
+                            barPercentage: .9
+                        }]
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                    }
+                }
+            });
+
+
+            var salesCategory = $("#salesCategory").get(0).getContext("2d");
+            var salesCategoryChart = new Chart(salesCategory, {
+                    type: 'doughnut',
+                    options: {
+                        responsive: true,
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        },
+                        tooltips: {
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    try {
+                                        let label = ' ' + data.labels[tooltipItem.index] || '';
+
+                                        if (label) {
+                                            label += ': ';
+                                        }
+
+                                        const sum = data.datasets[0].data.reduce((accumulator, curValue) => {
+                                            return accumulator + curValue;
+                                        });
+                                        const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+                                        label += Number((value / sum) * 100).toFixed(2) + '%';
+                                        return label;
+                                    } catch (error) {
+                                        console.log(error);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+
+        var salesNetflix1 = $("#salesNetflix1").get(0).getContext("2d");
+        var salesNetflix1Chart = new Chart(salesNetflix1, {
+            type: 'doughnut',
+            options: {
+                responsive: true,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            },
+        });
+        var salesNetflix2 = $("#salesNetflix2").get(0).getContext("2d");
+        var salesNetflix2Chart = new Chart(salesNetflix2, {
+            type: 'doughnut',
+            options: {
+                responsive: true,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            try {
+                                let label = ' ' + data.labels[tooltipItem.index] || '';
+
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                const sum = data.datasets[0].data.reduce((accumulator, curValue) => {
+                                    return accumulator + curValue;
+                                });
+                                const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+                                label += Number((value / sum) * 100).toFixed(2) + '%';
+                                return label;
+                            } catch (error) {
+                                console.log(error);
+                            }
+                        }
+                    }
+                }
+            },
+        });
+        var salesNetflix3 = $("#salesNetflix3").get(0).getContext("2d");
+        var salesNetflix3Chart = new Chart(salesNetflix3, {
+            type: 'doughnut',
+            options: {
+                responsive: true,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            try {
+                                let label = ' ' + data.labels[tooltipItem.index] || '';
+
+                                if (label) {
+                                    label += ': ';
+                                }
+
+                                const sum = data.datasets[0].data.reduce((accumulator, curValue) => {
+                                    return accumulator + curValue;
+                                });
+                                const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+                                label += Number((value / sum) * 100).toFixed(2) + '%';
+                                return label;
+                            } catch (error) {
+                                console.log(error);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+
+            var salesUser = $("#salesUser").get(0).getContext("2d");
+            var salesUserChart = new Chart(salesUser, {
+                type: 'doughnut',
+                options: {
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                try {
+                                    let label = ' ' + data.labels[tooltipItem.index] || '';
+
+                                    if (label) {
+                                        label += ': ';
+                                    }
+
+                                    const sum = data.datasets[0].data.reduce((accumulator, curValue) => {
+                                        return accumulator + curValue;
+                                    });
+                                    const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+
+                                    label += Number((value / sum) * 100).toFixed(2) + '%';
+                                    return label;
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
+    </script>
+} 

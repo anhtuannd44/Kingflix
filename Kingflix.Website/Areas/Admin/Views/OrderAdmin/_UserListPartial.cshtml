@@ -1,0 +1,6 @@
+﻿@model IEnumerable<Kingflix.Models.AppUser>
+
+@foreach (var item in Model)
+{
+    <option value="@item.Id" @(item.IsSelected?"selected":"")>@item.FullName</option>
+}

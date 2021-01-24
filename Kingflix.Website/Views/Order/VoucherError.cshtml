@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_OrderLayout.cshtml";
+}
+<section style="min-height: 70vh">
+    <div class="container payment">
+        <div class="head mt-4">
+            <div class="">
+                <h4 class="step-button d-inline-block p-1 p-md-2">Lỗi</h4>
+                <h4 class="step-content d-inline-block">Có lỗi xảy ra trong quá trình đặt hàng!</h4>
+            </div>
+        </div>
+        <div class="body my-5 px-2">
+            <p class="text-center text-danger">Ưu đãi của bạn đã hết hạn hoặc đã được sử dụng!</p>
+        </div>
+        <div class="order-footer text-center my-4">
+            <a href="@Url.Action("Step1")" class="btn btn-primary" style="font-size: 1.2rem;">QUAY LẠI ĐẶT HÀNG</a>
+            <a href="@Url.Action("Index","Home")" class="btn btn-warning" style="font-size: 1.2rem;">TRANG CHỦ</a>
+        </div>
+    </div>
+</section>

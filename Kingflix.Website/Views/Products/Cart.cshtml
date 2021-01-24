@@ -1,0 +1,226 @@
+﻿@model Kingflix.Models.ShoppingCart
+@{
+    ViewBag.Title = "Giỏ Hàng";
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
+}
+
+<div class="bg-light" style="min-height: 75vh">
+    <div class="container mb-4">
+        <div class="top-checkout row">
+            <div class="top-checkout-list col-md-4 col-12 active">
+                <p><i class="number">1</i>Giỏ hàng của bạn</p>
+            </div>
+            <div class="top-checkout-list col-md-4 d-none d-md-inline">
+                <p><i class="number">2</i>Thông tin &amp; Thanh toán</p>
+            </div>
+            <div class="top-checkout-list col-md-4 d-none d-md-inline">
+                <p id="nk-hoan-tat-don-hang"><i class="number">3</i>Hoàn tất đơn hàng</p>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-md-8 col-md-8 col-lg-8 col-lg-8 col-xs-12">
+                <div class="card card-shadow card-information">
+                    <div class="card-body cart-content" id="cartContent" data-value="step1">
+                        <h5 class="card-title">Giỏ hàng của bạn</h5>
+                        <hr>
+                        <div class="cartInformation" id="cartDetails">
+                            @if (Model.Items.Count != 0)
+                            {
+                                foreach (var item in Model.Items)
+                                {
+                                    <div class="item-@(item.CategoryId)-@item.Month">
+                                        <input hidden="" id="ProductId" value="56">
+                                        <div class="row cart-item align-items-center m-0 py-1 rounded">
+                                            <div class="col-md-2 col-3 text-center">
+                                                <a href="@Url.Action("Details", new { id= item.CategoryId })">
+                                                    @if (string.IsNullOrEmpty(item.ImageId))
+                                                    {
+                                                        <img class="img-fluid image rounded" src="~/Content/image/No_Picture.jpg">
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="img-fluid image rounded" src="~/Content/Upload/Images/@item.ImageId">
+                                                    }
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6 col-9">
+                                                <p class="font-weight-bold mb-1 text-dark" style="white-space: normal;">@item.Name (@item.Month tháng)</p>
+                                                <p class="mb-0 text-dark" style="white-space: normal; font-size: 90%;">@item.PriceShow</p>
+                                                <div class="qty mt-2" style="zoom: .75">
+                                                    <span class="minus">-</span>
+                                                    <input type="text" class="count" name="qty" id="qty" value="@item.Count" data-id="@item.CategoryId" data-month="@item.Month" data-type="@item.TypeOfAccount">
+                                                    <span class="plus">+</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 col-7 text-right">
+                                                <p class="m-0" style="font-weight: 600">@item.TotalPrice</p>
+                                                <p class="badge badge-danger p-1 m-0 remove-from-cart" data-toggle="tooltip" data-title="Xóa khỏi giỏ hàng" data-id="@item.CategoryId" data-month="@item.Month" style="cursor: pointer;">
+                                                    <i class="mdi mdi-close" style="font-size: .7rem"></i>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                }
+                            }
+                            else
+                            {
+                                <div class="text-center">
+                                    <p>Giỏ hàng trống</p>
+                                    <a href="~/" class="btn btn-success btn-sm">Trang chủ</a>
+                                    <a href="@Url.Action("Index")" class="btn btn-primary btn-sm">Cửa hàng</a>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-md-4 col-lg-4 col-md-4 col-xs-12">
+                <div class="card card-shadow mb-4">
+                    <div class="card-body box-payment" id="cartTotal">
+                        <table style="width: 100%">
+                            <tbody>
+                                <tr>
+                                    <td class="pb-3" style="text-align:left;font-size: 20px;font-weight: 500;" colspan="2">Tóm tắt đơn hàng</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-1" width="50%">Tạm tính (Chưa VAT):</td>
+                                    <td id="totalListedPrice" class="py-1 text-right" width="50%">@Model.TotalPriceShow</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-1">Giảm giá:</td>
+                                    <td class="py-1 text-right" id="cartDiscount">0 ₫</td>
+                                </tr>
+                                <tr style="border-top:solid 1px #e7e7e7; line-height: 45px;">
+                                    <td>Thành tiền:</td>
+                                    <td style="font-size:20px; color:#e82429;font-weight:bold" id="preTotalPrice" class=" text-right">
+                                        @Model.TotalPriceShow
+                                    </td>
+                                </tr>
+                                <tr class="chonhinhthuc">
+                                    <td colspan="2" style="text-align:right">(Đã bao gồm VAT)</td>
+                                </tr>
+
+                                <tr class="shonhinhthuc" style="border-bottom:none; display: none;">
+                                    <td></td>
+                                    <td>(Đã bao gồm VAT)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @if (Model.Items.Count != 0)
+                {
+                    <div id="cartBtnAction">
+                        <div class="cart-continue mb-4 text-right rounded">
+                            <a href="@Url.Action("CheckOut")" class="btn btn-success btn-block h4 py-3" style="font-size: 1.2rem">TIẾP THEO<i class="fas fa-arrow-circle-right ml-3"></i></a>
+                        </div>
+                        <div class="card card-shadow rounded">
+                            <div class="card-header bg-white p-0 rounded" id="headingOne">
+                                <h5 class="mb-0 rounded">
+                                    <a href="#promotion" class="btn btn-link btn-block text-left py-3 text-dark px-4 rounded" data-toggle="collapse" aria-expanded="true">
+                                        Bạn có mã giảm giá? Click vào đây!
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="promotion" class="collapse" style="">
+                                <div class="card-body">
+                                    <p>Hiện chưa có chương trình giảm giá</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('.count').prop('disabled', true);
+        });
+
+        $(document).on('click', '.plus', function () {
+            var elm = $(this).parent().children("input").first();
+            $(elm).val(parseInt($(elm).val()) + 1);
+
+            var categoryId = elm.data("id");
+            var Month = elm.data("month");
+            var typeOfAccount = elm.data("type");
+            addToCart(categoryId, Month, 1, typeOfAccount);
+        });
+        $(document).on('click', '.minus', function () {
+            var elm = $(this).parent().children("input").first();
+            $(elm).val(parseInt($(elm).val()) - 1);
+            if ($('.count').val() == 0) {
+                $('.count').val(1);
+            }
+            else {
+                var categoryId = elm.data("id");
+                var Month = elm.data("month");
+                var typeOfAccount = elm.data("type");
+                addToCart(categoryId, Month, -1, typeOfAccount);
+            }
+        });
+
+        function addToCart(categoryId, Month, count, typeOfAccount) {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("AddToCart")",
+                data: {
+                    categoryId: categoryId,
+                    Month: Month,
+                    count: count,
+                    typeOfAccount: typeOfAccount
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success("Đã cập nhật giỏ hàng");
+                    }
+                    else {
+                        toastr.error("Giỏ hàng chưa được cập nhật");
+                    };
+                        window.location.reload();
+                },
+                error: function () {
+                    toastr.error("Thất bại! Có lỗi khi gửi dữ liệu, xin vui lòng thử lại");
+                },
+                complete: function () {
+                    exitSpinner()
+                }
+            })
+        }
+
+
+        $(document).on("click", ".remove-from-cart", function () {
+            var categoryId = $(this).data("id");
+            var Month = $(this).data("month");
+            loadSpinner();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("RemoveFromCart")",
+                data: {
+                    categoryId: categoryId,
+                    Month: Month
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success("Đã xóa khỏi giỏ hàng");
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000)
+                    }
+                },
+                error: function () {
+                    toastr.error("Không thể xóa khỏi giỏ hàng. Vui lòng thử lại");
+                    exitSpinner();
+                }
+            })
+        })
+    </script>
+}

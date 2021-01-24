@@ -1,0 +1,198 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Domain.DomainModel.Voucher
+
+@{
+    ViewBag.Title = "Chỉnh sửa Voucher";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "Voucher", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(a => a.DateCreated)
+    @Html.HiddenFor(a => a.VoucherId)
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group mb-4 mt-0">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control bg-white", @placeholder = "Tên Voucher (VD: Giảm 50% tối đa 30.000 trên toàn bộ các gói)" })
+                <div class="mt-1">
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.VoucherFor, htmlAttributes: new { @class = "control-label" })
+                                @Html.EnumDropDownListFor(model => model.VoucherFor, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.VoucherFor, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.VoucherId, htmlAttributes: new { @class = "control-label" })
+                                <input class="form-control" type="text" value="@Model.VoucherId" disabled style="cursor: not-allowed">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label" })
+                                @Html.EnumDropDownListFor(model => model.Type, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Value, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Value, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="MaxMoneyArea" style="display: @(Model.Type == VoucherType.Both?"block":"none");">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MaxMoney, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.MaxMoney, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.MaxMoney, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DateEnd, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.DateEnd, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="font-weight-bold mb-1">Khuyến mãi này áp dụng cho</p>
+                    <div class="row">
+                        @foreach (var i in ViewBag.Category)
+                        {
+                            var check = false;
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="form-check form-check-success">
+                                        <label class="form-check-label text-white">
+                                            @foreach (var j in Model.Voucher_Category)
+                                            {
+                                                if (i.CategoryId == j.CategoryId)
+                                                {
+                                                    <input type="checkbox" class="form-check-input" name="VoucherCategory" id="VoucherCategory" value="@i.CategoryId" checked="checked">@i.Name <i class="input-helper"></i>
+                                                    check = true;
+                                                    break;
+                                                }
+                                            }
+                                            @if (!check)
+                                            {
+
+                                                <input type="checkbox" class="form-check-input" name="VoucherCategory" id="VoucherCategory" value="@i.CategoryId">@i.Name <i class="input-helper"></i>
+
+                                            }
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="">Trạng thái Voucher</h6>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group row">
+                        <div class="col-md-7">
+                            @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        </div>
+                        <div class="col-md-5">
+                            <button type="submit" id="submitFormButton" class="btn btn-gradient-primary btn-rounded btn-block">Hoàn tất</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("#Type").on("change", function () {
+            var elm = $("#MaxMoneyArea")
+            if ($(this).val() == 2) {
+                elm.show();
+            }
+            else {
+                elm.hide();
+            }
+        })
+
+        var timer;
+        var timeout = 1000;
+
+        $(function () {
+            $.validator.methods.date = function (value, element) {
+                return this.optional($("#DateEnd")) || moment(value, "L", true).isValid();
+            }
+
+            $('#DateEnd').datetimepicker({
+                format: "L",
+                locale: moment.locale("vi"),
+                icons: {
+                    previous: 'mdi mdi-chevron-left',
+                    next: 'mdi mdi-chevron-right',
+                },
+            })
+        });
+
+        $('#VoucherId').keyup(function () {
+            var voucherId = $(this).val();
+            clearTimeout(timer);
+            if (voucherId) {
+                timer = setTimeout(function () {
+                    $.ajax({
+                        method: "POST",
+                        url: "@Url.Action("CheckVoucherId")",
+                        data: {
+                            voucherId: voucherId
+                        },
+                        success: function (data) {
+                            if (data == "found") {
+                                $("#checkName").html('<p class="m-0 text-danger">Mã ' + voucherId + " có thể tạo được</div>");
+                            }
+                            else {
+                                $("#checkName").html('<p class="m-0 text-success">Mã ' + voucherId + " có thể tạo được</div>");
+                            }
+                        }
+                    });
+
+                }, timeout);
+            }
+            else {
+                $("#checkName").html("");
+            }
+        });
+    </script>
+}

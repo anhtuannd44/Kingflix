@@ -1,0 +1,209 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Domain.DomainModel.FlashSale
+@{
+    ViewBag.Title = "Thêm Flash Sale";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using (Html.BeginForm("Create", "FlashSales", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group mb-4 mt-0">
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control bg-white", @placeholder = "Tiêu đề" })
+                <div class="mt-1">
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Thời gian diễn ra sự kiện</h3>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="form-group">
+                        <label for="TimeStart" class="control-label">Thời gian bắt đầu</label>
+                        @Html.TextBoxFor(model => model.TimeStart, new { @class = "form-control" })
+                        <div class="mt-1">
+                            @Html.ValidationMessageFor(model => model.TimeStart, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="TimeEnd" class="control-label">Thời gian kết thúc</label>
+                        @Html.TextBoxFor(model => model.TimeEnd, new { @class = "form-control" })
+                        <div class="mt-1">
+                            @Html.ValidationMessageFor(model => model.TimeEnd, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Các sản phẩm giảm giá</h4>
+                    <div id="categoryAreas">
+                        @Html.Action("GetCategoryList")
+                    </div>
+                    <div class="text-center mb-3">
+                        <button class="btn btn-primary btn-rounded add-category btn-sm" type="button">Thêm sản phẩm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Đăng</h3>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group">
+                        <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-block">Hoàn tất</button>
+                    </div>
+                </div>
+            </div>
+            @*Ảnh Bài Viết*@
+            <div class="card position-relative">
+                <div class="card-header">
+                    <h3 class="card-title">Ảnh Cover</h3>
+                </div>
+                <div class="card-body">
+                    <div class="preview-image w-100">
+                        <div class="image-box ratio-4-3">
+                            <img id="previewCover" class="img-fluid rounded-top image" src="~/Content/image/No_Picture.jpg">
+                        </div>
+                        <div class="position-absolute d-none" id="removeCover" style="top: 5px; right:10px">
+                            <a class="text-primary" data-toggle="tooltip" title="Xóa hình cover" style="font-size: 19px"><i class="mdi mdi-delete"></i></a>
+                        </div>
+                    </div>
+                    <input type="text" hidden id="Cover" name="Cover" data-toggle="modal" data-target="#ModalTemplate-Img" />
+                    <label for="Cover" class="btn btn-gradient-info btn-rounded mt-3 btn-block btn-sm">Chọn Hình Cover</label>
+                    <p class="my-2 font-italic small text-center">Hình này sẽ làm hình ảnh đại diện cho bài viết</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+        $(function () {
+            $.validator.methods.date = function (value, element) {
+                return this.optional(element) || moment(value, "DD/MM/YYYY hh:mm A", true).isValid();
+            }
+            $('#TimeStart').datetimepicker({
+                format: "DD/MM/YYYY hh:mm A",
+                locale: moment.locale("vi"),
+                minDate: moment()
+            })
+            $('#TimeEnd').datetimepicker({
+                format: "DD/MM/YYYY hh:mm A",
+                locale: moment.locale("vi"),
+                useCurrent: false
+            })
+
+            $("#TimeStart").on("dp.change", function (e) {
+                $('#TimeEnd').data("DateTimePicker").minDate(e.date);
+            });
+            $("#TimeEnd").on("dp.change", function (e) {
+                $('#TimeStart').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+
+        $("#Cover").click(function () {
+            var cover = $(this).val().split(",");
+            loadLibraryImage(false, cover, false);
+        });
+
+        $("#uploadImageList").click(function () {
+            var imageList = $("#imageAlbum").val().split(",");
+            loadLibraryImage(true, imageList, false);
+        });
+
+        $("#submitModalImage").click(function () {
+            if ($(this).data("is-multi")) {
+                renderSelectedImage(getListImageSelect());
+            }
+            else {
+                var image = getSingleImageSelect();
+                if ($(this).data("textarea")) {
+                    if (image != "" && image != undefined) {
+                        addToTextArea(image);
+                    }
+                }
+                else {
+                    if (image != "" && image != undefined) {
+                        $("#ImageId").val(image);
+                        $("#previewCover").attr("src", "../../Content/Upload/Images/" + image);
+                        $("#removeCover").removeClass("d-none");
+                    }
+                    else {
+                        $("#ImageId").val(null);
+                        $("#previewCover").attr("src", "../../Content/image/No_Picture.JPG");
+                        $("#removeCover").addClass("d-none");
+                    }
+                }
+            }
+            $("#ModalTemplate-Img").modal('hide');
+        });
+
+        $("#removeCover").click(function () {
+            $("#previewCover").attr("src", "../../Content/image/No_Picture.jpg");
+            $("#Cover").val(null);
+            $("#removeCover").addClass("d-none");
+        });
+
+        function renderSelectedImage(listImage) {
+            $.ajax({
+                method: "POST",
+                url: "/Image/LoadSelectImage",
+                data: {
+                    imageAlbum: listImage
+                },
+                success: function (data) {
+                    $("#renderImage").html(data);
+                    $("#imageAlbum").val(listImage);
+                },
+                error: function () {
+                    toastr.error("Có lỗi xảy ra, vui lòng thử lại", 'Thất bại!');
+                }
+            });
+        };
+        $(document).on("change", ".categry-id", function () {
+            var elm = $(this);
+            loadSpinner();
+
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("GetMonthList")",
+                    data: {
+                        categoryid: elm.val()
+                    },
+                    success: function (data) {
+                        elm.parent().parent().children(".month-id").first().children("select").html(data);
+                        exitSpinner();
+                    },
+                    error: function () {
+                        toastr.error("Có lỗi khi gửi dữ liệu, vui lòng thử lại")
+                    }
+                })
+        })
+        $(".add-category").click(function () {
+            $.ajax({
+                method: "GET",
+                url: "@Url.Action("GetCategoryList")",
+                success: function (data) {
+                    $("#categoryAreas").append(data);
+                    exitSpinner();
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu, vui lòng thử lại")
+                }
+            })
+        })
+        $(document).on("click", ".remove-category-month", function () {
+            $(this).parent().parent().parent().remove();
+        })
+</script>
+
+}

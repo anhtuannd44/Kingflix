@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Kingflix.Models.Image>
+
+
+@foreach (var item in Model)
+{
+    <div class="col-md-2 library-image">
+        <div class="image-box ratio-1-1 image-item w-100 m-0 shadow rounded @(item.IsSelected?"active":"")" data-id="@item.ImageId.Split('.')[0]"
+             onclick="@(item.IsSelected?"unSelectImage(this)":"selectImage(this)")" data-multiple="@(ViewBag.IsMultiple=="True"?"True":"False")">
+            <img class="img-fluid rounded image lazy" data-src="/Content/Upload/Images/@item.ImageId" src="~/Content/image/loading.svg" />
+            <span class="position-absolute bg-info" style="display: none;">
+                <i class="mdi mdi-check text-white p-1" style="border-radius: 99px;"></i>
+            </span>
+        </div>
+        <div class="position-relative text-center w-100 mt-3">
+            <button class="btn btn-success btn-sm edit-img" data-id="@item.ImageId" data-toggle="modal" data-target="#ModalEditImage">
+                <i class="mdi mdi-lead-pencil"></i>
+                Sửa
+            </button>
+            <button class="btn btn-danger btn-sm delete-img" data-id="@item.ImageId">
+                <i class="mdi mdi-delete"></i>
+                Xóa
+            </button>
+        </div>
+        <input hidden type="@(ViewBag.IsMultiple=="True"?"checkbox":"radio")" id="image-@item.ImageId.Split('.')[0]" data-id="image-@item.ImageId.Split('.')[0]" name="imageListSelect" value="@item.ImageId" data-checked="@(item.IsSelected ? "checked" : "")" />
+    </div>
+}
+@if (! (ViewBag.IsMultiple == "True"))
+{
+    <input hidden name="imageListSelect" id="image-not-set" value="" type="radio" />
+}

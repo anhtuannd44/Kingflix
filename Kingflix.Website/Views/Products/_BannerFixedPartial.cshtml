@@ -1,0 +1,27 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.Homepage>
+
+<div id="bannerAds" style="position: fixed; left: 50%; transform: translateX(-50%); z-index: 10;">
+    <div class="container" style="width: 1140px; margin-top: 50px">
+        <a href="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER5").FirstOrDefault().Link)?"#":Model.Where(a => a.Title == "BANNER5").FirstOrDefault().Link)" class="ads-left position-absolute" style="transform: translateX(-100%); left: -10px;">
+            @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER5").FirstOrDefault().ImageId))
+            {
+                <img class="img-fluid image"style="max-width: 150px;" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER5").FirstOrDefault().ImageId">
+            }
+            else
+            {
+                <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+            }
+        </a>
+        <a href="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER6").FirstOrDefault().Link)?"#":Model.Where(a => a.Title == "BANNER6").FirstOrDefault().Link)" class="ads-left position-absolute" style="transform: translateX(100%); right: -10px;">
+            @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER6").FirstOrDefault().ImageId))
+            {
+                <img class="img-fluid image" style="max-width: 150px;" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER6").FirstOrDefault().ImageId">
+            }
+            else
+            {
+                <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+            }
+        </a>
+    </div>
+</div>

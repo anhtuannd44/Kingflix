@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Voucher>
+@{
+    ViewBag.Title = "Chương trình khuyến mãi";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+<div class="clearfix">
+    <h3 class="float-left mb-0 card-title">Chương trình khuyến mãi đang diễn ra</h3>
+</div>
+@if (Model.Count() != 0)
+{
+    <div class="row mt-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body rounded p-3 position-relative" style="background: #f72d2d">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center position-relative">
+                                <div class="">
+                                    <img class="img-fluid image" style="border-radius: 99%" src="~/Content/image/netflix-logo-white.png" />
+                                </div>
+
+                            </div>
+                            <div class="col-md-9" style="border-left: 1px dashed #f5f5f5">
+                                <div class="text-right mb-1">
+                                    <a href="@Url.Action("Step1","Order", new { promoCode = item.VoucherId })" class="text-white" target="_blank">Dùng ngay</a>
+                                </div>
+                                <h6 class="mb-1 text-white">@item.Name</h6>
+                                <p class="mb-1 text-light">CODE: <span class="text-white font-weight-bold">@item.VoucherId</span></p>
+                                <p class="mb-1 text-light small">HSD: <span class="text-light">@item.DateEnd.ToString("dd/MM/yyyy")</span></p>
+                                <div class="text-right">
+                                    <a href="#" class="text-white promotion-policy" data-policy="@item.PolicyContent" data-id="@item.VoucherId">Điều kiện</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 20px; height: 20px; border-radius: 99px; background:#16171a; position: absolute; top: -10px; left: 23%"></div>
+                        <div style="width: 20px; height: 20px; border-radius: 99px; background:#16171a; position: absolute; bottom: -10px; left: 23%"></div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+<div class="modal fade" id="ModalPromotion" aria-hidden="true" tabindex='-1'>
+    <div class="modal-dialog modal-lg" style="min-height: 100px">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="card-title font-weight-bold mb-0">Điều kiện áp dụng Khuyến mãi</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="p-4">
+                    <h4>Mã: <span class="text-success" id="promoCode"></span></h4>
+                    <p id="policy"></p>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        $(".promotion-policy").click(function () {
+            $("#policy").html($(this).data("policy"));
+            $("#promoCode").html($(this).data("id"));
+            $("#ModalPromotion").modal("show");
+        })
+    </script>
+}

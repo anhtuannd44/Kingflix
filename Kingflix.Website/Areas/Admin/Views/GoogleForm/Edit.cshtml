@@ -1,0 +1,53 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Domain.DomainModel.GoogleForm
+@{
+    ViewBag.Title = "Sửa khảo sát";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using (Html.BeginForm("Edit", "GoogleForm", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(a=>a.Id)
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group mb-4 mt-0">
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control bg-white", @placeholder = "Tiêu đề mẫu khảo sát" })
+                <div class="mt-1">
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Link nhúng của Google Form</h3>
+                </div>
+                <div class="card-body pt-0">
+                    @Html.TextAreaFor(model => model.Url, new { @class = "form-control", @rows = "20" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Tùy chọn đăng</h3>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group row">
+                        <div class="col-md-7">
+                            @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        </div>
+                        <div class="col-md-5">
+                            <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-block">Hoàn tất</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

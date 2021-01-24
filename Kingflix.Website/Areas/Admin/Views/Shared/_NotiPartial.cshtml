@@ -1,0 +1,44 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Models.ViewModel.NotificationViewModel>
+
+@if (Model.Count() != 0)
+{
+    foreach (var item in Model)
+    {
+        if (item.Type == NotificationType.Order)
+        {
+            <a class="dropdown-item preview-item" href="@item.Link">
+                <div class="preview-thumbnail">
+                    <div class="preview-icon bg-success">
+                        <i class="mdi mdi-calendar"></i>
+                    </div>
+                </div>
+                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                    <p class="mb-1 small text-success">Đơn mới</p>
+                    <h6 class="preview-subject font-weight-normal mb-1 ellipsis">@item.Title</h6>
+                    <p class="ellipsis mb-0"> @item.Content </p>
+                </div>
+            </a>
+        }
+        else
+        {
+            <a class="dropdown-item preview-item" href="@item.Link">
+                <div class="preview-thumbnail">
+                    <div class="preview-icon bg-danger">
+                        <i class="mdi mdi-block-helper"></i>
+                    </div>
+                </div>
+                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                    <p class="mb-1 small text-warning">Báo lỗi</p>
+                    <h6 class="preview-subject font-weight-normal mb-1 ellipsis">@item.Title</h6>
+                    <p class="ellipsis mb-0"> @item.Content </p>
+                </div>
+            </a>
+        }
+        <div class="dropdown-divider"></div>
+    }
+}
+else
+{
+
+}

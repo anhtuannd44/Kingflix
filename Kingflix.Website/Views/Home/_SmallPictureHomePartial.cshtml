@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Homepage>
+
+@if (Model.Count() == 0)
+{
+    <seciton class="section-home bg-black">
+        <div class="container">
+            <div class="row align-items-center text-md-left text-center">
+                <div class="col-md-6 order-1">
+                    <h3 class="home-title">Về Kingflix.vn</h3>
+                    <p class="home-description">Kingflix.vn là đơn vị cung cấp tài khoản Netflix, Spotify, ... uy tín hàng đầu Việt Nam. Chất lượng, uy tín và dịch vụ tốt là phương châm của chúng tôi.</p>
+                </div>
+                <div class="col-md-6 order-2">
+                    <div class="image-box ratio-4-3">
+                        <img src="~/Content/image/FireTV.jpg" class="img-fluid rounded image" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </seciton>
+    <seciton class="section-home bg-black">
+        <div class="container">
+            <div class="row align-items-center text-md-left text-center">
+                <div class="col-md-6 order-md-1 order-2">
+                    <div class="image-box ratio-4-3">
+                        <img src="~/Content/image/main-download.png" class="img-fluid rounded image" />
+                    </div>
+                </div>
+                <div class="col-md-6 order-md-2 order-1">
+                    <h3 class="home-title mt-3">Tải phim về trên thiết bị để xem offline</h3>
+                    <p class="home-description">Lưu trữ trên thiết bị của mình và bạn có thể xem mọi lúc, kể cả lúc không có kết nối Internet</p>
+                </div>
+            </div>
+        </div>
+    </seciton>
+    <seciton class="section-home bg-black">
+        <div class="container">
+            <div class="row align-items-center text-md-left text-center">
+                <div class="col-md-6">
+                    <h3 class="home-title">Mọi thiết bị đều có thể xem</h3>
+                    <p class="home-description">Chỉ với 1 tài khoản duy nhất, có thể sử dụng trên nhiều thiết bị: laptop, máy tính bảng, điện thoại, TV, ... mà không phát sinh thêm chi phí</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="image-box ratio-4-3">
+                        <img src="~/Content/image/Netflix_Multiple_Device.jpg" class="img-fluid rounded image" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </seciton>
+}
+else
+{
+    foreach (var item in Model)
+    {
+        if (item.OrderBy != 2)
+        {
+            <seciton class="section-home bg-black" style="background: @item.BackgroundColor !important;">
+                <div class="container">
+                    <div class="row align-items-center text-md-left text-center">
+                        <div class="col-md-6">
+                            <h3 class="home-title">@item.Title</h3>
+                            <p class="home-description">@item.Content</p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="image-box ratio-4-3">
+                                @if (string.IsNullOrEmpty(item.ImageId))
+                                {
+                                    <img src="~/Content/image/No_Picture.jpg" class="img-fluid rounded image" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/Upload/Images/@item.ImageId" class="img-fluid rounded image" />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </seciton>
+        }
+        else
+        {
+            <seciton class="section-home bg-black" style="background: @item.BackgroundColor !important;">
+                <div class="container">
+                    <div class="row align-items-center text-md-left text-center">
+                        <div class="col-md-6 order-md-1 order-2">
+                            <div class="image-box ratio-4-3">
+                                @if (string.IsNullOrEmpty(item.ImageId))
+                                {
+                                    <img src="~/Content/image/No_Picture.jpg" class="img-fluid rounded image" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/Upload/Images/@item.ImageId" class="img-fluid rounded image" />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6 order-md-2 order-1">
+                            <h3 class="home-title mt-3">Tải phim về trên thiết bị để xem offline</h3>
+                            <p class="home-description">Lưu trữ trên thiết bị của mình và bạn có thể xem mọi lúc, kể cả lúc không có kết nối Internet</p>
+                        </div>
+                    </div>
+                </div>
+            </seciton>
+        }
+    }
+}

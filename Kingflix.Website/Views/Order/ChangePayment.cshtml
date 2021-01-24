@@ -1,0 +1,176 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.Payment>
+@{
+    ViewBag.Title = "Phương thức thanh toán";
+    Layout = "~/Views/Shared/_OrderLayout.cshtml";
+}
+
+<section style="min-height: 70vh">
+    <div class="container payment">
+        <div class="head mt-4">
+            <div class="">
+                <h4 class="step-button d-inline-block p-1 p-md-2">Bước 3</h4>
+                <h4 class="step-content d-inline-block"> Chọn phương thức thanh toán</h4>
+            </div>
+        </div>
+        <div class="body my-5 px-2">
+            @if (Model.Count() != 0)
+            {
+                foreach (var item in Model)
+                {
+                    if (item.Type == PaymentType.Bank || item.Type == PaymentType.EWallet || item.Type == PaymentType.Orther)
+                    {
+                        <div class="row justify-content-center">
+                            <div class="col-md-7">
+                                <div class="row payment-item align-items-center @(ViewBag.PaymentId == item.PaymentId?"active":"")" data-value="@item.PaymentId">
+                                    <div class="col-md-2 col-4">
+                                        <div class="px-1 py-2">
+                                            <div class="image-box ratio-1-1">
+                                                @{string base64 = "", imgSrc = "";}
+                                                @if (item.Logo != null)
+                                                {
+                                                    base64 = Convert.ToBase64String(item.Logo);
+                                                    imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                                    <img class="img-fluid rounded image" src="@imgSrc">
+                                                }
+                                                else
+                                                {
+                                                    <img class="img-fluid rounded image" src="~/Content/image/No_Picture.jpg">
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10 col-8">
+                                        <h6 class="mb-1 text-black">@item.Name</h6>
+                                        <p class="m-0">@item.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                <div id="accordion">
+                    <div class="row justify-content-center">
+                        <div class="col-md-7">
+                            <div class="row payment-collapse pb-3">
+                                <div class="col-md-12">
+                                    <div class="row align-items-center" data-toggle="collapse" data-target="#bankOther" aria-expanded="true" aria-controls="bankOther">
+                                        <div class="col-md-2 col-4">
+                                            <div class="px-1 py-2">
+                                                <div class="image-box ratio-1-1">
+                                                    <img class="img-fluid rounded image" src="~/Content/image/online.png">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-10 col-8">
+                                            <h6 class="mb-1 text-black">Chuyển khoản qua ngân hàng khác</h6>
+                                            <p class="m-0">Chuyển khoản Online hoặc tại quầy giao dịch các ngân hàng khác</p>
+                                        </div>
+                                    </div>
+                                    <div class="row collapse justify-content-center border-top @(ViewBag.Type == PaymentType.BankOrther?"show":"")" id="bankOther" data-parent="#accordion">
+                                        @foreach (var item in Model)
+                                        {
+                                            if (item.Type == PaymentType.BankOrther)
+                                            {
+                                                <div class="col-md-2 payment-item mx-2 @(ViewBag.PaymentId == item.PaymentId?"active":"")" data-value="@item.PaymentId">
+                                                    <div class="image-box ratio-1-1">
+                                                        @{string base64 = "", imgSrc = "";}
+                                                        @if (item.Logo != null)
+                                                        {
+                                                            base64 = Convert.ToBase64String(item.Logo);
+                                                            imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                                            <img class="img-fluid rounded image" src="@imgSrc">
+                                                        }
+                                                        else
+                                                        {
+                                                            <img class="img-fluid rounded image" src="~/Content/image/No_Picture.jpg">
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-7">
+                            <div class="row payment-collapse pb-3">
+                                <div class="col-md-12">
+                                    <div class="row align-items-center" data-toggle="collapse" data-target="#eWalletOrther" aria-expanded="true" aria-controls="eWalletOrther">
+                                        <div class="col-md-2 col-4">
+                                            <div class="px-1 py-2">
+                                                <div class="image-box ratio-1-1">
+                                                    <img class="img-fluid rounded image" src="~/Content/image/e-wallet.jpg">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-10 col-8">
+                                            <h6 class="mb-1 text-black">Chuyển khoản qua các ví điện tử khác</h6>
+                                            <p class="m-0">Chuyển khoản hoặc quét mã QR của ZaloPay, ViettelPay, AirPay</p>
+                                        </div>
+                                    </div>
+                                    <div class="row collapse justify-content-center border-top @(ViewBag.Type == PaymentType.EWalletOrther?"show":"")" id="eWalletOrther" data-parent="#accordion">
+                                        @foreach (var item in Model)
+                                        {
+                                            if (item.Type == PaymentType.EWalletOrther)
+                                            {
+                                                <div class="col-md-2 payment-item mx-2 @(ViewBag.PaymentId == item.PaymentId?"active":"")" data-value="@item.PaymentId">
+                                                    <div class="image-box ratio-1-1">
+                                                        @{string base64 = "", imgSrc = "";}
+                                                        @if (item.Logo != null)
+                                                        {
+                                                            base64 = Convert.ToBase64String(item.Logo);
+                                                            imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                                            <img class="img-fluid rounded image" src="@imgSrc">
+                                                        }
+                                                        else
+                                                        {
+                                                            <img class="img-fluid rounded image" src="~/Content/image/No_Picture.jpg">
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-center">Chưa có phương thức thanh toán nào. Vui lòng liên hệ Quản Trị Viên để được hỗ trợ!</p>
+            }
+        </div>
+        @using (Html.BeginForm("UpdatePayment", "Order", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <input hidden value="@ViewBag.OrderId" id="orderId" name="orderId" />
+            <div class="order-footer text-center my-4">
+                <div class="row justify-content-center">
+                    <div class="col-md-5 px-2 p-md-0">
+                        <input hidden id="PaymentId" name="PaymentId" />
+                        <button class="btn btn-primary order-submit btn-block" type="submit" style="font-size: 1.2rem;">Hoàn tất</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+@section scripts {
+    <script>
+        //Change Payment
+        $(function () {
+            $("#PaymentId").val($(".payment-item").first().data("value"));
+        })
+        $(".payment-item").click(function () {
+            $(".payment-item").removeClass("active");
+            $(this).addClass("active");
+            $("#PaymentId").val($(this).data("value"));
+        })
+        
+    </script>
+}

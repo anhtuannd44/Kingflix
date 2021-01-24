@@ -1,0 +1,2104 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{79CDD265-10E6-4DFC-B812-10A4B474A272}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kingflix.Website</RootNamespace>
+    <AssemblyName>Kingflix.Website</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44310</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>4.0</TypeScriptToolsVersion>
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TypeScriptTarget>ES2020</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac, Version=4.0.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.0.1\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.Owin.4.0.1\lib\net45\Autofac.Integration.Mvc.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Owin, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Owin.4.2.0\lib\net45\Autofac.Integration.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.4.2.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.6.0\lib\net45\ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.DataSet.3.6.0\lib\net35\ExcelDataReader.DataSet.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\..\Kinflix\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.0\lib\net451\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.0\lib\net451\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.0\lib\net451\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.0\lib\net451\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.Web.4.7.0\lib\net35\NLog.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Recaptcha, Version=1.0.5.0, Culture=neutral, PublicKeyToken=9afc4d65b28c38c2, processorArchitecture=MSIL">
+      <HintPath>..\packages\recaptcha.1.0.5.0\lib\.NetFramework 4.0\Recaptcha.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Linq.Expressions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Expressions.4.3.0\lib\net463\System.Linq.Expressions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.6\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="X.PagedList, Version=7.6.0.0, Culture=neutral, PublicKeyToken=00b6c4f97602e5e8, processorArchitecture=MSIL">
+      <HintPath>..\packages\X.PagedList.7.6.0\lib\net461\X.PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="X.PagedList.Mvc, Version=7.6.0.0, Culture=neutral, PublicKeyToken=c6e0b5b21f916f4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\X.PagedList.Mvc.7.6.0\lib\net461\X.PagedList.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\favicon.ico" />
+    <Content Include="Content\font.css" />
+    <Content Include="Content\home.css" />
+    <Content Include="Content\image\ads.png" />
+    <Content Include="Content\image\bg-kin-referral.png" />
+    <Content Include="Content\image\bg-main.jpg" />
+    <Content Include="Content\image\chung-nhan-1.png" />
+    <Content Include="Content\image\chung-nhan-2.png" />
+    <Content Include="Content\image\chung-nhan-3.png" />
+    <Content Include="Content\image\circle.svg" />
+    <Content Include="Content\image\e-wallet.jpg" />
+    <Content Include="Content\image\favicon.ico" />
+    <Content Include="Content\image\favicon.png" />
+    <Content Include="Content\image\FireTV.jpg" />
+    <Content Include="Content\image\flashsale.png" />
+    <Content Include="Content\image\google-link.jpg" />
+    <Content Include="Content\image\icon.jpg" />
+    <Content Include="Content\image\loading.svg" />
+    <Content Include="Content\image\logo-light-main.png" />
+    <Content Include="Content\image\logo-light-mini.png" />
+    <Content Include="Content\image\logo-light.png" />
+    <Content Include="Content\image\logo-main-dark.png" />
+    <Content Include="Content\image\logo-main.png" />
+    <Content Include="Content\image\Logo-mini.png" />
+    <Content Include="Content\image\logo.png" />
+    <Content Include="Content\image\main-download.png" />
+    <Content Include="Content\image\main-king.png" />
+    <Content Include="Content\image\main-tv.png" />
+    <Content Include="Content\image\member-gold.png" />
+    <Content Include="Content\image\member-plat.png" />
+    <Content Include="Content\image\member-silver.png" />
+    <Content Include="Content\image\member-titan.png" />
+    <Content Include="Content\image\member.png" />
+    <Content Include="Content\image\momo-150x150.png" />
+    <Content Include="Content\image\netflix-logo-white.png" />
+    <Content Include="Content\image\netflix-logo.png" />
+    <Content Include="Content\image\Netflix_Multiple_Device.jpg" />
+    <Content Include="Content\image\Normal-Note20-800-300-800x300-1.png" />
+    <Content Include="Content\image\No_Picture.jpg" />
+    <Content Include="Content\image\online.png" />
+    <Content Include="Content\image\reno4-800-300-800x300-2.png" />
+    <Content Include="Content\image\Spevi-Logo-2.png" />
+    <Content Include="Content\image\Spevi-Logo-Main.png" />
+    <Content Include="Content\image\Spotify-Logo.png" />
+    <Content Include="Content\image\vietcombank.jpg" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\plugin\bootstrap-table\.eslintrc.js" />
+    <Content Include="Content\plugin\bootstrap-table\.gitignore" />
+    <Content Include="Content\plugin\bootstrap-table\dist\bootstrap-table-locale-all.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\bootstrap-table-locale-all.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\bootstrap-table-vue.esm.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\bootstrap-table-vue.esm.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\bootstrap-table-vue.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\bootstrap-table-vue.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\bootstrap-table.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\bootstrap-table.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\bootstrap-table.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\bootstrap-table.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\addrbar\bootstrap-table-addrbar.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\addrbar\bootstrap-table-addrbar.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\auto-refresh\bootstrap-table-auto-refresh.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\auto-refresh\bootstrap-table-auto-refresh.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\cookie\bootstrap-table-cookie.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\cookie\bootstrap-table-cookie.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\copy-rows\bootstrap-table-copy-rows.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\copy-rows\bootstrap-table-copy-rows.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\custom-view\bootstrap-table-custom-view.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\custom-view\bootstrap-table-custom-view.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\defer-url\bootstrap-table-defer-url.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\defer-url\bootstrap-table-defer-url.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\editable\bootstrap-table-editable.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\editable\bootstrap-table-editable.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\export\bootstrap-table-export.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\export\bootstrap-table-export.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\filter-control\bootstrap-table-filter-control.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\filter-control\bootstrap-table-filter-control.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\filter-control\bootstrap-table-filter-control.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\filter-control\bootstrap-table-filter-control.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\filter-control\utils.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\filter-control\utils.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\fixed-columns\bootstrap-table-fixed-columns.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\fixed-columns\bootstrap-table-fixed-columns.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\fixed-columns\bootstrap-table-fixed-columns.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\fixed-columns\bootstrap-table-fixed-columns.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\group-by-v2\bootstrap-table-group-by.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\group-by-v2\bootstrap-table-group-by.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\group-by-v2\bootstrap-table-group-by.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\group-by-v2\bootstrap-table-group-by.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\i18n-enhance\bootstrap-table-i18n-enhance.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\i18n-enhance\bootstrap-table-i18n-enhance.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\key-events\bootstrap-table-key-events.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\key-events\bootstrap-table-key-events.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\mobile\bootstrap-table-mobile.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\mobile\bootstrap-table-mobile.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\multiple-sort\bootstrap-table-multiple-sort.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\multiple-sort\bootstrap-table-multiple-sort.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\page-jump-to\bootstrap-table-page-jump-to.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\page-jump-to\bootstrap-table-page-jump-to.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\page-jump-to\bootstrap-table-page-jump-to.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\page-jump-to\bootstrap-table-page-jump-to.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\pipeline\bootstrap-table-pipeline.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\pipeline\bootstrap-table-pipeline.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\print\bootstrap-table-print.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\print\bootstrap-table-print.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\reorder-columns\bootstrap-table-reorder-columns.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\reorder-columns\bootstrap-table-reorder-columns.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\reorder-rows\bootstrap-table-reorder-rows.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\reorder-rows\bootstrap-table-reorder-rows.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\reorder-rows\bootstrap-table-reorder-rows.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\reorder-rows\bootstrap-table-reorder-rows.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\resizable\bootstrap-table-resizable.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\resizable\bootstrap-table-resizable.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\sticky-header\bootstrap-table-sticky-header.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\sticky-header\bootstrap-table-sticky-header.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\sticky-header\bootstrap-table-sticky-header.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\sticky-header\bootstrap-table-sticky-header.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\toolbar\bootstrap-table-toolbar.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\toolbar\bootstrap-table-toolbar.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\treegrid\bootstrap-table-treegrid.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\extensions\treegrid\bootstrap-table-treegrid.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-af-ZA.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-af-ZA.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ar-SA.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ar-SA.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-bg-BG.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-bg-BG.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ca-ES.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ca-ES.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-cs-CZ.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-cs-CZ.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-da-DK.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-da-DK.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-de-DE.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-de-DE.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-el-GR.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-el-GR.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-en-US.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-en-US.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-AR.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-AR.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-CL.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-CL.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-CR.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-CR.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-ES.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-ES.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-MX.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-MX.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-NI.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-NI.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-SP.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-es-SP.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-et-EE.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-et-EE.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-eu-EU.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-eu-EU.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fa-IR.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fa-IR.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fi-FI.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fi-FI.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fr-BE.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fr-BE.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fr-CH.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fr-CH.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fr-FR.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fr-FR.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fr-LU.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-fr-LU.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-he-IL.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-he-IL.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-hr-HR.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-hr-HR.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-hu-HU.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-hu-HU.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-id-ID.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-id-ID.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-it-IT.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-it-IT.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ja-JP.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ja-JP.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ka-GE.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ka-GE.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ko-KR.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ko-KR.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ms-MY.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ms-MY.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-nb-NO.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-nb-NO.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-nl-BE.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-nl-BE.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-nl-NL.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-nl-NL.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-pl-PL.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-pl-PL.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-pt-BR.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-pt-BR.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-pt-PT.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-pt-PT.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ro-RO.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ro-RO.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ru-RU.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ru-RU.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-sk-SK.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-sk-SK.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-sr-Cyrl-RS.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-sr-Cyrl-RS.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-sr-Latn-RS.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-sr-Latn-RS.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-sv-SE.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-sv-SE.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-th-TH.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-th-TH.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-tr-TR.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-tr-TR.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-uk-UA.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-uk-UA.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ur-PK.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-ur-PK.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-uz-Latn-UZ.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-uz-Latn-UZ.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-vi-VN.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-vi-VN.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-zh-CN.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-zh-CN.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-zh-TW.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\locale\bootstrap-table-zh-TW.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bootstrap-table\bootstrap-table.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bootstrap-table\bootstrap-table.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bootstrap-table\bootstrap-table.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bootstrap-table\bootstrap-table.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bootstrap-table\fonts\bootstrap-table.svg" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bulma\bootstrap-table-bulma.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bulma\bootstrap-table-bulma.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bulma\bootstrap-table-bulma.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bulma\bootstrap-table-bulma.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\foundation\bootstrap-table-foundation.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\foundation\bootstrap-table-foundation.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\foundation\bootstrap-table-foundation.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\foundation\bootstrap-table-foundation.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\materialize\bootstrap-table-materialize.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\materialize\bootstrap-table-materialize.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\materialize\bootstrap-table-materialize.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\materialize\bootstrap-table-materialize.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\semantic\bootstrap-table-semantic.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\semantic\bootstrap-table-semantic.js" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\semantic\bootstrap-table-semantic.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\semantic\bootstrap-table-semantic.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\rollup.config.js" />
+    <Content Include="Content\plugin\bootstrap-table\site\.gitignore" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\css\docs.min.css" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\css\style.css" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\alipay.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\alipayLogo.png" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\bootstrap-table.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\bootstrap3.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\bootstrap4.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\bulma.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\edu-birdie.png" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\element-table.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\foundation.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\fresh-table.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\light-bootstrap.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\materialize.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\pager-dashboard.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\paypalLogo.png" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\semantic.jpg" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\weixin.png" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\images\weixinLogo.png" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\js\docs.min.js" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\js\supports.js" />
+    <Content Include="Content\plugin\bootstrap-table\site\favicon.png" />
+    <Content Include="Content\plugin\bootstrap-table\site\index.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\robots.txt" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\ads.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\analytics.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\docs-navbar.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\docs-sidebar.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\favicons.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\footer.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\header.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\icons\download.svg" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\icons\facebook.svg" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\icons\github.svg" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\icons\import.svg" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\icons\lightning.svg" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\icons\linkedin.svg" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\icons\mail.svg" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\icons\menu.svg" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\icons\opencollective.svg" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\icons\twitter.svg" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\scripts.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\skippy.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\stylesheet.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\subscribe.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_includes\supports.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_layouts\default.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_layouts\docs.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_layouts\home.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_layouts\simple.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\.eslintrc.js" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\.gitignore" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\babel.config.js" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\public\index.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\public\themes.html" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\src\main.js" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\vue.config.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\bootstrap-table.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\constants\index.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\addrbar\bootstrap-table-addrbar.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\auto-refresh\bootstrap-table-auto-refresh.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\cookie\bootstrap-table-cookie.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\copy-rows\bootstrap-table-copy-rows.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\custom-view\bootstrap-table-custom-view.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\defer-url\bootstrap-table-defer-url.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\editable\bootstrap-table-editable.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\export\bootstrap-table-export.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\filter-control\bootstrap-table-filter-control.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\filter-control\utils.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\fixed-columns\bootstrap-table-fixed-columns.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\group-by-v2\bootstrap-table-group-by.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\i18n-enhance\bootstrap-table-i18n-enhance.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\key-events\bootstrap-table-key-events.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\mobile\bootstrap-table-mobile.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\multiple-sort\bootstrap-table-multiple-sort.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\page-jump-to\bootstrap-table-page-jump-to.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\pipeline\bootstrap-table-pipeline.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\print\bootstrap-table-print.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\reorder-columns\bootstrap-table-reorder-columns.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\reorder-rows\bootstrap-table-reorder-rows.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\resizable\bootstrap-table-resizable.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\sticky-header\bootstrap-table-sticky-header.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\toolbar\bootstrap-table-toolbar.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\treegrid\bootstrap-table-treegrid.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-af-ZA.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-ar-SA.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-bg-BG.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-ca-ES.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-cs-CZ.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-da-DK.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-de-DE.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-el-GR.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-en-US.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-es-AR.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-es-CL.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-es-CR.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-es-ES.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-es-MX.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-es-NI.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-es-SP.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-et-EE.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-eu-EU.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-fa-IR.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-fi-FI.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-fr-BE.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-fr-CH.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-fr-FR.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-fr-LU.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-he-IL.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-hr-HR.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-hu-HU.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-id-ID.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-it-IT.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-ja-JP.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-ka-GE.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-ko-KR.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-ms-MY.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-nb-NO.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-nl-BE.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-nl-NL.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-pl-PL.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-pt-BR.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-pt-PT.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-ro-RO.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-ru-RU.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-sk-SK.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-sr-Cyrl-RS.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-sr-Latn-RS.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-sv-SE.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-th-TH.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-tr-TR.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-uk-UA.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-ur-PK.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-uz-Latn-UZ.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-vi-VN.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-zh-CN.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\bootstrap-table-zh-TW.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bootstrap-table\bootstrap-table.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bootstrap-table\fonts\bootstrap-table.svg" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bulma\bootstrap-table-bulma.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\foundation\bootstrap-table-foundation.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\materialize\bootstrap-table-materialize.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\semantic\bootstrap-table-semantic.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\utils\index.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\virtual-scroll\index.js" />
+    <Content Include="Content\plugin\bootstrap-table\src\vue\index.js" />
+    <Content Include="Content\plugin\bootstrap-table\tools\check-api.js" />
+    <Content Include="Content\plugin\bootstrap-table\tools\check-locale.js" />
+    <Content Include="Content\plugin\chart\.gitignore" />
+    <Content Include="Content\plugin\chart\docs\style.css" />
+    <Content Include="Content\plugin\chart\gulpfile.js" />
+    <Content Include="Content\plugin\chart\karma.conf.js" />
+    <Content Include="Content\plugin\chart\rollup.config.js" />
+    <Content Include="Content\plugin\chart\rollup.plugins.js" />
+    <Content Include="Content\plugin\chart\samples\advanced\content-security-policy.css" />
+    <Content Include="Content\plugin\chart\samples\advanced\content-security-policy.html" />
+    <Content Include="Content\plugin\chart\samples\advanced\content-security-policy.js" />
+    <Content Include="Content\plugin\chart\samples\advanced\progress-bar.html" />
+    <Content Include="Content\plugin\chart\samples\charts\area\analyser.js" />
+    <Content Include="Content\plugin\chart\samples\charts\area\line-boundaries.html" />
+    <Content Include="Content\plugin\chart\samples\charts\area\line-datasets.html" />
+    <Content Include="Content\plugin\chart\samples\charts\area\line-stacked.html" />
+    <Content Include="Content\plugin\chart\samples\charts\area\radar.html" />
+    <Content Include="Content\plugin\chart\samples\charts\bar\horizontal.html" />
+    <Content Include="Content\plugin\chart\samples\charts\bar\multi-axis.html" />
+    <Content Include="Content\plugin\chart\samples\charts\bar\stacked-group.html" />
+    <Content Include="Content\plugin\chart\samples\charts\bar\stacked.html" />
+    <Content Include="Content\plugin\chart\samples\charts\bar\vertical.html" />
+    <Content Include="Content\plugin\chart\samples\charts\bubble.html" />
+    <Content Include="Content\plugin\chart\samples\charts\combo-bar-line.html" />
+    <Content Include="Content\plugin\chart\samples\charts\doughnut.html" />
+    <Content Include="Content\plugin\chart\samples\charts\line\basic.html" />
+    <Content Include="Content\plugin\chart\samples\charts\line\interpolation-modes.html" />
+    <Content Include="Content\plugin\chart\samples\charts\line\line-styles.html" />
+    <Content Include="Content\plugin\chart\samples\charts\line\multi-axis.html" />
+    <Content Include="Content\plugin\chart\samples\charts\line\point-sizes.html" />
+    <Content Include="Content\plugin\chart\samples\charts\line\point-styles.html" />
+    <Content Include="Content\plugin\chart\samples\charts\line\skip-points.html" />
+    <Content Include="Content\plugin\chart\samples\charts\line\stepped.html" />
+    <Content Include="Content\plugin\chart\samples\charts\pie.html" />
+    <Content Include="Content\plugin\chart\samples\charts\polar-area.html" />
+    <Content Include="Content\plugin\chart\samples\charts\radar-skip-points.html" />
+    <Content Include="Content\plugin\chart\samples\charts\radar.html" />
+    <Content Include="Content\plugin\chart\samples\charts\scatter\basic.html" />
+    <Content Include="Content\plugin\chart\samples\charts\scatter\multi-axis.html" />
+    <Content Include="Content\plugin\chart\samples\favicon.ico" />
+    <Content Include="Content\plugin\chart\samples\index.html" />
+    <Content Include="Content\plugin\chart\samples\legend\callbacks.html" />
+    <Content Include="Content\plugin\chart\samples\legend\point-style.html" />
+    <Content Include="Content\plugin\chart\samples\legend\positioning.html" />
+    <Content Include="Content\plugin\chart\samples\logo.svg" />
+    <Content Include="Content\plugin\chart\samples\samples.js" />
+    <Content Include="Content\plugin\chart\samples\scales\filtering-labels.html" />
+    <Content Include="Content\plugin\chart\samples\scales\gridlines-display.html" />
+    <Content Include="Content\plugin\chart\samples\scales\gridlines-style.html" />
+    <Content Include="Content\plugin\chart\samples\scales\linear\min-max-suggested.html" />
+    <Content Include="Content\plugin\chart\samples\scales\linear\min-max.html" />
+    <Content Include="Content\plugin\chart\samples\scales\linear\step-size.html" />
+    <Content Include="Content\plugin\chart\samples\scales\logarithmic\line.html" />
+    <Content Include="Content\plugin\chart\samples\scales\logarithmic\scatter.html" />
+    <Content Include="Content\plugin\chart\samples\scales\multiline-labels.html" />
+    <Content Include="Content\plugin\chart\samples\scales\non-numeric-y.html" />
+    <Content Include="Content\plugin\chart\samples\scales\time\combo.html" />
+    <Content Include="Content\plugin\chart\samples\scales\time\financial.html" />
+    <Content Include="Content\plugin\chart\samples\scales\time\line-point-data.html" />
+    <Content Include="Content\plugin\chart\samples\scales\time\line.html" />
+    <Content Include="Content\plugin\chart\samples\scales\toggle-scale-type.html" />
+    <Content Include="Content\plugin\chart\samples\scriptable\bar.html" />
+    <Content Include="Content\plugin\chart\samples\scriptable\bubble.html" />
+    <Content Include="Content\plugin\chart\samples\scriptable\line.html" />
+    <Content Include="Content\plugin\chart\samples\scriptable\pie.html" />
+    <Content Include="Content\plugin\chart\samples\scriptable\polar.html" />
+    <Content Include="Content\plugin\chart\samples\scriptable\radar.html" />
+    <Content Include="Content\plugin\chart\samples\style.css" />
+    <Content Include="Content\plugin\chart\samples\tooltips\border.html" />
+    <Content Include="Content\plugin\chart\samples\tooltips\callbacks.html" />
+    <Content Include="Content\plugin\chart\samples\tooltips\custom-line.html" />
+    <Content Include="Content\plugin\chart\samples\tooltips\custom-pie.html" />
+    <Content Include="Content\plugin\chart\samples\tooltips\custom-points.html" />
+    <Content Include="Content\plugin\chart\samples\tooltips\interactions.html" />
+    <Content Include="Content\plugin\chart\samples\tooltips\positioning.html" />
+    <Content Include="Content\plugin\chart\samples\utils.js" />
+    <Content Include="Content\plugin\chart\src\adapters\adapter.moment.js" />
+    <Content Include="Content\plugin\chart\src\adapters\index.js" />
+    <Content Include="Content\plugin\chart\src\controllers\controller.bar.js" />
+    <Content Include="Content\plugin\chart\src\controllers\controller.bubble.js" />
+    <Content Include="Content\plugin\chart\src\controllers\controller.doughnut.js" />
+    <Content Include="Content\plugin\chart\src\controllers\controller.horizontalBar.js" />
+    <Content Include="Content\plugin\chart\src\controllers\controller.line.js" />
+    <Content Include="Content\plugin\chart\src\controllers\controller.pie.js" />
+    <Content Include="Content\plugin\chart\src\controllers\controller.polarArea.js" />
+    <Content Include="Content\plugin\chart\src\controllers\controller.radar.js" />
+    <Content Include="Content\plugin\chart\src\controllers\controller.scatter.js" />
+    <Content Include="Content\plugin\chart\src\controllers\index.js" />
+    <Content Include="Content\plugin\chart\src\core\core.adapters.js" />
+    <Content Include="Content\plugin\chart\src\core\core.animation.js" />
+    <Content Include="Content\plugin\chart\src\core\core.animations.js" />
+    <Content Include="Content\plugin\chart\src\core\core.controller.js" />
+    <Content Include="Content\plugin\chart\src\core\core.datasetController.js" />
+    <Content Include="Content\plugin\chart\src\core\core.defaults.js" />
+    <Content Include="Content\plugin\chart\src\core\core.element.js" />
+    <Content Include="Content\plugin\chart\src\core\core.helpers.js" />
+    <Content Include="Content\plugin\chart\src\core\core.interaction.js" />
+    <Content Include="Content\plugin\chart\src\core\core.layouts.js" />
+    <Content Include="Content\plugin\chart\src\core\core.plugins.js" />
+    <Content Include="Content\plugin\chart\src\core\core.scale.js" />
+    <Content Include="Content\plugin\chart\src\core\core.scaleService.js" />
+    <Content Include="Content\plugin\chart\src\core\core.ticks.js" />
+    <Content Include="Content\plugin\chart\src\core\core.tooltip.js" />
+    <Content Include="Content\plugin\chart\src\elements\element.arc.js" />
+    <Content Include="Content\plugin\chart\src\elements\element.line.js" />
+    <Content Include="Content\plugin\chart\src\elements\element.point.js" />
+    <Content Include="Content\plugin\chart\src\elements\element.rectangle.js" />
+    <Content Include="Content\plugin\chart\src\elements\index.js" />
+    <Content Include="Content\plugin\chart\src\helpers\helpers.canvas.js" />
+    <Content Include="Content\plugin\chart\src\helpers\helpers.core.js" />
+    <Content Include="Content\plugin\chart\src\helpers\helpers.easing.js" />
+    <Content Include="Content\plugin\chart\src\helpers\helpers.math.js" />
+    <Content Include="Content\plugin\chart\src\helpers\helpers.options.js" />
+    <Content Include="Content\plugin\chart\src\helpers\helpers.rtl.js" />
+    <Content Include="Content\plugin\chart\src\helpers\index.js" />
+    <Content Include="Content\plugin\chart\src\index.js" />
+    <Content Include="Content\plugin\chart\src\platforms\platform.basic.js" />
+    <Content Include="Content\plugin\chart\src\platforms\platform.dom.css" />
+    <Content Include="Content\plugin\chart\src\platforms\platform.dom.js" />
+    <Content Include="Content\plugin\chart\src\platforms\platform.js" />
+    <Content Include="Content\plugin\chart\src\plugins\index.js" />
+    <Content Include="Content\plugin\chart\src\plugins\plugin.filler.js" />
+    <Content Include="Content\plugin\chart\src\plugins\plugin.legend.js" />
+    <Content Include="Content\plugin\chart\src\plugins\plugin.title.js" />
+    <Content Include="Content\plugin\chart\src\scales\index.js" />
+    <Content Include="Content\plugin\chart\src\scales\scale.category.js" />
+    <Content Include="Content\plugin\chart\src\scales\scale.linear.js" />
+    <Content Include="Content\plugin\chart\src\scales\scale.linearbase.js" />
+    <Content Include="Content\plugin\chart\src\scales\scale.logarithmic.js" />
+    <Content Include="Content\plugin\chart\src\scales\scale.radialLinear.js" />
+    <Content Include="Content\plugin\chart\src\scales\scale.time.js" />
+    <Content Include="Content\plugin\chart\test\context.js" />
+    <Content Include="Content\plugin\chart\test\fixture.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\backgroundColor\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\backgroundColor\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\backgroundColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\backgroundColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\backgroundColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\backgroundColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-absolute.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-flex-offset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-flex-single-reverse.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-flex-single.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-flex.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-max.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-min-interval.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-multiple.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-no-overlap.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-offset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-per-dataset-stacked.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-per-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-reverse.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-single-xy.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-single.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-stacked.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderColor\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderColor\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderSkipped\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderSkipped\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderSkipped\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderSkipped\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderSkipped\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderSkipped\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\indexable-object.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\indexable-object.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\negative.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\negative.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\object.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\object.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\scriptable-object.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\scriptable-object.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\borderWidth\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\chart-area-clip.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\chart-area-clip.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\floatBar\float-bar-horizontal.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\floatBar\float-bar-stacked-horizontal.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\floatBar\float-bar-stacked.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\floatBar\float-bar.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\horizontal-borders.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\horizontal-borders.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\stacking\order-default.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\stacking\order-specified.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bubble\point-style.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bubble\radius-scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bubble\radius-scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\backgroundColor\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\backgroundColor\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\backgroundColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\backgroundColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\backgroundColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\backgroundColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderAlign\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderAlign\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderAlign\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderAlign\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderAlign\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderAlign\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderColor\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderColor\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderWidth\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderWidth\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderWidth\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderWidth\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderWidth\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\borderWidth\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\doughnut-border-align-center.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\doughnut-border-align-inner.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\doughnut-circumference-over-2pi.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\doughnut-circumference.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\doughnut-weight.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\pie-border-align-center.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\pie-border-align-inner.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\pie-circumference.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\pie-weight.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\backgroundColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\backgroundColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\backgroundColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\backgroundColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderCapStyle\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderCapStyle\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderCapStyle\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderCapStyle\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderDashOffset\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderDashOffset\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderDashOffset\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderDashOffset\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderDash\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderDash\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderDash\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderDash\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderJoinStyle\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderJoinStyle\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderJoinStyle\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderJoinStyle\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderWidth\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderWidth\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderWidth\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\borderWidth\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-x-max.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-x-min.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-x.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-y-max.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-y-min.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-y.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\specified.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\cubicInterpolationMode\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\cubicInterpolationMode\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\cubicInterpolationMode\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\cubicInterpolationMode\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\fill\order-default.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\fill\order-default.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\fill\order.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\fill\order.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\fill\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\fill\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\fill\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\fill\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\non-numeric-y.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\point-style.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBackgroundColor\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBackgroundColor\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBackgroundColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBackgroundColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBackgroundColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBackgroundColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderColor\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderColor\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderWidth\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderWidth\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderWidth\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderWidth\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderWidth\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointBorderWidth\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointStyle\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointStyle\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointStyle\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointStyle\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointStyle\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\pointStyle\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\radius\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\radius\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\radius\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\radius\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\radius\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\radius\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\rotation\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\rotation\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\rotation\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\rotation\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\rotation\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\rotation\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\stacking\order-default.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\stacking\order-default.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\stacking\order-specified.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\stacking\order-specified.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\angle-array.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\angle-undefined.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\indexable-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\indexable-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\indexable-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\indexable-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\scriptable-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\scriptable-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\scriptable-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\scriptable-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\value-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\value-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\value-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\backgroundColor\value-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\border-align-center.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\border-align-inner.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\indexable-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\indexable-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\indexable-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\indexable-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\scriptable-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\scriptable-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\scriptable-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\scriptable-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\value-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\value-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\value-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderAlign\value-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\indexable-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\indexable-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\indexable-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\indexable-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\scriptable-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\scriptable-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\scriptable-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\scriptable-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\value-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\value-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\value-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderColor\value-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\indexable-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\indexable-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\indexable-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\indexable-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\scriptable-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\scriptable-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\scriptable-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\scriptable-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\value-dataset.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\value-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\value-element-options.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\borderWidth\value-element-options.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\backgroundColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\backgroundColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\backgroundColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\backgroundColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderCapStyle\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderCapStyle\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderCapStyle\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderCapStyle\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderDashOffset\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderDashOffset\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderDashOffset\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderDashOffset\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderDash\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderDash\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderDash\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderDash\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderJoinStyle\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderJoinStyle\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderJoinStyle\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderJoinStyle\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderWidth\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderWidth\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderWidth\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\borderWidth\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\fill\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\fill\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\fill\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\fill\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\point-style.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBackgroundColor\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBackgroundColor\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBackgroundColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBackgroundColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBackgroundColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBackgroundColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderColor\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderColor\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderColor\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderColor\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderColor\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderColor\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderWidth\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderWidth\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderWidth\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderWidth\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderWidth\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointBorderWidth\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointStyle\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointStyle\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointStyle\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointStyle\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointStyle\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\pointStyle\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\radius\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\radius\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\radius\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\radius\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\radius\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\radius\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\rotation\indexable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\rotation\indexable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\rotation\scriptable.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\rotation\scriptable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\rotation\value.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\rotation\value.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\core.scale\label-offset-vertical-axes.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\core.scale\tick-drawing.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\core.tooltip\opacity.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\core.tooltip\opacity.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-circle.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-cross-rot.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-cross.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-dash.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-image.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-image.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-line.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-rect-rot.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-rect-rounded.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-rect.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-star.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-triangle.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\rotation.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\rotation.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\helpers.canvas\rounded-rect.js" />
+    <Content Include="Content\plugin\chart\test\fixtures\helpers.canvas\rounded-rect.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-end-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-end.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin-spline-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin-spline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin-stepped-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin-stepped.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-start-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-start.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-dataset-border.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-dataset-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-dataset-spline-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-dataset-spline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-end-circular.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-end-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-end.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-origin-circular.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-origin-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-origin-spline-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-origin-spline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-origin.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-start-circular.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-start-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-start.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-dataset-border.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-dataset-span.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-dataset-spline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-dataset.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-bottom-center-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-bottom-center-single.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-bottom-end-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-bottom-start-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-left-center-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-left-center-single.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-left-default-center.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-left-end-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-left-start-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-right-center-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-right-center-single.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-right-default-center.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-right-end-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-right-start-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-top-center-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-top-center-single.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-top-end-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-top-start-mulitiline.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\anglelines-disable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\border-dash.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\circular-border-dash.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\gridlines-disable.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\gridlines-no-z.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\gridlines-z.png" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\indexable-gridlines.png" />
+    <Content Include="Content\plugin\chart\test\index.js" />
+    <Content Include="Content\plugin\chart\test\matchers.js" />
+    <Content Include="Content\plugin\chart\test\specs\controller.bar.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\controller.bubble.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\controller.doughnut.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\controller.line.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\controller.polarArea.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\controller.radar.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\controller.scatter.test.js" />
+    <Content Include="Content\plugin\chart\test\specs\core.controller.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\core.datasetController.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\core.element.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\core.helpers.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\core.interaction.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\core.layouts.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\core.plugin.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\core.scale.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\core.scaleService.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\core.ticks.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\core.tooltip.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\element.arc.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\element.line.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\element.point.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\element.rectangle.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\global.defaults.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\global.deprecations.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\global.namespace.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\helpers.canvas.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\helpers.core.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\helpers.easing.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\helpers.math.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\helpers.options.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\platform.dom.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\plugin.filler.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\plugin.legend.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\plugin.title.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\scale.category.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\scale.linear.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\scale.logarithmic.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\scale.radialLinear.tests.js" />
+    <Content Include="Content\plugin\chart\test\specs\scale.time.tests.js" />
+    <Content Include="Content\plugin\chart\test\utils.js" />
+    <Content Include="Content\plugin\datetimepicker\css\bootstrap-datetimepicker.css" />
+    <Content Include="Content\plugin\datetimepicker\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\plugin\datetimepicker\js\bootstrap-datetimepicker.min.js" />
+    <Content Include="Content\plugin\jquerycountdown\jquery.coundown.css" />
+    <Content Include="Content\plugin\jquerycountdown\jquery.countdown.js" />
+    <Content Include="Content\plugin\jquerycountdown\jquery.countdown.min.js" />
+    <Content Include="Content\plugin\nprogress\nprogress.css" />
+    <Content Include="Content\plugin\nprogress\nprogress.js" />
+    <Content Include="Content\plugin\select2\dist\css\select2.css" />
+    <Content Include="Content\plugin\select2\dist\css\select2.min.css" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\af.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\ar.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\az.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\bg.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\bn.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\bs.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\ca.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\cs.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\da.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\de.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\dsb.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\el.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\en.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\eo.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\es.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\et.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\eu.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\fa.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\fi.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\fr.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\gl.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\he.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\hi.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\hr.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\hsb.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\hu.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\hy.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\id.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\is.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\it.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\ja.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\ka.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\km.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\ko.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\lt.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\lv.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\mk.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\ms.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\nb.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\ne.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\nl.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\pa.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\pl.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\ps.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\pt-BR.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\pt.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\ro.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\ru.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\sk.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\sl.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\sq.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\sr-Cyrl.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\sr.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\sv.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\th.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\tk.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\tr.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\uk.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\vi.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\zh-CN.js" />
+    <Content Include="Content\plugin\select2\dist\js\i18n\zh-TW.js" />
+    <Content Include="Content\plugin\select2\dist\js\select2.full.js" />
+    <Content Include="Content\plugin\select2\dist\js\select2.full.min.js" />
+    <Content Include="Content\plugin\select2\dist\js\select2.js" />
+    <Content Include="Content\plugin\select2\dist\js\select2.min.js" />
+    <Content Include="Content\plugin\select2\select2-bootstrap4\dist\select2-bootstrap4.css" />
+    <Content Include="Content\plugin\select2\select2-bootstrap4\dist\select2-bootstrap4.min.css" />
+    <Content Include="Content\plugin\summernote\summernote-bs4.css" />
+    <Content Include="Content\plugin\summernote\summernote-bs4.js" />
+    <Content Include="Content\plugin\tiny-slider\dist\min\tiny-slider.helper.ie8.js" />
+    <Content Include="Content\plugin\tiny-slider\dist\min\tiny-slider.js" />
+    <Content Include="Content\plugin\tiny-slider\dist\tiny-slider.css" />
+    <Content Include="Content\plugin\tiny-slider\dist\tiny-slider.helper.ie8.js" />
+    <Content Include="Content\plugin\tiny-slider\dist\tiny-slider.js" />
+    <Content Include="Content\plugin\toastr\toastr.css" />
+    <Content Include="Content\plugin\toastr\toastr.min.js" />
+    <Content Include="Content\plugin\upload\css\jquery.dm-uploader.min.css" />
+    <Content Include="Content\plugin\upload\js\jquery.dm-uploader.min.js" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\table.min.css" />
+    <Content Include="Content\theme-custom.css" />
+    <Content Include="Content\theme\css\style.css" />
+    <Content Include="Content\theme\js\chart.js" />
+    <Content Include="Content\theme\js\dashboard.js" />
+    <Content Include="Content\theme\js\file-upload.js" />
+    <Content Include="Content\theme\js\hoverable-collapse.js" />
+    <Content Include="Content\theme\js\misc.js" />
+    <Content Include="Content\theme\js\off-canvas.js" />
+    <Content Include="Content\theme\js\summernote.js" />
+    <Content Include="Content\theme\js\todo.js" />
+    <Content Include="Content\theme\js\todolist.js" />
+    <Content Include="Content\theme\vendors\chart.js\Chart.min.js" />
+    <Content Include="Content\theme\vendors\css\vendor.bundle.base.css" />
+    <Content Include="Content\theme\vendors\js\vendor.bundle.base.js" />
+    <Content Include="Content\theme\vendors\mdi\css\materialdesignicons.min.css" />
+    <Content Include="Content\Upload\Images\-logo-light-main.png" />
+    <Content Include="Content\Upload\Images\117866782_321227022357134_8486464456897892805_n.jpg" />
+    <Content Include="Content\Upload\Images\118306740_308612910417989_2690989839352679264_n.jpg" />
+    <Content Include="Content\Upload\Images\118428735_2880012858896908_7161035524867507615_o.jpg" />
+    <Content Include="Content\Upload\Images\118540771_1715550868607558_2095666716666538041_o.png" />
+    <Content Include="Content\Upload\Images\1f9b12fdd9cc08a1b443ba6af8f434c6-copy-copy.png" />
+    <Content Include="Content\Upload\Images\1f9b12fdd9cc08a1b443ba6af8f434c6.png" />
+    <Content Include="Content\Upload\Images\5.jpg" />
+    <Content Include="Content\Upload\Images\75k.png" />
+    <Content Include="Content\Upload\Images\89daa58ce69dcf41aae55e23f8599db0.jfif" />
+    <Content Include="Content\Upload\Images\968c44eb9d4961173858.jpg" />
+    <Content Include="Content\Upload\Images\ahihi-o-logo-light.png" />
+    <Content Include="Content\Upload\Images\airpay.jpg" />
+    <Content Include="Content\Upload\Images\Artboard 13.png" />
+    <Content Include="Content\Upload\Images\Artboard13.png" />
+    <Content Include="Content\Upload\Images\bg-main.jpg" />
+    <Content Include="Content\Upload\Images\cach-lam-tra-dao-cam-sa.jpg" />
+    <Content Include="Content\Upload\Images\digital-marketing.jpg" />
+    <Content Include="Content\Upload\Images\images.jpg" />
+    <Content Include="Content\Upload\Images\logo-light-mini.png" />
+    <Content Include="Content\Upload\Images\main-download.png" />
+    <Content Include="Content\Upload\Images\momo-150x150.png" />
+    <Content Include="Content\Upload\Images\momo.jpg" />
+    <Content Include="Content\Upload\Images\Netflix_Multiple_Device.jpg" />
+    <Content Include="Content\Upload\Images\ologo-light-main.png" />
+    <Content Include="Content\Upload\Images\open-graph-default.png" />
+    <Content Include="Content\Upload\Images\tra-dao-cam-sa-ngon-tai-kadi-cafe.jpg" />
+    <Content Include="Content\Upload\Images\tra-dao-cam-xa.png" />
+    <Content Include="Content\Upload\Images\vietcombank.jpg" />
+    <Content Include="Content\Upload\Images\vietelpay.jpg" />
+    <Content Include="Content\Upload\Images\youtube-pre.png" />
+    <Content Include="Content\Upload\Images\z1996836475380_8aaeb75c8f47a72c36cf2eaf866e93c6.jpg" />
+    <Content Include="Content\Upload\Images\z1996836480687_07889529b20bdf4c179885126f800047.jpg" />
+    <Content Include="Content\Upload\Images\z2001698528944_86c49424a7cff94173d38fc2f1e6ecaf.jpg" />
+    <Content Include="Content\Upload\Images\z2011438484682_808c64200b1bb6f88758fc9c242fdef3.jpg" />
+    <Content Include="Content\Upload\Images\z2011441072050_804dbf0736e5c6df4bba43690c86c629.jpg" />
+    <Content Include="ErrorsPages\500.html" />
+    <Content Include="Font\open-sans\LICENSE.txt" />
+    <Content Include="Global.asax" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Error.cshtml" />
+    <Content Include="App_Data\app.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\connectionString.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ErrorsPages\404.html" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\plugin\bootstrap-table\.browserslistrc" />
+    <Content Include="Content\plugin\bootstrap-table\.github\FUNDING.yml" />
+    <Content Include="Content\plugin\bootstrap-table\.github\ISSUE_TEMPLATE\1_Bug_report.md" />
+    <Content Include="Content\plugin\bootstrap-table\.github\ISSUE_TEMPLATE\2_Feature_request.md" />
+    <Content Include="Content\plugin\bootstrap-table\.github\ISSUE_TEMPLATE\3_Support_question.md" />
+    <Content Include="Content\plugin\bootstrap-table\.github\ISSUE_TEMPLATE\4_Documentation.md" />
+    <Content Include="Content\plugin\bootstrap-table\.github\PULL_REQUEST_TEMPLATE.md" />
+    <Content Include="Content\plugin\bootstrap-table\.npmignore" />
+    <Content Include="Content\plugin\bootstrap-table\.stylelintrc" />
+    <Content Include="Content\plugin\bootstrap-table\.travis.yml" />
+    <Content Include="Content\plugin\bootstrap-table\bootstrap-table.jquery.json" />
+    <Content Include="Content\plugin\bootstrap-table\bower.json" />
+    <Content Include="Content\plugin\bootstrap-table\CHANGELOG.md" />
+    <Content Include="Content\plugin\bootstrap-table\composer.json" />
+    <Content Include="Content\plugin\bootstrap-table\CONTRIBUTING.md" />
+    <Content Include="Content\plugin\bootstrap-table\deploy.sh" />
+    <Content Include="Content\plugin\bootstrap-table\deploy_key.enc" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bootstrap-table\fonts\bootstrap-table.eot" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bootstrap-table\fonts\bootstrap-table.ttf" />
+    <Content Include="Content\plugin\bootstrap-table\dist\themes\bootstrap-table\fonts\bootstrap-table.woff" />
+    <Content Include="Content\plugin\bootstrap-table\DONATORS.md" />
+    <Content Include="Content\plugin\bootstrap-table\Gemfile" />
+    <Content Include="Content\plugin\bootstrap-table\LICENSE" />
+    <Content Include="Content\plugin\bootstrap-table\package.json" />
+    <Content Include="Content\plugin\bootstrap-table\README.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\assets\css\docs.min.css.map" />
+    <Content Include="Content\plugin\bootstrap-table\site\CNAME" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\about\license.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\about\overview.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\about\team.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\about\translations.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\api\column-options.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\api\events.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\api\localizations.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\api\methods.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\api\table-options.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\addrbar.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\auto-refresh.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\cookie.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\copy-rows.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\custom-view.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\defer-url.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\editable.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\export.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\filter-control.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\fixed-columns.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\group-by-v2.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\i18n-enhance.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\key-events.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\mobile.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\multiple-sort.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\page-jump-to.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\pipeline.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\print.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\reorder-columns.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\reorder-rows.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\resizable.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\sticky-header.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\toolbar.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\extensions\treegrid.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\faq.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\getting-started\browsers-devices.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\getting-started\build-tools.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\getting-started\contents.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\getting-started\download.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\getting-started\introduction.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\getting-started\usage.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\vuejs\browser.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\vuejs\component.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\vuejs\introduction.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\docs\vuejs\webpack.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\LICENSE" />
+    <Content Include="Content\plugin\bootstrap-table\site\news.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\themes\bootstrap-table.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\themes\bootstrap3.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\themes\bulma.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\themes\foundation.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\themes\index.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\themes\materialize.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\themes\semantic.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\_data\core-team.yml" />
+    <Content Include="Content\plugin\bootstrap-table\site\_data\nav.yml" />
+    <Content Include="Content\plugin\bootstrap-table\site\_data\translations.yml" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\package.json" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\README.md" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\src\App.vue" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\src\components\Categories.vue" />
+    <Content Include="Content\plugin\bootstrap-table\site\_themes\src\components\List.vue" />
+    <Content Include="Content\plugin\bootstrap-table\src\.babelrc" />
+    <Content Include="Content\plugin\bootstrap-table\src\bootstrap-table.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\auto-refresh\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\cookie\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\copy-rows\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\defer-url\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\editable\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\export\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\filter-control\bootstrap-table-filter-control.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\filter-control\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\fixed-columns\bootstrap-table-fixed-columns.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\group-by-v2\bootstrap-table-group-by.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\group-by-v2\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\i18n-enhance\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\key-events\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\mobile\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\multiple-sort\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\page-jump-to\bootstrap-table-page-jump-to.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\pipeline\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\pipeline\LICENSE" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\pipeline\README.md" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\reorder-columns\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\reorder-rows\bootstrap-table-reorder-rows.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\reorder-rows\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\resizable\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\sticky-header\bootstrap-table-sticky-header.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\sticky-header\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\toolbar\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\extensions\treegrid\extension.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\locale\README.md" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bootstrap-table\bootstrap-table.json" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bootstrap-table\bootstrap-table.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bootstrap-table\fonts\bootstrap-table.eot" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bootstrap-table\fonts\bootstrap-table.ttf" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bootstrap-table\fonts\bootstrap-table.woff" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bootstrap-table\_font.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bootstrap-table\_variables.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bootstrap\_variables.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bulma\bootstrap-table-bulma.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\bulma\_variables.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\foundation\bootstrap-table-foundation.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\foundation\_variables.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\materialize\bootstrap-table-materialize.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\materialize\_variables.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\semantic\bootstrap-table-semantic.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\semantic\_variables.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\themes\_theme.scss" />
+    <Content Include="Content\plugin\bootstrap-table\src\vue\BootstrapTable.vue" />
+    <Content Include="Content\plugin\bootstrap-table\tools\README.md" />
+    <Content Include="Content\plugin\bootstrap-table\_config.yml" />
+    <Content Include="Content\plugin\chart\.codeclimate.yml" />
+    <Content Include="Content\plugin\chart\.editorconfig" />
+    <Content Include="Content\plugin\chart\.eslintignore" />
+    <Content Include="Content\plugin\chart\.eslintrc.yml" />
+    <Content Include="Content\plugin\chart\.github\ISSUE_TEMPLATE.md" />
+    <Content Include="Content\plugin\chart\.github\ISSUE_TEMPLATE\BUG.md" />
+    <Content Include="Content\plugin\chart\.github\ISSUE_TEMPLATE\DOCS.md" />
+    <Content Include="Content\plugin\chart\.github\ISSUE_TEMPLATE\FEATURE.md" />
+    <Content Include="Content\plugin\chart\.github\ISSUE_TEMPLATE\SUPPORT.md" />
+    <Content Include="Content\plugin\chart\.github\PULL_REQUEST_TEMPLATE.md" />
+    <Content Include="Content\plugin\chart\.htmllintrc" />
+    <Content Include="Content\plugin\chart\.travis.yml" />
+    <Content Include="Content\plugin\chart\book.json" />
+    <Content Include="Content\plugin\chart\composer.json" />
+    <Content Include="Content\plugin\chart\docs\axes\cartesian\category.md" />
+    <Content Include="Content\plugin\chart\docs\axes\cartesian\linear.md" />
+    <Content Include="Content\plugin\chart\docs\axes\cartesian\logarithmic.md" />
+    <Content Include="Content\plugin\chart\docs\axes\cartesian\README.md" />
+    <Content Include="Content\plugin\chart\docs\axes\cartesian\time.md" />
+    <Content Include="Content\plugin\chart\docs\axes\labelling.md" />
+    <Content Include="Content\plugin\chart\docs\axes\radial\linear.md" />
+    <Content Include="Content\plugin\chart\docs\axes\radial\README.md" />
+    <Content Include="Content\plugin\chart\docs\axes\README.md" />
+    <Content Include="Content\plugin\chart\docs\axes\styling.md" />
+    <Content Include="Content\plugin\chart\docs\charts\area.md" />
+    <Content Include="Content\plugin\chart\docs\charts\bar.md" />
+    <Content Include="Content\plugin\chart\docs\charts\bubble.md" />
+    <Content Include="Content\plugin\chart\docs\charts\doughnut.md" />
+    <Content Include="Content\plugin\chart\docs\charts\line.md" />
+    <Content Include="Content\plugin\chart\docs\charts\mixed.md" />
+    <Content Include="Content\plugin\chart\docs\charts\polar.md" />
+    <Content Include="Content\plugin\chart\docs\charts\radar.md" />
+    <Content Include="Content\plugin\chart\docs\charts\README.md" />
+    <Content Include="Content\plugin\chart\docs\charts\scatter.md" />
+    <Content Include="Content\plugin\chart\docs\configuration\animations.md" />
+    <Content Include="Content\plugin\chart\docs\configuration\elements.md" />
+    <Content Include="Content\plugin\chart\docs\configuration\layout.md" />
+    <Content Include="Content\plugin\chart\docs\configuration\legend.md" />
+    <Content Include="Content\plugin\chart\docs\configuration\README.md" />
+    <Content Include="Content\plugin\chart\docs\configuration\title.md" />
+    <Content Include="Content\plugin\chart\docs\configuration\tooltip.md" />
+    <Content Include="Content\plugin\chart\docs\developers\api.md" />
+    <Content Include="Content\plugin\chart\docs\developers\axes.md" />
+    <Content Include="Content\plugin\chart\docs\developers\charts.md" />
+    <Content Include="Content\plugin\chart\docs\developers\contributing.md" />
+    <Content Include="Content\plugin\chart\docs\developers\plugins.md" />
+    <Content Include="Content\plugin\chart\docs\developers\README.md" />
+    <Content Include="Content\plugin\chart\docs\developers\updates.md" />
+    <Content Include="Content\plugin\chart\docs\general\accessibility.md" />
+    <Content Include="Content\plugin\chart\docs\general\colors.md" />
+    <Content Include="Content\plugin\chart\docs\general\device-pixel-ratio.md" />
+    <Content Include="Content\plugin\chart\docs\general\fonts.md" />
+    <Content Include="Content\plugin\chart\docs\general\interactions\events.md" />
+    <Content Include="Content\plugin\chart\docs\general\interactions\modes.md" />
+    <Content Include="Content\plugin\chart\docs\general\interactions\README.md" />
+    <Content Include="Content\plugin\chart\docs\general\options.md" />
+    <Content Include="Content\plugin\chart\docs\general\performance.md" />
+    <Content Include="Content\plugin\chart\docs\general\README.md" />
+    <Content Include="Content\plugin\chart\docs\general\responsive.md" />
+    <Content Include="Content\plugin\chart\docs\getting-started\installation.md" />
+    <Content Include="Content\plugin\chart\docs\getting-started\integration.md" />
+    <Content Include="Content\plugin\chart\docs\getting-started\README.md" />
+    <Content Include="Content\plugin\chart\docs\getting-started\usage.md" />
+    <Content Include="Content\plugin\chart\docs\notes\comparison.md" />
+    <Content Include="Content\plugin\chart\docs\notes\extensions.md" />
+    <Content Include="Content\plugin\chart\docs\notes\license.md" />
+    <Content Include="Content\plugin\chart\docs\notes\README.md" />
+    <Content Include="Content\plugin\chart\docs\README.md" />
+    <Content Include="Content\plugin\chart\docs\SUMMARY.md" />
+    <Content Include="Content\plugin\chart\LICENSE.md" />
+    <Content Include="Content\plugin\chart\MAINTAINING.md" />
+    <Content Include="Content\plugin\chart\package-lock.json" />
+    <Content Include="Content\plugin\chart\package.json" />
+    <Content Include="Content\plugin\chart\README.md" />
+    <Content Include="Content\plugin\chart\samples\.eslintrc.yml" />
+    <Content Include="Content\plugin\chart\scripts\deploy.sh" />
+    <Content Include="Content\plugin\chart\scripts\release.sh" />
+    <Content Include="Content\plugin\chart\test\.eslintrc.yml" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-absolute.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-flex-offset.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-flex-single-reverse.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-flex-single.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-flex.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-max.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-min-interval.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-multiple.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-no-overlap.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-offset.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-per-dataset-stacked.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-per-dataset.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-reverse.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-single-xy.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-single.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\bar-thickness-stacked.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\floatBar\float-bar-horizontal.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\floatBar\float-bar-stacked-horizontal.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\floatBar\float-bar-stacked.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\floatBar\float-bar.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\stacking\order-default.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bar\stacking\order-specified.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.bubble\point-style.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\doughnut-border-align-center.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\doughnut-border-align-inner.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\doughnut-circumference-over-2pi.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\doughnut-circumference.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\doughnut-weight.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\pie-border-align-center.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\pie-border-align-inner.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\pie-circumference.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.doughnut\pie-weight.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-x-max.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-x-min.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-x.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-y-max.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-y-min.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\default-y.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\clip\specified.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\non-numeric-y.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.line\point-style.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\angle-array.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\angle-undefined.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\border-align-center.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.polarArea\border-align-inner.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\controller.radar\point-style.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\core.scale\label-offset-vertical-axes.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\core.scale\tick-drawing.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-circle.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-cross-rot.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-cross.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-dash.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-line.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-rect-rot.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-rect-rounded.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-rect.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-star.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\element.point\point-style-triangle.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-end-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-end.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin-spline-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin-spline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin-stepped-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin-stepped.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-origin.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-start-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-boundary-start.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-dataset-border.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-dataset-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-dataset-spline-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-dataset-spline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-line-dataset.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-end-circular.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-end-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-end.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-origin-circular.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-origin-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-origin-spline-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-origin-spline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-origin.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-start-circular.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-start-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-boundary-start.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-dataset-border.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-dataset-span.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-dataset-spline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.filler\fill-radar-dataset.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-bottom-center-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-bottom-center-single.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-bottom-end-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-bottom-start-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-left-center-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-left-center-single.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-left-default-center.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-left-end-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-left-start-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-right-center-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-right-center-single.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-right-default-center.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-right-end-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-right-start-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-top-center-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-top-center-single.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-top-end-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\plugin.legend\legend-doughnut-top-start-mulitiline.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\anglelines-disable.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\border-dash.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\circular-border-dash.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\gridlines-disable.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\gridlines-no-z.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\gridlines-z.json" />
+    <Content Include="Content\plugin\chart\test\fixtures\scale.radialLinear\indexable-gridlines.json" />
+    <Content Include="Content\plugin\select2\select2-bootstrap4\src\layout.scss" />
+    <Content Include="Content\plugin\select2\select2-bootstrap4\src\_multiple.scss" />
+    <Content Include="Content\plugin\select2\select2-bootstrap4\src\_single.scss" />
+    <Content Include="Content\plugin\summernote\summernote-bs4.js.map" />
+    <Content Include="Content\plugin\tiny-slider\dist\sourcemaps\tiny-slider.css.map" />
+    <Content Include="Content\plugin\tiny-slider\dist\sourcemaps\tiny-slider.helper.ie8.js.map" />
+    <Content Include="Content\plugin\tiny-slider\dist\sourcemaps\tiny-slider.js.map" />
+    <Content Include="Content\plugin\toastr\toastr.js.map" />
+    <Content Include="Content\theme\css\style.css.map" />
+    <Content Include="Content\theme\scss\components\_badges.scss" />
+    <Content Include="Content\theme\scss\components\_bootstrap-progress.scss" />
+    <Content Include="Content\theme\scss\components\_breadcrumbs.scss" />
+    <Content Include="Content\theme\scss\components\_buttons.scss" />
+    <Content Include="Content\theme\scss\components\_cards.scss" />
+    <Content Include="Content\theme\scss\components\_checkbox-radio.scss" />
+    <Content Include="Content\theme\scss\components\_dropdown.scss" />
+    <Content Include="Content\theme\scss\components\_forms.scss" />
+    <Content Include="Content\theme\scss\components\_icons.scss" />
+    <Content Include="Content\theme\scss\components\_lists.scss" />
+    <Content Include="Content\theme\scss\components\_preview.scss" />
+    <Content Include="Content\theme\scss\components\_tables.scss" />
+    <Content Include="Content\theme\scss\components\_todo-list.scss" />
+    <Content Include="Content\theme\scss\landing-screens\_auth.scss" />
+    <Content Include="Content\theme\scss\mixins\_animation.scss" />
+    <Content Include="Content\theme\scss\mixins\_background.scss" />
+    <Content Include="Content\theme\scss\mixins\_badges.scss" />
+    <Content Include="Content\theme\scss\mixins\_blockqoute.scss" />
+    <Content Include="Content\theme\scss\mixins\_breadcrumbs.scss" />
+    <Content Include="Content\theme\scss\mixins\_buttons.scss" />
+    <Content Include="Content\theme\scss\mixins\_cards.scss" />
+    <Content Include="Content\theme\scss\mixins\_misc.scss" />
+    <Content Include="Content\theme\scss\mixins\_pagination.scss" />
+    <Content Include="Content\theme\scss\mixins\_popovers.scss" />
+    <Content Include="Content\theme\scss\mixins\_text.scss" />
+    <Content Include="Content\theme\scss\mixins\_tooltips.scss" />
+    <Content Include="Content\theme\scss\style.scss" />
+    <Content Include="Content\theme\scss\_dashboard.scss" />
+    <Content Include="Content\theme\scss\_demo.scss" />
+    <Content Include="Content\theme\scss\_fonts.scss" />
+    <Content Include="Content\theme\scss\_footer.scss" />
+    <Content Include="Content\theme\scss\_functions.scss" />
+    <Content Include="Content\theme\scss\_layouts.scss" />
+    <Content Include="Content\theme\scss\_misc.scss" />
+    <Content Include="Content\theme\scss\_navbar.scss" />
+    <Content Include="Content\theme\scss\_reset.scss" />
+    <Content Include="Content\theme\scss\_sidebar.scss" />
+    <Content Include="Content\theme\scss\_typography.scss" />
+    <Content Include="Content\theme\scss\_utilities.scss" />
+    <Content Include="Content\theme\scss\_variables.scss" />
+    <Content Include="Content\theme\scss\_vertical-wrapper.scss" />
+    <Content Include="Content\theme\scss\_widget-grid.scss" />
+    <Content Include="Content\theme\vendors\js\bootstrap.min.js.map" />
+    <Content Include="Content\theme\vendors\mdi\css\materialdesignicons.min.css.map" />
+    <Content Include="Content\theme\vendors\mdi\fonts\materialdesignicons-webfont.eot" />
+    <Content Include="Content\theme\vendors\mdi\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="Content\theme\vendors\mdi\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="Content\theme\vendors\mdi\fonts\materialdesignicons-webfont.woff2" />
+    <Content Include="Fonts\materialdesignicons-webfont.eot" />
+    <Content Include="Fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="Fonts\materialdesignicons-webfont.woff" />
+    <Content Include="Fonts\materialdesignicons-webfont.woff2" />
+    <Content Include="Font\materialdesignicons-webfont.eot" />
+    <Content Include="Font\materialdesignicons-webfont.ttf" />
+    <Content Include="Font\materialdesignicons-webfont.woff" />
+    <Content Include="Font\materialdesignicons-webfont.woff2" />
+    <Content Include="Font\open-sans\OpenSans-Bold.ttf" />
+    <Content Include="Font\open-sans\OpenSans-BoldItalic.ttf" />
+    <Content Include="Font\open-sans\OpenSans-ExtraBold.ttf" />
+    <Content Include="Font\open-sans\OpenSans-ExtraBoldItalic.ttf" />
+    <Content Include="Font\open-sans\OpenSans-Italic.ttf" />
+    <Content Include="Font\open-sans\OpenSans-Light.ttf" />
+    <Content Include="Font\open-sans\OpenSans-LightItalic.ttf" />
+    <Content Include="Font\open-sans\OpenSans-Regular.ttf" />
+    <Content Include="Font\open-sans\OpenSans-SemiBold.ttf" />
+    <Content Include="Font\open-sans\OpenSans-SemiBoldItalic.ttf" />
+    <Content Include="Font\summernote\summernote.eot" />
+    <Content Include="Font\summernote\summernote.ttf" />
+    <Content Include="Font\summernote\summernote.woff" />
+    <Content Include="Areas\Admin\Views\BaoTri\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\BlogAdmin\Category.cshtml" />
+    <Content Include="Areas\Admin\Views\BlogAdmin\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\BlogAdmin\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\BlogAdmin\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\CardTemplates\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\CardTemplates\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\CardTemplates\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\EditCategoryDetails.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Category\_AddPricePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Combo\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Email\CreateEmailTemplate.cshtml" />
+    <Content Include="Areas\Admin\Views\Email\EditEmailTemplate.cshtml" />
+    <Content Include="Areas\Admin\Views\Email\EmailTemplate.cshtml" />
+    <Content Include="Areas\Admin\Views\Email\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Email\_EmailListPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Email\_EmailTemplateListPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\FlashSales\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\FlashSales\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\FlashSales\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\FlashSales\_CategoryListPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\FlashSales\_MonthListPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\GoogleForm\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\GoogleForm\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\GoogleForm\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Homepages\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Homepages\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Homepages\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Homepages\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Homepages\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Homepages\SetupShop.cshtml" />
+    <Content Include="Areas\Admin\Views\Homepages\Slider.cshtml" />
+    <Content Include="Areas\Admin\Views\Homepages\SmallPicture.cshtml" />
+    <Content Include="Areas\Admin\Views\Homepages\Social.cshtml" />
+    <Content Include="Areas\Admin\Views\KingCoin\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\KingCoin\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\KingCoin\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\KingCoin\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\KingCoin\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Notification\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\OrderAdmin\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\OrderAdmin\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\OrderAdmin\_UserListPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\PageAdmin\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\PageAdmin\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\PageAdmin\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Payment\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Payment\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Payment\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\_AddProfilePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\_CategoryListPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\_ProductListPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\_ProductListSelectPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Question\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Question\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Question\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Recruitment\Category.cshtml" />
+    <Content Include="Areas\Admin\Views\Recruitment\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Recruitment\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Recruitment\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Reviews\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Reviews\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Setup\BaoTri.cshtml" />
+    <Content Include="Areas\Admin\Views\Setup\Policy.cshtml" />
+    <Content Include="Areas\Admin\Views\Setup\TopText.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_NotiPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Supports\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Supports\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManage\DeleteProduct.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManage\DeleteUser.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManage\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManage\PreExtend.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManage\_EditProductPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManage\_EmailHistoryPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManage\_EmailPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManage\_NewProfilePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManage\_ProfileListPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManage\_ProfileNullListPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\UserProduct\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\User\_OrderHistoryPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\User\_ProfilePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\VoucherChildList.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\_CreateVoucherPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\_EditVoucherPartial.cshtml" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Scripts\clipboard\dist\clipboard.js" />
+    <Content Include="Scripts\clipboard\dist\clipboard.min.js" />
+    <Content Include="Scripts\front\order.js" />
+    <None Include="Scripts\jquery-3.5.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.5.1.js" />
+    <Content Include="Scripts\jquery-3.5.1.min.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.js" />
+    <Content Include="Scripts\jquery.lazyload.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\rating\rater.js" />
+    <Content Include="Scripts\rating\rater.min.js" />
+    <Content Include="Scripts\table.js" />
+    <Content Include="Scripts\upload\image-library.js" />
+    <Content Include="Scripts\upload\upload-file.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\AutofacConfig.cs" />
+    <Compile Include="App_Start\AutoMapperConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityAuthConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\BaoTriController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BlogAdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CardTemplatesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\EmailController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ExtendController.cs" />
+    <Compile Include="Areas\Admin\Controllers\FlashSalesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\GoogleFormController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomepagesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\KingCoinController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NotificationController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrderAdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PageAdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PaymentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Admin\Controllers\QuestionController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RecruitmentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ReviewsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SetupController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SupportsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserManageController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserProductController.cs" />
+    <Compile Include="Areas\Admin\Controllers\VoucherController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\APIController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\BlogController.cs" />
+    <Compile Include="Controllers\FlashSaleController.cs" />
+    <Compile Include="Controllers\GiftcodeController.cs" />
+    <Compile Include="Controllers\GmailController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\BaseExtendedController.cs" />
+    <Compile Include="Controllers\ImageController.cs" />
+    <Compile Include="Controllers\JobsController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\PageController.cs" />
+    <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\RedeemController.cs" />
+    <Compile Include="Controllers\ResearchController.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
+    <Compile Include="CustomFilters\ResetDataDictionariesAttribute.cs" />
+    <Compile Include="CustomFilters\ReturnUrlAttribute.cs" />
+    <Compile Include="CustomFilters\WebApiExceptionFilterAttribute.cs" />
+    <Compile Include="CustomModelBinders\DecimalModelBinder.cs" />
+    <Compile Include="Extensions\HtmlHelpers.cs" />
+    <Compile Include="Extensions\IdentityHelpers.cs" />
+    <Compile Include="Extensions\WebApi\WebApiGlobalErrorLogger.cs" />
+    <Compile Include="Extensions\WebApi\WebApiGlobalExceptionHandler.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\SortingManager.cs" />
+    <Compile Include="Models\Custom\UrlManager.cs" />
+    <Compile Include="Models\ManageViewModel.cs" />
+    <Compile Include="Models\ShoppingCart.cs" />
+    <Compile Include="Models\UserChangePasswordViewModel.cs" />
+    <Compile Include="Models\UserEditViewModel.cs" />
+    <Compile Include="Models\UserLoginViewModel.cs" />
+    <Compile Include="Models\UserCreateViewModel.cs" />
+    <Compile Include="Models\UserResetPasswordViewModel.cs" />
+    <Compile Include="Models\ViewModel\CartViewModel.cs" />
+    <Compile Include="Models\ViewModel\CharViewModel.cs" />
+    <Compile Include="Models\ViewModel\Email.cs" />
+    <Compile Include="Models\ViewModel\FlashSaleViewModel.cs" />
+    <Compile Include="Models\ViewModel\ImageViewModel.cs" />
+    <Compile Include="Models\ViewModel\NotificationViewModel.cs" />
+    <Compile Include="Models\ViewModel\PriceViewModel.cs" />
+    <Compile Include="Models\ViewModel\UserManageViewModel.cs" />
+    <Compile Include="Models\ViewModel\ReferralViewModel.cs" />
+    <Compile Include="Models\ViewModel\ReviewViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Shared\_Error.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <None Include="packages.config" />
+    <Content Include="Scripts\jquery-3.5.1.min.map" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
+    <Content Include="Views\Blog\BlogList.cshtml" />
+    <Content Include="Views\Blog\Details.cshtml" />
+    <Content Include="Views\Blog\Index.cshtml" />
+    <Content Include="Views\Blog\_CategoryListPartial.cshtml" />
+    <Content Include="Views\Emails\ChangeProfile.cshtml" />
+    <Content Include="Views\Emails\RegisterAccount.cshtml" />
+    <Content Include="Views\FlashSale\Index.cshtml" />
+    <Content Include="Views\Image\_ImageLibraryModalPartial.cshtml" />
+    <Content Include="Views\Image\_ImageLibraryPartial.cshtml" />
+    <Content Include="Views\Image\_ImageSelectedPartial.cshtml" />
+    <Content Include="Views\Jobs\Details.cshtml" />
+    <Content Include="Views\Jobs\Index.cshtml" />
+    <Content Include="Views\Jobs\JobList.cshtml" />
+    <Content Include="Views\Jobs\_CategoryListPartial.cshtml" />
+    <Content Include="Views\Manage\CreateSupport.cshtml" />
+    <Content Include="Views\Manage\EditSupport.cshtml" />
+    <Content Include="Views\Manage\ExtendHistory.cshtml" />
+    <Content Include="Views\Manage\Giftcode.cshtml" />
+    <Content Include="Views\Manage\GiftcodeList.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\KingCoin.cshtml" />
+    <Content Include="Views\Manage\KingCoinDetails.cshtml" />
+    <Content Include="Views\Manage\KingCoinHistory.cshtml" />
+    <Content Include="Views\Manage\MemberShip.cshtml" />
+    <Content Include="Views\Manage\OrderHistory.cshtml" />
+    <Content Include="Views\Manage\Promotion.cshtml" />
+    <Content Include="Views\Manage\ReferralSetting.cshtml" />
+    <Content Include="Views\Manage\Renew.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\Support.cshtml" />
+    <Content Include="Views\Manage\UserInformation.cshtml" />
+    <Content Include="Views\Manage\_CardTemplateDetailsPartial.cshtml" />
+    <Content Include="Views\Manage\_CategoryListPartial.cshtml" />
+    <Content Include="Views\Manage\_ExtendDetailsPartial.cshtml" />
+    <Content Include="Views\Manage\_ExtendPartial.cshtml" />
+    <Content Include="Views\Manage\_ExtendProfilePartial.cshtml" />
+    <Content Include="Views\Manage\_MonthListPartial.cshtml" />
+    <Content Include="Views\Manage\_PaymentDetailsPartial.cshtml" />
+    <Content Include="Views\Manage\_PolicyPartial.cshtml" />
+    <Content Include="Views\Manage\_ProductListPartial.cshtml" />
+    <Content Include="Views\Manage\_ProfileNetflixPartial.cshtml" />
+    <Content Include="Views\Manage\_ProfileSpotifyPartial.cshtml" />
+    <Content Include="Views\Manage\_ReferralPartial.cshtml" />
+    <Content Include="Views\Order\ChangePayment.cshtml" />
+    <Content Include="Views\Order\Details.cshtml" />
+    <Content Include="Views\Order\Payment.cshtml" />
+    <Content Include="Views\Order\PaymentOther.cshtml" />
+    <Content Include="Views\Order\Register.cshtml" />
+    <Content Include="Views\Order\Step1.cshtml" />
+    <Content Include="Views\Order\VoucherError.cshtml" />
+    <Content Include="Views\Order\_ComboPartial.cshtml" />
+    <Content Include="Views\Order\_OrderInformationPartial.cshtml" />
+    <Content Include="Views\Page\Index.cshtml" />
+    <Content Include="Views\Products\Cart.cshtml" />
+    <Content Include="Views\Products\CheckOut.cshtml" />
+    <Content Include="Views\Products\Details.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\Products\_BannerFixedPartial.cshtml" />
+    <Content Include="Views\Products\_BannerShopPartial.cshtml" />
+    <Content Include="Views\Products\_MiniCartPartial.cshtml" />
+    <Content Include="Views\Redeem\Index.cshtml" />
+    <Content Include="Views\Research\Index.cshtml" />
+    <Content Include="Views\Review\_ReviewInformationPartial.cshtml" />
+    <Content Include="Views\Review\_ReviewListPartial.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\_FooterSocialPartial.cshtml" />
+    <Content Include="Views\Home\_QuestionPartial.cshtml" />
+    <Content Include="Views\Home\_SmallPictureHomePartial.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\Footer\_FooterPartial.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\ModalTemplate\_ModalImagePartial.cshtml" />
+    <Content Include="Views\Shared\ModalTemplate\_ModalPartial.cshtml" />
+    <Content Include="Views\Shared\ProductItem\_ProductItemPartial.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Shared\_EmailPartial.cshtml" />
+    <Content Include="Views\Shared\_HomepageLayout.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_ManageLayout.cshtml" />
+    <Content Include="Views\Shared\_OrderLayout.cshtml" />
+    <Content Include="Views\Shared\_PaymentMethodPartial.cshtml" />
+    <Content Include="Views\Shared\_ShareSocialIconPartial.cshtml" />
+    <Content Include="Views\Shared\_ShopLayout.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kingflix.Domain\Kingflix.Domain.csproj">
+      <Project>{6890D687-0482-4C31-A1A4-51409224F01A}</Project>
+      <Name>Kingflix.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kingflix.Services\Kingflix.Services.csproj">
+      <Project>{0c465d03-447e-4fe6-8781-7f8ba8def154}</Project>
+      <Name>Kingflix.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kingflix.Utilities\Kingflix.Utilities.csproj">
+      <Project>{44BA2192-129A-4D41-B03F-072940900CF5}</Project>
+      <Name>Kingflix.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Content\plugin\bootstrap-table\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Models\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>50304</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44310/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>https://localhost:44310/</IISAppRootUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

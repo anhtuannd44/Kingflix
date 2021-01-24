@@ -1,0 +1,29 @@
+﻿@model Kingflix.Domain.DomainModel.Setting
+@{
+    ViewBag.Title = "TopText";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="clearfix">
+                    <h4 class="card-title mt-2 float-left">@ViewBag.Title</h4>
+                </div>
+                <hr />
+                @using (Html.BeginForm("UpdateTopText", "Setup", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label for="Content"></label>
+                        <input class="form-control" value="@Model.Content" placeholder="Nhập content ở đây" id="Content" name="Content" />
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-success btn-sm px-3">Cập nhật</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

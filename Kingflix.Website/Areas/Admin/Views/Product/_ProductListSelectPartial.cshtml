@@ -1,0 +1,6 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Product>
+
+@foreach (var item in Model)
+{
+    <option value="@item.ProductId" @(ViewBag.ProductId == item.ProductId ? "selected" : "")>@item.ProductId</option>
+}

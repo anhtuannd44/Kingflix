@@ -1,0 +1,410 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Homepage>
+@{
+    ViewBag.Title = "Cài đặt Slider";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css" integrity="sha512-wuFRnk4KiQftPmBWRd5TmmgnuMEMVSySF4EsQJ50FemRIHIF5JkwD57UdcWqtGwamThUWHgXf8tSiiJitWnD0w==" crossorigin="anonymous" />
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="clearfix">
+                    <h4 class="card-title mt-2 float-left">@ViewBag.Title</h4>
+                    <button class="btn btn-sm btn-gradient-success btn-rounded float-right add-slider" data-toggle="modal" data-target="#AddSlider">Thêm hình vào Slider</button>
+                </div>
+                <hr />
+                @if (Model.Count() != 0)
+                {
+                    <div class="row">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-md-6 mt-2">
+                                <div class="card h-100">
+                                    <div class="card-body p-1 shadow h-100">
+                                        <div class="row align-items-center mb-2">
+                                            <div class="col-md-4">
+                                                @if (string.IsNullOrEmpty(item.YoutubeId))
+                                                {
+                                                    <div class="image-box ratio-4-3">
+                                                        <img class="img-fluid rounded-top image" src="~/Content/Upload/Images/@item.ImageId">
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <iframe id="ytplayer" type="text/html" style="width: 100%"
+                                                            src="https://www.youtube.com/embed/@item.YoutubeId?autoplay=1&controls=0&disablekb=1&color=white"
+                                                            frameborder="0" allowfullscreen></iframe>
+                                                }
+                                            </div>
+                                            <div class="col-md-7">
+                                                <h4 class="mb-1 text-white">@item.Title</h4>
+                                                <p class="">@item.Content</p>
+                                                <p class="">@item.SubContent</p>
+                                                <a href="#" class="btn btn-success btn-sm btn-rounded edit"
+                                                   @*data-toggle="modal" data-target="#EditSlider"*@ data-id="@item.Id"
+                                                   data-title="@item.Title"
+                                                   data-content="@item.Content"
+                                                   data-image="@item.ImageId"
+                                                   data-youtubeUrl="@item.YoutubeId"
+                                                   data-subcontent="@item.SubContent"
+                                                   data-titlebackground="@item.TitleColor"
+                                                   data-contentbackground="@item.ContentColor"
+                                                   data-subcontentbackground="@item.SubContentColor"
+                                                   data-text-fixed="@item.TextFixed"
+                                                   >Chỉnh sửa</a>
+                                                <a href="#" class="btn btn-primary btn-sm btn-rounded delete" data-id="@item.Id">Xóa</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-center">Chưa có dữ liệu</p>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="AddSlider" aria-hidden="true" tabindex='-1'>
+    <div class="modal-dialog modal-lg mb-0" style="min-height: 100px">
+        <div class="modal-content px-3" id="AddSliderContent">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="card-title font-weight-bold mb-0">Thêm hình vào Slider</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <hr />
+            @using (Ajax.BeginForm("AddSlider", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "loadSpinner",
+                OnComplete = "exitSpinner",
+                OnSuccess = "AddSliderSuccess"
+            }))
+            {
+                <div class="modal-body py-3">
+                    <div class="card-body shadow">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="preview-image w-100">
+                                    <div class="image-box ratio-4-3">
+                                        <img id="previewCover" class="img-fluid rounded-top image" src="~/Content/image/No_Picture.jpg">
+                                    </div>
+                                </div>
+                                <input type="text" hidden id="ImageId" name="ImageId" data-toggle="modal" data-target="#ModalTemplate-Img" />
+                                <label for="ImageId" class="btn btn-gradient-info btn-rounded mt-3 btn-block btn-sm">Chọn Hình</label>
+                                <div class="form-group mt-4">
+                                    <label for="YoutubeUrl" class="text-white">Video (Link Youtube)</label>
+                                    <input type="text" class="form-control" name="YoutubeUrl" id="YoutubeUrl" />
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="Title" class="text-white">Tiêu đề lớn</label>
+                                    <input type="text" class="form-control" name="Title" id="Title" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="titleBackgroundArea" class="text-white">Màu tiêu đề</label>
+                                    <div id="titleBackground" class="input-group color-picker">
+                                        <input type="text" class="form-control" name="titleBackground" />
+                                        <span class="input-group-append">
+                                            <span class="input-group-text colorpicker-input-addon px-4 py-1"><i></i></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Content" class="text-white">Nội dung (Trên button)</label>
+                                    <textarea class="form-control" name="Content" id="Content"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contentBackgroundArea" class="text-white">Màu chữ nội dung (Trên button)</label>
+                                    <div id="contentBackground" class="input-group color-picker">
+                                        <input type="text" class="form-control" name="contentBackground" />
+                                        <span class="input-group-append">
+                                            <span class="input-group-text colorpicker-input-addon px-4 py-1"><i></i></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subContent" class="text-white">Nội dung thêm (Dưới Button)</label>
+                                    <textarea class="form-control" name="subContent" id="subContent"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subContentBackgroundArea" class="text-white">Màu chữ nội dung (Trên button)</label>
+                                    <div id="subContentBackground" class="input-group color-picker">
+                                        <input type="text" class="form-control" name="subContentBackground" />
+                                        <span class="input-group-append">
+                                            <span class="input-group-text colorpicker-input-addon px-4 py-1"><i></i></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="TextFixed" class="text-white">Neo text</label>
+                                    <input type="text" class="form-control" name="TextFixed" id="TextFixed" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <button class="btn btn-danger btn-sm btn-rounded" type="button" data-dismiss="modal">Hủy</button>
+                    <button class="btn btn-success btn-sm btn-rounded add-slider-submit" type="submit">Hoàn tất</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EditSlider" aria-hidden="true" tabindex='-1'>
+    <div class="modal-dialog modal-lg mb-0" style="min-height: 100px">
+        <div class="modal-content px-3" id="EditSliderContent">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="card-title font-weight-bold mb-0">Chỉnh sửa Slider</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <hr />
+            @using (Ajax.BeginForm("EditSlider", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                OnBegin = "loadSpinner",
+                OnComplete = "exitSpinner",
+                OnSuccess = "editSliderSuccess"
+            }))
+            {
+                <input hidden name="id" id="id" value="" type="text" />
+                <div class="modal-body py-3">
+                    <div class="card-body shadow">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="preview-image-edit w-100">
+                                    <div class="image-box ratio-4-3">
+                                        <img id="previewCoverEdit" class="img-fluid rounded-top image" src="~/Content/image/No_Picture.jpg">
+                                    </div>
+                                </div>
+                                <input type="text" hidden id="imageId" name="imageId" data-toggle="modal" data-target="#ModalTemplate-Img" />
+                                <label for="imageId" class="btn btn-gradient-info btn-rounded mt-3 btn-block btn-sm">Chọn Hình</label>
+                                <div class="form-group mt-4">
+                                    <label for="youtubeUrl" class="text-white">Video (Link Youtube)</label>
+                                    <input type="text" class="form-control" name="youtubeUrl" id="youtubeUrl" />
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="title" class="text-white">Tiêu đề lớn</label>
+                                    <input type="text" class="form-control" name="title" id="title" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-white">Màu tiêu đề</label>
+                                    <div id="titleBackgroundArea" class="input-group color-picker">
+                                        <input type="text" class="form-control" id="titleBackground" name="titleBackground" />
+                                        <span class="input-group-append">
+                                            <span class="input-group-text colorpicker-input-addon px-4 py-1"><i></i></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content" class="text-white">Nội dung thêm</label>
+                                    <textarea class="form-control" name="content" id="content"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-white">Màu chữ nội dung (Trên button)</label>
+                                    <div id="contentBackgroundArea" class="input-group color-picker">
+                                        <input type="text" class="form-control" id="contentBackground" name="contentBackground" />
+                                        <span class="input-group-append">
+                                            <span class="input-group-text colorpicker-input-addon px-4 py-1"><i></i></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subcontent" class="text-white">Nội dung thêm (Dưới Button)</label>
+                                    <textarea class="form-control" name="subcontent" id="subcontent"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-white">Màu chữ nội dung (Trên button)</label>
+                                    <div id="subContentBackgroundArea" class="input-group color-picker">
+                                        <input type="text" class="form-control" id="subContentBackground" name="subContentBackground" />
+                                        <span class="input-group-append">
+                                            <span class="input-group-text colorpicker-input-addon px-4 py-1"><i></i></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="textFixed" class="text-white">Neo text</label>
+                                    <input type="text" class="form-control" name="textFixed" id="textFixed" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <button class="btn btn-danger btn-sm btn-rounded" type="button" data-dismiss="modal">Hủy</button>
+                    <button class="btn btn-success btn-sm btn-rounded edit-slider-submit" type="submit">Hoàn tất</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js" integrity="sha512-INXxqXxcP6zawSei7i47Xmu+6ZIBRbsYN1LHAy5H1gzl1XIfTbI/OLjUcvBnDD8F3ZSVB6mf8asEPTMxz4VNjw==" crossorigin="anonymous"></script>
+
+    <script>
+        $(function () {
+            $('.color-picker').colorpicker({"color":"#FFFFFF"});
+        });
+        $("#ImageId").click(function () {
+            var cover = $(this).val().split(",");
+            loadLibraryImage(false, cover, false);
+            $("#submitModalImage").attr('data-target-id', 'ImageId');
+        });
+        $("#imageId").click(function () {
+            var cover = $(this).val().split(",");
+            loadLibraryImage(false, cover, false);
+            $("#submitModalImage").attr('data-target-id', 'imageId');
+        });
+        $("#submitModalImage").click(function () {
+            if ($(this).data("is-multi")) {
+                renderSelectedImage(getListImageSelect());
+            }
+            else {
+                var image = getSingleImageSelect();
+                if ($(this).data("textarea")) {
+                    if (image != "" && image != undefined) {
+                        addToTextArea(image);
+                    }
+                }
+                else {
+                    if (image != "" && image != undefined) {
+                        if ($(this).data("target-id") == "ImageId") {
+                            $("#ImageId").val(image);
+                            $("#previewCover").attr("src", "../../Content/Upload/Images/" + image);
+                        }
+                        else {
+                            $("#imageId").val(image);
+                            $("#previewCoverEdit").attr("src", "../../Content/Upload/Images/" + image);
+                        }
+                    }
+                    else {
+                        if ($(this).data("target-id") == "ImageId") {
+                            $("#ImageId").val(null);
+                            $("#previewCover").attr("src", "../../Content/image/No_Picture.JPG");
+                        } else {
+                            $("#imageId").val(null);
+                            $("#previewCoverEdit").attr("src", "../../Content/image/No_Picture.JPG");
+                        }
+                    }
+                }
+            }
+            $("#ModalTemplate-Img").modal('hide');
+        });
+
+        $('#AddSlider').on('hidden.bs.modal', function (e) {
+            $("#EditSliderContent input").val(null);
+            $("#previewCover").attr("src", "../../Content/image/No_Picture.JPG");
+        })
+        $('#EditSlider').on('hidden.bs.modal', function (e) {
+            
+            $("#previewCoverEdit").attr("src", "../../Content/image/No_Picture.JPG");
+        })
+
+        $(document).on("click", ".edit",function () {
+            var title = $(this).data("title");
+            var content = $(this).data("content");
+            var id = $(this).data("id");
+            var imageId = $(this).data("image");
+            var titleBackground = $(this).data("titlebackground");
+            var contentBackground = $(this).data("contentbackground");
+            var textFixed = $(this).data("text-fixed");
+            var subContentBackground = $(this).data("subcontentbackground");
+            var youtubeId = $(this).data("youtubeurl");
+            var youtube = "";
+            if (youtubeId != null && youtubeId != undefined && youtubeId != "") {
+                youtube = "https://www.youtube.com/watch?v=" + $(this).data("youtubeurl");
+            }
+            var subcontent = $(this).data("subcontent");
+
+            $("#id").val(id);
+            $("#title").val(title);
+            $("#content").val(content);
+            $("#youtubeUrl").val(youtube);
+            $("#subcontent").val(subcontent);
+            $("#textFixed").val(textFixed);
+
+            $("#EditSliderContent #titleBackground").colorpicker('setValue', titleBackground);
+            $("#EditSliderContent #titleBackground").val(titleBackground);
+                        
+            $("#EditSliderContent #contentBackground").colorpicker('setValue', contentBackground);
+            $("#EditSliderContent #contentBackground").val(contentBackground);
+                        
+            $("#EditSliderContent #subContentBackground").colorpicker('setValue', subContentBackground);
+            $("#EditSliderContent #subContentBackground").val(subContentBackground);
+            if (imageId == "") {
+                $("#previewCoverEdit").attr("src", "../../Content/image/No_Picture.JPG");
+                $("#imageId").val(null);
+            }
+            else {
+                $("#previewCoverEdit").attr("src", "../../Content/Upload/Images/" + imageId);
+                $("#imageId").val(imageId);
+            }
+            $("#EditSlider").modal("show");
+        })
+
+        function AddSliderSuccess(data) {
+            if (data.status == "success") {
+                toastr.success(data.message);
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
+            else {
+                toastr.error(data.message);
+                $("#AddSlider").modal('hide');
+            }
+        }
+        function editSliderSuccess(data) {
+            if (data.status == "success") {
+                toastr.success(data.message);
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
+            else {
+                toastr.error(data.message);
+                $("#EditSlider").modal('hide');
+            }
+        }
+         $(document).on("click", ".delete", function () {
+            var id = $(this).data("id");
+            var r = confirm("Bạn có muốn xóa slider này hoàn toàn không?");
+            if (r == true) {
+                loadSpinner();
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("DeleteSlider")",
+                    data: { id: id },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            toastr.success(data.message);
+                            window.location.reload();
+                        }
+                    },
+                    error: function () {
+                        exitSpinner();
+                        toastr.error("Có lỗi xảy ra. Vui lòng thử lại");
+                    }
+                })
+            }
+        })
+    </script>
+}

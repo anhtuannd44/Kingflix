@@ -1,0 +1,54 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.Payment>
+
+@if (Model.Count() != 0)
+{
+    foreach (var item in Model)
+    {
+        if (item.Type != PaymentType.Orther && item.Type != PaymentType.InternetBanking && item.Type != PaymentType.QRVidientu)
+        {
+            <div class="row justify-content-center payment-api" data-payment="@item.PaymentId">
+                <div class="col-md-12">
+                    <div class="row payment-item align-items-center" data-value="@item.PaymentId">
+                        <div class="col-md-2 col-3 order-2 order-md-0">
+                            <div class="px-1 py-md-2 py-1">
+                                <div class="image-box ratio-1-1">
+                                    @{string base64 = "", imgSrc = "";}
+                                    @if (item.Logo != null)
+                                    {
+                                        base64 = Convert.ToBase64String(item.Logo);
+                                        imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        <img class="img-fluid rounded image" src="@imgSrc">
+                                    }
+                                    else
+                                    {
+                                        <img class="img-fluid rounded image" src="~/Content/image/No_Picture.jpg">
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2 d-md-none order-0">
+                            <div class="px-1 py-md-2 py-1">
+                                <i class="mdi mdi-chevron-right text-black" style="font-size: 2rem;"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-10 col-7 order-1 order-md-1">
+                            <div class="px-1 py-md-2 py-1">
+                                <h6 class="mb-0 mb-md-1 text-black">@item.Name</h6>
+                                <p class="m-0 d-none d-md-block">@item.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+
+        }
+    }
+}
+else
+{
+    <p class="text-center">Chưa có phương thức thanh toán nào. Vui lòng liên hệ Quản Trị Viên để được hỗ trợ!</p>
+}

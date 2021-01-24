@@ -1,0 +1,49 @@
+﻿@model Kingflix.Domain.DomainModel.Question
+
+@{
+    ViewBag.Title = "Thêm câu hỏi";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Câu hỏi</h3>
+                </div>
+                <div class="card-body pt-0">
+                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Câu trả lời</h3>
+                </div>
+                <div class="card-body pt-0">
+                    @Html.TextAreaFor(model => model.Content, new { @class = "textarea text-area-0", @rows="20"})
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Đăng</h3>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group">
+                        <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-block">Hoàn tất</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

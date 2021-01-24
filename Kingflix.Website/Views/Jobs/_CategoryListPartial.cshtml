@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.BlogCategory>
+
+<div class="categoryList">
+    <h5 class="font-weight-bold mb-0">Chuyên mục</h5>
+    <ul class="mt-2">
+        <li>
+            <a href="@Url.Action("Index")">
+                <i class="mdi mdi-arrow-right mr-2"></i>
+                Tất cả bài viết
+            </a>
+        </li>
+        @foreach (var item in Model)
+        {
+            <li>
+                <a href="~/tuyen-dung/@item.Url">
+                    <i class="mdi mdi-arrow-right mr-2"></i>
+                    @item.Name (@item.Blog.Count)
+                </a>
+            </li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,143 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Models.AppUser>
+
+@{
+    ViewBag.Title = "Danh sách người dùng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section head {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mt-2">@ViewBag.Title</h4>
+        <hr />
+        @*<div class="clearfix">
+                <div class="position-relative float-left">
+                    <p class="d-inline-block">Chọn danh sách: </p>
+                    <div class="d-inline-block ml-2">
+                        <ul class="nav-custom mt-2 mb-0 pl-0">
+                                <li><a class="@(ViewBag.Group??"active")" href="@Url.Action("Index")"><i class="mdi mdi-slack mr-1"></i>Tất cả</a></li>
+                                <li><a class="@(ViewBag.Group == Group.Trail?"active":"")" href="@Url.Action("Index", new { group = Group.Trail})"><i class="mdi mdi-slack mr-1"></i>Ngắn hạn</a></li>
+                                <li><a class="@(ViewBag.Group == Group.King?"active":"")" href="@Url.Action("Index", new { group = Group.King})"><i class="mdi mdi-slack mr-1"></i>King</a></li>
+                                <li><a class="@(ViewBag.Group == Group.Avenger?"active":"")" href="@Url.Action("Index", new { group = Group.Avenger})"><i class="mdi mdi-slack mr-1"></i>Avenger</a></li>
+                                <li><a class="@(ViewBag.Group == Group.Mouse?"active":"")" href="@Url.Action("Index", new { group = Group.Mouse})"><i class="mdi mdi-slack mr-1"></i>Mouse</a></li>
+                                <li><a class="@(ViewBag.Group == Group.Family?"active":"")" href="@Url.Action("Index", new { group = Group.Family})"><i class="mdi mdi-slack mr-1"></i>Family</a></li>
+                                <li><a class="@(ViewBag.Group == Group.Normal?"active":"")" href="@Url.Action("Index", new { group = Group.Normal})"><i class="mdi mdi-slack mr-1"></i>Khác</a></li>
+                            </ul>
+                    </div>
+                </div>
+                <div class="float-right">
+                    <a href="@Url.Action("Create","User")" class="btn btn-primary btn-sm px-2 btn-rounded">Thêm người dùng</a>
+                </div>
+            </div>*@
+        <div id="productList">
+            @if (Model.Count() != 0)
+            {
+                <table class="table table-bordered table-hover position-relative"
+                       data-toggle="table"
+                       data-search="true"
+                       data-sort-name="name"
+                       data-sort-order="desc"
+                       data-pagination="true"
+                       data-page-size="20">
+                    <thead class=" text-white">
+                        <tr>
+                            <th class="font-weight-bold" data-sortable="true" data-field="Group" data-detail-formatter="getProfileList">Tên</th>
+                            <th class="font-weight-bold" style="cursor: pointer" data-sortable="true" data-field="productId"> Email </th>
+                            <th class="font-weight-bold" data-sortable="true" data-detail-formatter="getProfileList"> Số điện thoại </th>
+                            <th class="text-center font-weight-bold" data-sortable="true" data-detail-formatter="getProfileList"> Ngày sinh </th>
+                            <th class="text-center font-weight-bold" data-sortable="true" data-detail-formatter="getProfileList"> Giới tính </th>
+                            <th class="text-center font-weight-bold" data-sortable="true" data-detail-formatter="getProfileList"> Ngày tạo </th>
+                            <th class="text-center font-weight-bold" data-sortable="true" data-detail-formatter="getProfileList"> Trạng thái </th>
+                            <th class="text-center font-weight-bold" data-sortable="true" data-detail-formatter="getProfileList"> Hành động </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="position-relative">
+                                <td>
+                                    <a href="@Url.Action("Edit", new { id=item.Id })" class="text-success">
+                                        @item.FullName
+                                    </a>
+                                </td>
+                                <td style="cursor: pointer">
+                                    @item.Email
+                                </td>
+                                <td>
+                                    @item.PhoneNumber
+                                </td>
+                                <td class="text-center">
+                                    @if (item.Birthday != null)
+                                    {
+                                        <p class="m-0">@item.Birthday.Value.ToString("dd/MM/yyyy")</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="m-0">Chưa có</p>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @(item.Gentle==Gentle.Man?Gentle.Man.GetEnumDisplayName():item.Gentle==Gentle.Women?Gentle.Women.GetEnumDisplayName():Gentle.Other.GetEnumDisplayName())
+                                </td>
+                                <td class="text-center">
+                                    @item.DateCreated.ToString("dd/MM/yyyy")
+                                </td>
+                                <td class="text-center">
+                                    @if (item.IsUsingService)
+                                    {
+                                        <p class="badge badge-success">Đang sử dụng</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="badge badge-dark">Không sử dụng</p>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn-warning p-1" data-toggle="tooltip" data-title="Chỉnh sửa" href="@Url.Action("Edit", new { id = item.Id })">
+                                        <i class="mdi mdi-pencil"></i>
+                                    </a>
+                                    @if (!item.IsAdmin)
+                                    {
+                                        <p class="m-0 btn btn-danger p-1 delete-user" data-toggle="tooltip" data-sort-name="@item.FullName" data-title="Xóa">
+                                            <i class="mdi mdi-delete"></i>
+                                        </p>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).on("click", ".delete-user", function () {
+            var id = $(this).data("id");
+            var r = confirm("Bạn có muốn xóa phương thức '" + $(this).data("name") + "' hoàn toàn không?");
+            if (r == true) {
+                loadSpinner();
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("Delete")",
+                    data: { id: id },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            toastr.success(data.message);
+                            location.reload();
+                        }
+                    },
+                    error: function () {
+                        exitSpinner();
+                        toastr.error("Có lỗi xảy ra. Vui lòng thử lại");
+                    }
+                })
+            }
+        })
+    </script>
+}

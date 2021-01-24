@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.ExtendProfile>
+<div class="modal-header border-0 pb-0">
+    <h4 class="card-title font-weight-bold mb-0">Chi tiết mã gia hạn: @Model.FirstOrDefault().OrderId</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" class="mdi mdi-close"></span>
+    </button>
+</div>
+<div class="modal-body py-4">
+    <div class="row">
+        <div class="col-md-4">Tài khoản</div>
+        <div class="col-md-4">Profile</div>
+        <div class="col-md-4">Số tháng</div>
+    </div>
+    <hr/>
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="col-md-4">@item.Profile.ProductId</div>
+            <div class="col-md-4">@item.Profile.Name</div>
+            <div class="col-md-4">@item.Orders.Month</div>
+        </div>
+    }
+</div>

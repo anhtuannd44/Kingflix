@@ -1,0 +1,58 @@
+﻿@model Kingflix.Domain.DomainModel.Profile
+
+<tr class="profile-tr-@Model.ProfileId">
+    <td>
+        <input value="@Model.ProfileId" hidden name="ProfileList[@ViewBag.I].ProfileId" id="ProfileList[@ViewBag.I].ProfileId" />
+        <div class="editItem">
+            <input class="form-control" value="@Model.Name" name="ProfileList[@ViewBag.I].Name" id="ProfileList[@ViewBag.I].Name" />
+        </div>
+        <div class="showItem" style="display: none">
+            @Model.Name
+        </div>
+    </td>
+    <td>
+        <div class="editItem">
+            <input class="form-control" value="@Model.Pincode" name="ProfileList[@ViewBag.I].Pincode" id="ProfileList[@ViewBag.I].Pincode" />
+        </div>
+        <div class="showItem" style="display: none">
+            @Model.Pincode
+        </div>
+    </td>
+    <td style="min-width: 200px">
+        <div class="editItem">
+            <select class="select2 select2-2" data-id="@Model.ProfileId" id="ProfileList[@ViewBag.I].UserId" name="ProfileList[@ViewBag.I].UserId">
+                <option value="" data-phone="">Chọn Email</option>
+                @foreach (var j in Model.UserList)
+                {
+                    <option value="@j.Id" data-phone="@j.PhoneNumber">@j.Email</option>
+                }
+            </select>
+        </div>
+    </td>
+    <td>
+        <div id="userPhone-@Model.ProfileId" class="editItem">
+        </div>
+    </td>
+    <td>
+        <div class="editItem">
+            <input type="date" class="form-control" id="ProfileList[@ViewBag.I].DateStart" name="ProfileList[@ViewBag.I].DateStart" />
+        </div>
+    </td>
+    <td>
+        <div class="editItem">
+            <input type="date" class="form-control" id="ProfileList[@ViewBag.I].DateEnd" name="ProfileList[@ViewBag.I].DateEnd" />
+        </div>
+    </td>
+    <td></td>
+    <td class="showItem" style="display: none"></td>
+    <td class="showItem" style="display: none"></td>
+    <td class="text-center editItem">
+        <button class="badge badge-primary remove-profile" data-id="@Model.ProfileId" type="button"><i class="mdi mdi-delete"></i></button>
+    </td>
+</tr>
+
+<script>
+    $('.select2-2').select2({
+        language: "vi"
+    });
+</script>

@@ -1,0 +1,83 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.Homepage>
+<div class="row">
+    <div class="col-md-8 p-0">
+        <div class="slider h-100">
+            <div class="slider-shop position-relative h-100">
+                @if (Model.Where(a => a.Type == PictureHomeType.SliderCategory).Count() != 0)
+                {
+                    foreach (var item in Model.Where(a => a.Type == PictureHomeType.SliderCategory))
+                    {
+                        <div class="image-box ratio-16-8">
+                            <img class="img-fluid image" src="~/Content/Upload/Images/@item.ImageId">
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="image-box ratio-16-8">
+                        <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+                    </div>
+                }
+            </div>
+            <div class="slider-controls w-100" id="customize-controls">
+                <button class="btn float-left btn-slider tns-prev" style="top: 42%; left: 1rem;"><i class="mdi mdi-arrow-left"></i></button>
+                <button class="btn float-right btn-slider tns-next " style="top: 42%; right: 1rem"><i class="mdi mdi-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 pl-2 pr-0">
+        <div class="image-box ratio-16-8">
+            <a href="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER1").FirstOrDefault().Link)?"#":Model.Where(a => a.Title == "BANNER1").FirstOrDefault().Link)">
+                @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER1").FirstOrDefault().ImageId))
+                {
+                    <img class="img-fluid image" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER1").FirstOrDefault().ImageId">
+                }
+                else
+                {
+                    <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+                }
+                </a>
+        </div>
+        <div class="image-box ratio-16-8" style="margin-top: .55rem">
+            <a href="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER2").FirstOrDefault().Link)?"#":Model.Where(a => a.Title == "BANNER2").FirstOrDefault().Link)">
+                @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER2").FirstOrDefault().ImageId))
+                {
+                    <img class="img-fluid image" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER2").FirstOrDefault().ImageId">
+                }
+                else
+                {
+                    <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+                }
+                </a>
+        </div>
+    </div>
+    <div class="col-md-6 pl-0 pr-2 mt-2">
+        <div class="image-box ratio-16-8">
+            <a href="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER3").FirstOrDefault().Link)?"#":Model.Where(a => a.Title == "BANNER3").FirstOrDefault().Link)">
+                @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER3").FirstOrDefault().ImageId))
+                {
+                    <img class="img-fluid image" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER3").FirstOrDefault().ImageId">
+                }
+                else
+                {
+                    <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+                }
+            </a>
+        </div>
+    </div>
+    <div class="col-md-6 pl-2 pr-0 mt-2">
+        <div class="image-box ratio-16-8">
+            <a href="@(string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER4").FirstOrDefault().Link)?"#":Model.Where(a => a.Title == "BANNER4").FirstOrDefault().Link)">
+                @if (!string.IsNullOrEmpty(Model.Where(a => a.Title == "BANNER4").FirstOrDefault().ImageId))
+                {
+                    <img class="img-fluid image" src="~/Content/Upload/Images/@Model.Where(a => a.Title == "BANNER4").FirstOrDefault().ImageId">
+                }
+                else
+                {
+                    <img class="img-fluid image" src="~/Content/image/No_Picture.jpg">
+                }
+            </a>
+        </div>
+    </div>
+</div>

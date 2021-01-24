@@ -1,0 +1,90 @@
+﻿@model Kingflix.Domain.DomainModel.Review
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "Reviews", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(a => a.ReviewId)
+    @Html.HiddenFor(a => a.DateCreated)
+    @Html.HiddenFor(a => a.UserId)
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Thông tin chi tiết</h3>
+                </div>
+                <div class="card-body pt-0">
+                    <p>Người đánh giá: <span class="text-success">@Model.UserInformation.Email</span></p>
+                    <p>Thời gian: @Model.DateCreated.ToString("HH:mm - dd/MM/yyyy")</p>
+
+                    @if (Model.Star != 0)
+                    {<p>
+                            Số sao đánh giá:
+                            <span class="star" style="font-size: 1.25rem; line-height: 1rem">
+                                <i class="mdi mdi-star" style="color: #ff6a00;"></i>
+                                @for (int i = 2; i <= 5; i++)
+                                {
+                                    if (Model.Star >= i)
+                                    {
+                                        <i class="mdi mdi-star" style="color: #ff6a00; margin-left: -7px"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="mdi mdi-star" style="color: #c4c4c4; margin-left: -7px"></i>
+                                    }
+                                }
+                            </span>
+                        </p>
+                    }
+
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Nội dung Bình luận - Đánh giá</h3>
+                </div>
+                <div class="card-body pt-0">
+                    @Html.TextAreaFor(model => model.Content, new { @class = "form-control" })
+                </div>
+            </div>
+            @if (Model.ReplyFor != null)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Trả lời cho bình luận</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                        @Html.TextAreaFor(model => model.ReplyForContent, new { @class = "form-control text-secondary", @disabled = "" })
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-4">
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Đăng</h3>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group row">
+                        <div class="col-md-7">
+                            @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        </div>
+                        <div class="col-md-5">
+                            <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-block">Hoàn tất</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

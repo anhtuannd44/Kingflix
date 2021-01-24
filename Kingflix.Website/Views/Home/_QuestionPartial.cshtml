@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Question>
+
+@if (Model.Count() != 0)
+{
+    <seciton class="section-home bg-black">
+        <div class="container" id="QAHome">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-9">
+                    <h3 class="home-title text-center question">Câu hỏi thường gặp</h3>
+                    <div id="accordion" class="mt-5">
+                        @foreach (var item in Model)
+                        {
+                            <div class="card">
+                                <div class="card-header clearfix" id="heading-@item.Id">
+                                    <h3 class="collapsed float-left" data-toggle="collapse" data-target="#collapse-@item.Id" aria-expanded="false" aria-controls="collapse-@item.Id" style="max-width: 80%">
+                                        @item.Title
+
+                                    </h3>
+                                    <i class="mdi mdi-plus float-right collapsed" style="font-size: 2rem" data-toggle="collapse" data-target="#collapse-@item.Id" aria-expanded="false" aria-controls="collapse-@item.Id"></i>
+                                </div>
+                                <div id="collapse-@item.Id" class="collapse" aria-labelledby="heading-@item.Id" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <p>@Html.Raw(item.Content)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </seciton>
+}

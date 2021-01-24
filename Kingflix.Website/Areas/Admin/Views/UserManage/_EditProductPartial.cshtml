@@ -1,0 +1,130 @@
+﻿@model Kingflix.Domain.DomainModel.Product
+
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(a => a.ProductId)
+@Html.HiddenFor(a => a.DateCreated)
+@Html.HiddenFor(a => a.CategoryId)
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mt-2 mb-4">Thông tin tài khoản</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ProductId, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="mt-2">
+                        @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="mt-2">
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DateEnd, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.DateEnd, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="mt-2">
+                        @Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control select2" })
+                    <div class="mt-2">
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" id="CycleArea" style="display: @(Model.CategoryId == NETFLIX2?"block":"none")">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Cycle, htmlAttributes: new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(model => model.Cycle, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                    <div class="mt-2">
+                        @Html.ValidationMessageFor(model => model.Cycle, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body py-0">
+        <h6 class=" my-4">Trạng thái tài khoản</h6>
+        <div class="form-group">
+            @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+        </div>
+        <div class="form-group" id="replaceProduct" style="display: @(Model.Status == Kingflix.Domain.Enumerables.ProductStatus.Replace?"block":"none")">
+            <select id="ParentId" name="ParentId" class="form-control select2-hidden-search">
+                @foreach (var item in ViewBag.ChangeProduct)
+                {
+                    <option value="@item.ProductId">@item.ProductId</option>
+                }
+            </select>
+        </div>
+        <input type="text" name="changePassRequired" id="changePassRequired" value="False" hidden />
+        <input type="text" name="currentParentId" id="currentParentId" value="@Model.ParentId" hidden />
+        <div class="form-group" id="changeAccountPass" style="display: none">
+            <label class="control-label" for="newPassword">Mật khẩu mới cho tài khoản thay thế</label>
+            <input class="form-control text-box single-line" data-val="true" data-val-required="Bạn chưa nhập Password cho tài khoản thay thế" id="newPassword" name="newPassword" type="text" value="1111" required>
+            <div class="mt-2">
+                <span class="field-validation-valid text-danger" data-valmsg-for="newPassword" data-valmsg-replace="true"></span>
+            </div>
+        </div>
+        <div class="text-center my-3">
+            <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-sm">Hoàn tất</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var currentStatus = "@Model.Status";
+
+    $(function () {
+        $.validator.methods.date = function (value, element) {
+            return this.optional($("#DateEnd")) || moment(value, "L", true).isValid();
+        }
+        $('#DateEnd').datetimepicker({
+            format: "L",
+            locale: moment.locale("vi"),
+            icons: {
+                previous: 'mdi mdi-chevron-left',
+                next: 'mdi mdi-chevron-right',
+            },
+        })
+    });
+
+    $(document).on("change", "#Status", function () {
+        if ($("#Status option:selected").text() == "Tài khoản thay thế") {
+            $("#replaceProduct").show();
+            $("#changeAccountPass").hide();
+            $("#changePassRequired").val("False");
+        }
+        else {
+            $("#replaceProduct").hide();
+            if (currentStatus == "Replace") {
+                $("#changeAccountPass").show();
+                $("#changePassRequired").val("True");
+            }
+        }
+    });
+    $(document).on("change", "#CategoryId", function () {
+        if ($(this).val() == NETFLIX2) {
+            $("#CycleArea").show();
+        }
+        else {
+            $("#CycleArea").hide();
+        }
+    })
+</script>
+

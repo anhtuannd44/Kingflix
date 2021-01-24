@@ -1,0 +1,43 @@
+﻿@model Kingflix.Domain.DomainModel.Setting
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="shortcut icon" href="/Content/image/favicon.png">
+    <title>Cửa hàng - KingFlix</title>
+    <meta property="og:title" content="Kingflix - Tài khoản bản quyền">
+    <meta property="og:description" content="Shop tài khoản bản quyền lớn và uy tín nhất Việt Nam. Bán tài khoản netflix, spotify, youtube, ... bản quyền giá rẻ, uy tín, nhanh chóng. Steam wallet, Steam code, CD Key Steam, CSGO , tài khoản bản quyền giá rẻ">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://kingflix.vn/">
+    <meta name="description" content="Shop tài khoản bản quyền lớn và uy tín nhất Việt Nam. Bán tài khoản netflix, spotify, youtube, ... bản quyền giá rẻ, uy tín, nhanh chóng. Steam wallet, Steam code, CD Key Steam, CSGO , tài khoản bản quyền giá rẻ">
+    <meta name="keywords" content="kingflix, kingflix.vn, kingflix giá rẻ, tài khoản netflix giá rẻ, netflix, tài khoản spotify, mua game bản quyền, mua tài khoản netflix giá rẻ">
+    @Styles.Render("~/Content/template-css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center text-center bg-light">
+                <div class="row flex-grow">
+                    <div class="col-lg-7 mx-auto text-white">
+                        <div class="text-center">
+                            <img class="" src="/Content/image/logo-main-dark.png" height="100">
+                            <h1 class="text-primary mt-5">@Model.Title</h1>
+                            <h3 class="font-weight-light text-dark">@Html.Raw(Model.Content)</h3>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-12 mt-xl-2">
+                                <p class="text-dark font-weight-medium text-center">Copyright © 2020 Kingflix.vn</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+
+</body>
+</html>

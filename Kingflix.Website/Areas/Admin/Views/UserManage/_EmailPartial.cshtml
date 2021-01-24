@@ -1,0 +1,53 @@
+﻿@model Kingflix.Models.ViewModel.EmailViewModel
+
+
+<div class="modal-header border-0 pb-0">
+    <h4 class="card-title font-weight-bold mb-0">Gửi Email</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" class="mdi mdi-close"></span>
+    </button>
+</div>
+<div class="modal-body py-3">
+
+    @using (Ajax.BeginForm("SendEmail", "Email", new AjaxOptions
+    {
+        OnBegin = "loadSpinner",
+        OnComplete = "exitSpinner",
+        OnSuccess = "SendMailSuccess"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        <input hidden value="@Kingflix.Domain.Enumerables.EmailType.Custom" id="Type" name="Type" />
+        <div class="card pt-5">
+            <div class="card-body pt-0">
+                <div class="form-group">
+                    <label for="EmailList" class="control-label">Email người dùng</label>
+                    <input type="text" required readonly value="@ViewBag.Email" class="form-control" id="EmailList" name="EmailList" />
+                </div>
+                <div class="form-group" id="emailTemplateList">
+                    <label for="EmailTemplateList" class="control-label">Chọn Mẫu Email</label>
+                    <select class="form-control select2" id="EmailTemplateId" name="EmailTemplateId" required>
+                        @foreach (var item in ViewBag.EmailTemplate)
+                        {
+                            <option value="@item.Id">@item.Title</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group text-center">
+                    <button class="btn btn-success btn-rounded" type="submit">Xác nhận gửi</button>
+                </div>
+            </div>
+        </div>
+
+    }
+
+</div>
+
+<script>
+    function SendMailSuccess(data) {
+        toastr.success(data.message);
+    }
+     
+</script>
+
+

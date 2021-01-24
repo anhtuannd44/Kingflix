@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Category>
+
+<div class="category-area" id="category">
+    <div class="form-group row">
+        <div class="col-md-5">
+            <select name="CategoryId" class="category-id form-control">
+                <option>Chọn sản phẩm</option>
+                @foreach (var item in Model)
+                {
+                    <option value="@item.CategoryId">@item.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-5 month-id">
+            <select name="Month" class="form-control month-category">
+                <option value="0">Chọn sản phẩm trước</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-danger btn-rounded p-2 remove-category-month" data-toggle="tooltip" data-title="Hủy" type="button"><i class="mdi mdi-delete"></i></button>
+        </div>
+    </div>
+</div>

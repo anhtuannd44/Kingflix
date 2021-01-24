@@ -1,0 +1,400 @@
+﻿@using Kingflix.Domain.Enumerables;
+@using Kingflix.Domain.DomainModel;
+@model Kingflix.Models.ViewModel.UserManageViewModel
+@{var i = 0;}
+
+@using (Ajax.BeginForm("EditProfileList", "UserManage", null, new AjaxOptions
+{
+    OnBegin = "loadSpinner",
+    OnSuccess = "editProfileSuccess",
+    OnComplete = "exitSpinner"
+}))
+{
+    <div id="@Model.Profile.FirstOrDefault().Products.GroupId">
+        <table class="table table-bordered table-hover shadow">
+            <thead>
+                <tr>
+                    <td>Profile</td>
+                    <td>Mã PIN</td>
+                    <td>Họ và tên/Email</td>
+                    <td>Số điện thoại</td>
+                    <td class="text-center">Ngày bắt đầu</td>
+                    <td class="text-center">Ngày hết hạn</td>
+                    <td class="text-center">Tình trạng</td>
+                    <td class="text-center showItem">Gửi Email</td>
+                    <td class="text-center showItem">Tình trạng Email</td>
+                    <td class="text-center editItem" style="display: none;">Hành động</td>
+                </tr>
+            </thead>
+            <tbody id="@Model.Profile.FirstOrDefault().ProductId.Replace("@","").Replace(".","")Profile">
+                @foreach (var profile in Model.Profile)
+                {
+                    <tr class="profile-tr-@profile.ProfileId">
+                        @if (!string.IsNullOrEmpty(profile.UserId))
+                        {
+                            <td>
+                                <input value="@profile.ProfileId" hidden name="ProfileList[@i].ProfileId" id="ProfileList[@i].ProfileId" />
+                                <div class="editItem" style="display: none">
+                                    <input class="form-control" value="@profile.Name" name="ProfileList[@i].Name" id="ProfileList[@i].Name" />
+                                </div>
+                                <div class="showItem">
+                                    @profile.Name
+                                </div>
+                            </td>
+                            <td>
+                                <div class="editItem" style="display: none">
+                                    <input class="form-control" value="@profile.Pincode" name="ProfileList[@i].Pincode" id="ProfileList[@i].Pincode" />
+                                </div>
+                                <div class="showItem">
+                                    @profile.Pincode
+                                </div>
+                            </td>
+                            <td>
+                                <div class="editItem" style="display: none">
+                                    <select class="select2" data-id="@profile.ProfileId" id="ProfileList[@i].UserId" name="ProfileList[@i].UserId">
+                                        <option value="" data-phone="">Chọn Email</option>
+                                        @foreach (var j in Model.UserList)
+                                        {
+                                            <option value="@j.Id" data-phone="@j.PhoneNumber" @(j.Id == profile.UserId ? "selected" : "")>@j.Email</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="showItem">
+                                    <a href="@Url.Action("Edit","User", new { id = profile.UserId })" class="text-success">
+                                        @profile.UserInformation.FullName/@profile.UserInformation.Email
+                                    </a>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="userPhone-@profile.ProfileId" class="editItem" style="display: none">
+                                    @profile.UserInformation.PhoneNumber
+                                </div>
+                                <div class="showItem">
+                                    @profile.UserInformation.PhoneNumber
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="editItem" style="display: none">
+                                    <input type="date" class="form-control" id="ProfileList[@i].DateStart" name="ProfileList[@i].DateStart" value="@profile.DateStart.ToString("yyyy-MM-dd")" />
+                                </div>
+                                <div class="showItem">
+                                    @profile.DateStart.ToString("dd/MM/yyyy")
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="editItem" style="display: none">
+                                    <input type="date" class="form-control" id="ProfileList[@i].DateEnd" name="ProfileList[@i].DateEnd" value="@profile.DateEnd.ToString("yyyy-MM-dd")" />
+                                </div>
+                                <div class="showItem">
+                                    @if ((profile.DateEnd.Date - DateTime.Today).Days < 0)
+                                    {
+                                        @profile.DateEnd.ToString("dd/MM/yyyy") <span class="text-primary font-weight-bold">(hết hạn @((DateTime.Today - profile.DateEnd.Date).Days) ngày)</span>
+                                    }
+                                    else
+                                    {
+                                        @profile.DateEnd.ToString("dd/MM/yyyy") <span class="text-warning font-weight-bold">(còn @((profile.DateEnd - DateTime.Now).Days) ngày)</span>
+                                    }
+
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                @if (profile.IsError)
+                                {
+                                    <p class="m-0 badge badge-warning">Báo lỗi</p>
+                                }
+                                else if (profile.StatusShow == UserProductStatusShow.Using)
+                                {
+                                    <p class="m-0 badge badge-success">@UserProductStatusShow.Using.GetEnumDisplayName()</p>
+                                }
+                                else if (profile.StatusShow == UserProductStatusShow.PreExpired)
+                                {
+                                    <p class="m-0 badge badge-warning">@UserProductStatusShow.PreExpired.GetEnumDisplayName()</p>
+                                }
+                                else if (profile.StatusShow == UserProductStatusShow.Expired)
+                                {
+                                    <p class="m-0 badge badge-primary">@UserProductStatusShow.Expired.GetEnumDisplayName()</p>
+                                }
+                            </td>
+                            <td class="text-center showItem">
+                                <button class="badge badge-info send-email" data-toggle="modal" data-target="#ModalTemplateLg" data-id="@profile.UserInformation.Email" type="button"><i class="mdi mdi-send"></i></button>
+                            </td>
+                            <td class="text-center showItem">
+                                <button class="badge badge-info email-history" data-toggle="modal" data-target="#ModalTemplateLg" data-id="@profile.UserInformation.Email" type="button">
+                                    <i class="mdi mdi-history"></i> Lịch sử
+                                </button>
+                            </td>
+                            <td class="text-center editItem" style="display: none;">
+                                <button class="badge badge-warning change-profile" data-toggle="modal" data-target="#ChangeProfileModal" data-product-id="@profile.ProductId" data-profile-id="@profile.ProfileId" type="button"><i class="mdi mdi-rotate-right"></i></button>
+                                <button class="badge badge-danger remove-from-profile" data-id="@profile.ProfileId" type="button"><i class="mdi mdi-eraser"></i></button>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <input value="@profile.ProfileId" hidden name="ProfileList[@i].ProfileId" id="ProfileList[@i].ProfileId" />
+                                <div class="editItem" style="display: none">
+                                    <input class="form-control" value="@profile.Name" name="ProfileList[@i].Name" id="ProfileList[@i].Name" />
+                                </div>
+                                <div class="showItem">
+                                    @profile.Name
+                                </div>
+                            </td>
+                            <td>
+                                <div class="editItem" style="display: none">
+                                    <input class="form-control" value="@profile.Pincode" name="ProfileList[@i].Pincode" id="ProfileList[@i].Pincode" />
+                                </div>
+                                <div class="showItem">
+                                    @profile.Pincode
+                                </div>
+                            </td>
+                            <td style="min-width: 200px">
+                                <div class="editItem" style="display: none">
+                                    <select class="select2" data-id="@profile.ProfileId" id="ProfileList[@i].UserId" name="ProfileList[@i].UserId">
+                                        <option value="" data-phone="">Chọn Email</option>
+                                        @foreach (var j in Model.UserList)
+                                        {
+                                            <option value="@j.Id" data-phone="@j.PhoneNumber">@j.Email</option>
+                                        }
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="userPhone-@profile.ProfileId" class="editItem">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="editItem" style="display: none">
+                                    <input type="date" class="form-control" id="ProfileList[@i].DateStart" name="ProfileList[@i].DateStart" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="editItem" style="display: none">
+                                    <input type="date" class="form-control" id="ProfileList[@i].DateEnd" name="ProfileList[@i].DateEnd" />
+                                </div>
+                            </td>
+                            <td></td>
+                            <td class="showItem"></td>
+                            <td class="showItem"></td>
+                            <td class="text-center editItem" style="display: none">
+                                <button class="badge badge-primary remove-profile" data-id="@profile.ProfileId" type="button"><i class="mdi mdi-delete"></i></button>
+                            </td>
+                        }
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+        <div class="addNewProfile my-2 text-right">
+            <div class="showItem">
+
+                <button class="btn btn-gradient-success btn-sm open-edit" data-id="@Model.Profile.FirstOrDefault().Products.GroupId" type="button">Chỉnh sửa</button>
+            </div>
+            <div class="editItem" style="display: none">
+                <button class="btn btn-gradient-success btn-sm" type="submit">Lưu lại</button>
+                <button class="btn btn-gradient-info btn-sm add-profile" data-productid="@Model.Profile.FirstOrDefault().ProductId" data-tableid="@Model.Profile.FirstOrDefault().ProductId.Replace("@","").Replace(".","")Profile" type="button">Thêm Profile</button>
+                <button class="btn btn-gradient-danger btn-sm close-edit" data-id="@Model.Profile.FirstOrDefault().Products.GroupId" type="button">Hủy thao tác</button>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="ChangeProfileModal" aria-hidden="true" tabindex='-1'>
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content" id="modalContent" style="min-height: 100px">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="card-title font-weight-bold mb-0">Đổi tài khoản</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="mdi mdi-close"></span>
+                </button>
+            </div>
+            <div class="modal-body p-5">
+                @using (Ajax.BeginForm("ChangeProfile", "UserManage", new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    OnBegin = "loadSpinner",
+                    OnSuccess = "changeProfileSuccess",
+                    OnComplete = "exitSpinner"
+                }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="text" value="" id="currentProduct" name="currentProduct" hidden />
+                    <input type="text" value="" id="currentProfile" name="currentProfile" hidden />
+                    <div class="row form-group align-items-center">
+                        <div class="offset-md-4 col-md-8">
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row form-group align-items-center">
+                        <div class="offset-md-1 col-md-2">
+                            <p class="font-weight-bold mb-0">Chọn loại tài khoản:</p>
+                        </div>
+                        <div class="col-md-7">
+                            <select class="select2" id="categoryId" name="categoryId">
+                                <option value="">Chọn loại tài khoản</option>
+                                @foreach (var item in (List<Category>)ViewData["CategoryId"])
+                                {
+                                    <option value="@item.CategoryId">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row form-group align-items-center">
+                        <div class="offset-md-1 col-md-2">
+                            <p class="font-weight-bold mb-0">Chọn tài khoản:</p>
+                        </div>
+                        <div class="col-md-7">
+                            <select class="form-control select2" id="product" name="product">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="btn btn-primary btn-rounded mb-0" data-dismiss="modal">Hủy</p>
+                        <button type="submit" class="btn btn-success btn-rounded">Xác nhận</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(".select2").select2();
+
+    $(document).on("click", ".open-edit", function () {
+        var elm = $(this);
+        $("#" + elm.data("id") + " .editItem").show();
+        $("#" + elm.data("id") + " .showItem").hide();
+    });
+
+    $(document).on("click", ".close-edit", function () {
+        var elm = $(this);
+        $("#" + elm.data("id") + " .editItem").hide();
+        $("#" + elm.data("id") + " .showItem").show();
+        $("#" + elm.data("id") + " .open-edit").show();
+    });
+
+    $(document).on("click", ".change-profile", function()
+    {
+        $("#currentProduct").val($(this).data("product-id"));
+        $("#currentProfile").val($(this).data("profile-id"));
+    })
+
+    $(document).on("change", "#categoryId", function ()
+    {
+        var categoryId = $("#categoryId").val();
+        $.ajax({
+            method: "POST",
+            url: "@Url.Action("GetProfileNull", "UserManage")",
+            data: {
+                categoryId: categoryId,
+                currentProduct: $("#currentProduct").val()
+            },
+            success: function (data) {
+                $("#product").html(data);
+            }
+        })
+    })
+
+    function changeProfileSuccess(data) {
+        if (data.status == "success") {
+            toastr.success(data.message);
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
+        }
+        else {
+            toastr.error(data.message);
+        }
+    }
+
+    $(document).on("change", ".select2", function () {
+        var phone = $("option:selected", this).attr("data-phone");
+        var profileId = $(this).data("id");
+        $("#userPhone-" + profileId).html(phone);
+    })
+    function editProfileSuccess(data) {
+        if (data.status == "success") {
+            toastr.success(data.message);
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
+        }
+        else {
+            toastr.error(data.message);
+        }
+    }
+
+    $(document).on("click", ".remove-from-profile", function () {
+        var elm = $(this);
+        var r = confirm("Bạn có thực sự muốn hủy người dùng này khỏi profile không?");
+        if (r == true) {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("ResetProfile")",
+                data: {
+                    profileId: elm.data("id")
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                }
+            })
+        }
+    })
+
+     $(document).on("click", ".send-email", function () {
+        var elm = $(this);
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("SendEmail")",
+                data: {
+                    email: elm.data("id")
+                },
+                beforeSend: function () {
+                    loadSpinner();
+                },
+                success: function (data) {
+                    $("#modalContentLg").html(data);
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu");
+                },
+                complete: function () {
+                    exitSpinner();
+                }
+            })
+     })
+     $(document).on("click", ".email-history", function () {
+        var elm = $(this);
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("EmailHistory")",
+                data: {
+                    email: elm.data("id")
+                },
+                beforeSend: function () {
+                    loadSpinner();
+                },
+                success: function (data) {
+                    $("#modalContentLg").html(data);
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu");
+                },
+                complete: function () {
+                    exitSpinner();
+                }
+            })
+    })
+
+</script>

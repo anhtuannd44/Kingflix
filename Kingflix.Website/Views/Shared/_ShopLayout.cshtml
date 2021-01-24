@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="shortcut icon" href="~/Content/image/favicon.png" />
+    <title>@ViewBag.Title - KingFlix</title>
+    <meta property="og:title" content="Kingflix - Tài khoản bản quyền">
+    <meta property="og:description" content="Shop tài khoản bản quyền lớn và uy tín nhất Việt Nam. Bán tài khoản netflix, spotify, youtube, ... bản quyền giá rẻ, uy tín, nhanh chóng. Steam wallet, Steam code, CD Key Steam, CSGO , tài khoản bản quyền giá rẻ">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://divineshop.vn/">
+    <meta name="description" content="Shop tài khoản bản quyền lớn và uy tín nhất Việt Nam. Bán tài khoản netflix, spotify, youtube, ... bản quyền giá rẻ, uy tín, nhanh chóng. Steam wallet, Steam code, CD Key Steam, CSGO , tài khoản bản quyền giá rẻ">
+    <meta name="keywords" content="kingflix, kingflix.vn, kingflix giá rẻ, tài khoản netflix giá rẻ, netflix, tài khoản spotify, mua game bản quyền, mua tài khoản netflix giá rẻ">
+
+    @Styles.Render("~/Content/template-css")
+    @Styles.Render("~/Content/style-css")
+    @Scripts.Render("~/bundles/modernizr")
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-177844864-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-177844864-1');
+    </script>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/5f57b662f0e7167d000e8483/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+</head>
+<body>
+    <header class="header">
+        <div class="" style="background: #c2060f">
+            <div class="container text-white font-weight-bold">
+                <marquee class="m-0 py-1">@Html.Action("GetTopText","Products")</marquee>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-lg py-3 shadow shop-area bg-primary" id="mainNav" style="height: unset;">
+            <div class="container">
+                <a class="brand-logo" href="~/"><img src="~/Content/image/logo-light.png" alt="logo" height="50" /></a>
+                <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right"><i class="fa fa-bars"></i></button>
+                <div id="navbarSupportedContent" class="collapse navbar-collapse">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active"><a href="~/" class="nav-link text-uppercase font-weight-bold">Trang chủ <span class="sr-only">(current)</span></a></li>
+                        <li class="nav-item"><a href="https://help.kingflix.vn/gioi-thieu/gioi-thieu-ve-kingflix" class="nav-link text-uppercase font-weight-bold">Giới thiệu</a></li>
+                        <li class="nav-item"><a href="~/blog" class="nav-link text-uppercase font-weight-bold">Tin tức</a></li>
+                        <li class="nav-item"><a href="https://help.kingflix.vn/bao-hanh/lien-he-ho-tro" class="nav-link text-uppercase font-weight-bold">Liên hệ</a></li>
+                        <li class="nav-item">
+
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <a href="@Url.Action("Login", "Account")" class="nav-link text-uppercase font-weight-bold">Đăng nhập</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("UserInformation", "Manage")" class="nav-link text-uppercase font-weight-bold">Thông tin tài khoản</a>
+                            }
+                        </li>
+                        <li class="nav-item dropdown position-relative" id="miniCartArea">
+                            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+                                <i class="mdi mdi-cart"></i> Giỏ hàng
+                                <span class="count-symbol bg-danger" style="display: none"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list shadow py-0" style="width: 400px" aria-labelledby="notificationDropdown">
+                                <h6 class="p-3 mb-0 border-bottom rounded-top text-white bg-primary">Giỏ hàng</h6>
+                                <div id="miniCart">
+                                    <div class="text-center">
+                                        <p class="my-3">Chưa có sản phẩm</p>
+                                    </div>
+                                </div>
+                                <div class="text-center py-2 bg-light rounded-bottom">
+                                    <a href="@Url.Action("Cart","Products")" class="btn btn-primary btn-sm text-white" style="line-height: 1rem;">Giỏ hàng</a>
+                                    <a href="@Url.Action("CheckOut","Products")" class="btn btn-warning btn-sm text-white" style="line-height: 1rem;">Thanh toán</a>
+                                </div>
+                            </div>
+                            <p class="m-0 bg-warning text-white position-absolute text-center" style="border-radius: 99px; height: 22px; width: 22px; font-size: .65rem; right: 0;top:0; line-height: 22px; font-weight: 700" id="miniCartCount">0</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    @Html.Action("GetBannerFixed","Products")
+    <div class="bg-light">
+        <div class="container">
+
+            @RenderBody()
+        </div>
+    </div>
+
+    @Html.Partial("Footer/_FooterPartial")
+
+    @Html.Partial("ModalTemplate/_ModalImagePartial")
+
+    <div id="spinnerLoading" class="spinner-loading" style="display: none;">
+        <img src="~/Content/image/logo.png" style="opacity: .15" />
+        <img src="~/Content/image/loading.svg" alt="Loading..." />
+    </div>
+
+    @Scripts.Render("~/bundles/template-js")
+    @Scripts.Render("~/bundles/home-js")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        NProgress.start();
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            loadMiniCart();
+        })
+
+        function loadMiniCart() {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("LoadMiniCart","Products")",
+                success: function (data) {
+                    $("#miniCart").html(data);
+                    $("#miniCartCount").html($("#miniCartCountReturn").html());
+                }
+            })
+        }
+
+        $('.select2').select2({
+            language: "vi"
+        });
+
+        $('.select2-hidden-search').select2({
+            minimumResultsForSearch: -1,
+            language: "vi"
+        });
+        var interval = setInterval(function () { NProgress.inc(); }, 1000);
+
+        // Trigger finish when page fully loaded
+        $(window).on("load", function () {
+            clearInterval(interval);
+            NProgress.done();
+        });
+        jQuery(window).on("unload", function () {
+            NProgress.start();
+        });
+
+    </script>
+</body>
+</html>
+

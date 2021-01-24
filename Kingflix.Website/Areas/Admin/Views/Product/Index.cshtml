@@ -1,0 +1,134 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.Product>
+
+@{
+    ViewBag.Title = "Danh sách tài khoản";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mt-2">@ViewBag.Title</h4>
+        <hr />
+        <div class="clearfix">
+            <div class="position-relative float-left">
+                <p class="d-inline-block">Chọn hành động: </p>
+                <div class="d-inline-block ml-2">
+                    <select id="productStatus" class="select2-hidden-search form-control-sm">
+                        <option value="@ProductStatus.Active">Đang hoạt động</option>
+                        <option value="@ProductStatus.Private">Chuyển vào kho</option>
+                    </select>
+                </div>
+                <div class="d-inline-block">
+                    <button class="btn btn-primary btn-rounded ml-2" id="changeStatus">Áp dụng</button>
+                </div>
+            </div>
+            <div class="float-right">
+                @using (Html.BeginForm("UploadProductList", "Product", FormMethod.Post, new { enctype = "multipart/form-data", @id = "CreateProductForm" }))
+                {
+                    <label class="btn btn-outline-success btn-sm btn-icon-text m-0" for="dataFile">
+                        <i class="mdi mdi-upload btn-icon-prepend"></i> <span id="fileName">Tải lên tệp tài khoản</span>
+                    </label>
+                    <input type="file" name="upload" accept=".xlsx, .xls" id="dataFile" hidden />
+                    <button type="submit" class="btn btn-gradient-primary btn-sm btn-icon-text border">
+                        <i class="mdi mdi-upload btn-icon-prepend"></i>
+                    </button>
+                }
+            </div>
+        </div>
+        <div id="productList">
+            @Html.Partial("_ProductListPartial", Model)
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).on("click", ".remove-product", function () {
+            var productId = $(this).data("id");
+            var r = confirm("Bạn có muốn xóa tài khoản '" + $(this).data("name") + "' hoàn toàn không?");
+            if (r == true) {
+                loadSpinner();
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("Delete")",
+                    data: { productId: productId },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            toastr.success(data.message);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        }
+                    },
+                    error: function () {
+                        exitSpinner();
+                        toastr.error("Có lỗi xảy ra. Vui lòng thử lại");
+                    }
+                })
+            }
+        })
+
+        var arr;
+        $('#changeStatus').click(function () {
+            arr = $('#tableSort tbody').find('[type="checkbox"]:checked').map(function () {
+                return $(this).closest('tr').find('td:nth-child(2)').text();
+            }).get();
+            var status = $("#productStatus").val();
+            if (arr.length != 0) {
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("ChangeProductStatus")",
+                    data: {
+                        productList: arr,
+                        status: status,
+                    },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            toastr.success(data.message);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        }
+                        else {
+                            toastr.error(data.message);
+                        }
+                    },
+                    error: function () {
+                        toastr.error("Có lỗi khi gửi dữ liệu. Vui lòng thử lại");
+                    }
+                })
+            }
+        });
+        $("#dataFile").change(function () {
+            $("#fileName").html($(this).val())
+        })
+
+        $("#CreateProductForm").submit(function (e) {
+            e.preventDefault();
+            var vcfData = new FormData($('#CreateProductForm')[0]);
+            var form = $(this);
+            var url = form.attr('action');
+            $.ajax({
+                method: "POST",
+                url: url,
+                data: vcfData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu. Vui lòng thử lại");
+                }
+            });
+        });
+    </script>
+}

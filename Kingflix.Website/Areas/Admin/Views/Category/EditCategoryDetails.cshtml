@@ -1,0 +1,195 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.CategoryNetflixDetails>
+@{
+    ViewBag.Title = "Chi tiết NETFLIX";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var i = 0;
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="text-center mb-5">
+            <h5 class="text-white mb-3">Chỉnh sửa các hạng mục Order Netflix</h5>
+            <p class="mb-0">- Ô bảo hành nếu điền "True" thì hiện dấu tích, "False" sẽ hiện dấu X, còn viết chữ khác thì sẽ hiển thị như content viết vào</p>
+            <p>- Nhấn và giữ các hàng để thay đổi thứ tự</p>
+        </div>
+        <hr />
+        <div class="row align-items-center text-success font-weight-bold">
+            <div class="col-md-1 col-1 text-center">Hiện?</div>
+            <div class="col-md-5 col-7 text-center">Nội dung</div>
+            <div class="col-md-6 col-4 text-center">
+                <div class="row">
+                    <div class="col-md-3">Siêu tiết kiệm</div>
+                    <div class="col-md-3">Ngắn hạn</div>
+                    <div class="col-md-3">Dài hạn</div>
+                    <div class="col-md-3">Family</div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        @using (Ajax.BeginForm("UpdateCategoryDetails", "Category", new AjaxOptions()
+        {
+            HttpMethod = "POST",
+            OnBegin = "loadSpinner",
+            OnComplete = "exitSpinner",
+            OnSuccess = "updateCategoryDetailsSuccess"
+
+        }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="sortable">
+                @foreach (var item in Model.OrderBy(a => a.OrderBy))
+                {
+                    <div class="">
+                        <input type="hidden" value="@item.Id" name="CategoryNetflixDetails[@i].Id" class="">
+                        <input type="hidden" value="@item.OrderBy" name="CategoryNetflixDetails[@i].OrderBy" class="order-by">
+                        <input type="hidden" value="@item.Type" name="CategoryNetflixDetails[@i].Type">
+                        <div class="card-body p-3 shadow mb-4 border border-dark category-details-content" style="border-radius: 10px;">
+                            <div class="row align-items-center align-content-center">
+                                <div class="col-md-1 col-1">
+                                    <div class="form-check mt-0" style="left: 30%">
+                                        <label class="form-check-label text-muted form-check-success">
+                                            <input type="checkbox" id="CategoryNetflixDetails_[@i]__IsShow" name="CategoryNetflixDetails[@i].IsShow" class="form-check-input" value="true" @(item.IsShow ? "checked" : "")><i class="input-helper text-success"></i>
+                                            <input name="CategoryNetflixDetails[@i].IsShow" type="hidden" value="false">
+                                            <i class="input-helper"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 col-6">
+                                    @if (item.Type == CategoryDetailsType.NoChangeAccount)
+                                    {
+                                        <p class="mb-1 text-small">@CategoryDetailsType.NoChangeAccount.GetEnumDisplayName()</p>
+                                    }
+                                    else if (item.Type == CategoryDetailsType.Support)
+                                    {
+                                        <p class="mb-1 text-small">@CategoryDetailsType.Support.GetEnumDisplayName()</p>
+                                    }
+                                    else if (item.Type == CategoryDetailsType.TimeAcceptOrder)
+                                    {
+                                        <p class="mb-1 text-small">@CategoryDetailsType.TimeAcceptOrder.GetEnumDisplayName()</p>
+                                    }
+                                    else if (item.Type == CategoryDetailsType.OwnProfile)
+                                    {
+                                        <p class="mb-1 text-small">@CategoryDetailsType.OwnProfile.GetEnumDisplayName()</p>
+                                    }
+                                    else if (item.Type == CategoryDetailsType.ScreenCount)
+                                    {
+                                        <p class="mb-1 text-small">@CategoryDetailsType.ScreenCount.GetEnumDisplayName()</p>
+                                    }
+                                    else if (item.Type == CategoryDetailsType.UltraHD)
+                                    {
+                                        <p class="mb-1 text-small">@CategoryDetailsType.UltraHD.GetEnumDisplayName()</p>
+                                    }
+                                    else if (item.Type == CategoryDetailsType.MultiScreen)
+                                    {
+                                        <p class="mb-1 text-small">@CategoryDetailsType.MultiScreen.GetEnumDisplayName()</p>
+                                    }
+                                    else if (item.Type == CategoryDetailsType.Download)
+                                    {
+                                        <p class="mb-1 text-small">@CategoryDetailsType.Download.GetEnumDisplayName()</p>
+                                    }
+                                    <textarea type="text" name="CategoryNetflixDetails[@i].Name" required class="form-control" rows="2" style="min-height: unset; padding: .5rem; border-radius: 7px">@item.Name</textarea>
+                                </div>
+                                <div class="col-md-6 col-6 text-center">
+                                    <div class="row">
+                                        @if (item.Type != CategoryDetailsType.Support && item.Type != CategoryDetailsType.TimeAcceptOrder && item.Type != CategoryDetailsType.ScreenCount)
+                                        {
+                                            <div class="col-md-3">
+                                                <div class="form-check mt-0">
+                                                    <label class="form-check-label text-muted form-check-success">
+                                                        <input type="checkbox" id="CategoryNetflixDetails_[@i]__CheckNetflix1" name="CategoryNetflixDetails[@i].CheckNetflix1" class="form-check-input" value="true" @(item.CheckNetflix1.Value?"checked" : "")><i class="input-helper text-success"></i>
+                                                        <input name="CategoryNetflixDetails[@i].CheckNetflix1" type="hidden" value="false">
+                                                        <i class="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-check mt-0">
+                                                    <label class="form-check-label text-muted form-check-success">
+                                                        <input type="checkbox" id="CategoryNetflixDetails_[@i]__CheckNetflix2" name="CategoryNetflixDetails[@i].CheckNetflix2" class="form-check-input" value="true" @(item.CheckNetflix2.Value?"checked" : "")><i class="input-helper text-success"></i>
+                                                        <input name="CategoryNetflixDetails[@i].CheckNetflix2" type="hidden" value="false">
+                                                        <i class="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-check mt-0">
+                                                    <label class="form-check-label text-muted form-check-success">
+                                                        <input type="checkbox" id="CategoryNetflixDetails_[@i]__CheckNetflix3" name="CategoryNetflixDetails[@i].CheckNetflix3" class="form-check-input" value="true" @(item.CheckNetflix3.Value?"checked" : "")><i class="input-helper text-success"></i>
+                                                        <input name="CategoryNetflixDetails[@i].CheckNetflix3" type="hidden" value="false">
+                                                        <i class="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-check mt-0">
+                                                    <label class="form-check-label text-muted form-check-success">
+                                                        <input type="checkbox" id="CategoryNetflixDetails_[@i]__CheckNetflix4" name="CategoryNetflixDetails[@i].CheckNetflix4" class="form-check-input" value="true" @(item.CheckNetflix4.Value?"checked" : "")><i class="input-helper text-success"></i>
+                                                        <input name="CategoryNetflixDetails[@i].CheckNetflix4" type="hidden" value="false">
+                                                        <i class="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-3 text-center">
+                                                <div class="form-group my-0 text-center">
+                                                    <input type="text" id="CategoryNetflixDetails_[@i]__ContentNetflix1" name="CategoryNetflixDetails[@i].ContentNetflix1" class="form-control text-center" value="@item.ContentNetflix1" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group my-0 text-center">
+                                                    <input type="text" id="CategoryNetflixDetails_[@i]__ContentNetflix2" name="CategoryNetflixDetails[@i].ContentNetflix2" class="form-control text-center" value="@item.ContentNetflix2" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group my-0 text-center">
+                                                    <input type="text" id="CategoryNetflixDetails_[@i]__ContentNetflix3" name="CategoryNetflixDetails[@i].ContentNetflix3" class="form-control text-center" value="@item.ContentNetflix3" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group my-0 text-center">
+                                                    <input type="text" id="CategoryNetflixDetails_[@i]__ContentNetflix4" name="CategoryNetflixDetails[@i].ContentNetflix4" class="form-control text-center" value="@item.ContentNetflix4" />
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    i++;
+                }
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-success btn-sm btn-rounded">Cập nhật</button>
+            </div>
+        }
+    </div>
+</div>
+@section scripts {
+    <script>
+        $(function () {
+            $(".sortable").sortable({
+                out: function () {
+                    var i = 1;
+                    $(".order-by").each(function () {
+                        $(this).val(i);
+                        i++;
+                    })
+                }
+            });
+            $(".sortable").disableSelection();
+        });
+
+        function updateCategoryDetailsSuccess(data) {
+            if (data.status == "success") {
+                toastr.success(data.message);
+            }
+            else {
+                toastr.error(data.message);
+            }
+        }
+    </script>
+}

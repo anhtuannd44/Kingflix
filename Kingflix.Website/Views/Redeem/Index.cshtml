@@ -1,0 +1,128 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Homepage>
+@{
+    ViewBag.Title = "Trang chủ - Kingflix";
+    Layout = "~/Views/Shared/_HomepageLayout.cshtml";
+}
+@section heads {
+    <link rel="stylesheet" href="https://sweet-modal.adepto.as/css/jquery.sweet-modal.min.css" />
+    <style>
+        .tns-outer, .tns-outer > div, .tns-outer > div > div, .tns-outer > div > div {
+            height: 100%;
+        }
+    </style>
+}
+
+<section class="section-home pt-0 pb-0 bg-opacity" style="height: 100vh;">
+    <div class="position-absolute w-100" style="z-index: 10;">
+        <nav class="navbar bg-transparent px-2 px-md-5 py-3">
+            <a class="brand-logo" href="~/"><img src="~/Content/image/logo-light.png" alt="logo" height="50" id="imgHome" /></a>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <a href="@Url.Action("Login", "Account")" class="navbar-text ml-auto btn btn-warning text-black">Đăng nhập</a>
+            }
+            else
+            {
+                <a href="@Url.Action("UserInformation", "Manage")" class="navbar-text ml-auto btn btn-warning text-black px-2">Thông tin tài khoản</a>
+            }
+        </nav>
+    </div>
+    <div class="container-fluid h-100 px-5" style="background: url('../Content/image/bg-main.jpg');">
+        <div class="row h-100">
+            <div class="col-md-5 h-100 position-relative">
+                <div class="position-absolute" style="top: 50%; transform: translate(0,-50%)">
+                    <h1 class="text-white font-weight-bold home-title-text home-title-text-redeem">Đổi quà của bạn</h1>
+                    <h3 class="text-white my-3 mt-4">Nhập mã GiftCode của bạn để nhận quà</h3>
+                    @using (Ajax.BeginForm("CheckGiftcode", "Redeem", new AjaxOptions
+                    {
+                        HttpMethod = "POST",
+                        OnBegin = "loadSpinner",
+                        OnSuccess = "checkGiftcodeSuccess",
+                        OnComplete = "exitSpinner",
+                        OnFailure = "sendError"
+                    }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group mt-1" style="width: 300px">
+                            <input class="form-control" type="text" id="giftcode" name="giftcode" required style="background: rgba(0,0,0,.8); border-radius: 5px; height:55px; color: #fff" />
+                        </div>
+                        <button type="submit" class="btn btn-primary px-5 mt-1">NHẬN QUÀ</button>
+                    }
+                    <div class="mt-5">
+                        <a class="text-light" href="#">Bạn cần giúp đỡ về Giftcode?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section scripts {
+    <script src="https://sweet-modal.adepto.as/js/jquery.sweet-modal.min.js"></script>
+    <script>
+        function checkGiftcodeSuccess(data) {
+            if (data.status == "error") {
+                $.sweetModal({
+                    content: data.message,
+                    title: 'Không thực hiện được',
+                    icon: $.sweetModal.ICON_ERROR,
+                    buttons: [
+                        {
+                            label: 'Đồng ý',
+                            classes: 'redB'
+                        }
+                    ]
+                });
+            }
+            else if (data.status == "noauth") {
+                $.sweetModal({
+                    content: data.message,
+                    title: 'Không thực hiện được',
+                    icon: $.sweetModal.ICON_WARNING,
+                    buttons: [
+                        {
+                            label: 'Đăng nhập',
+                            classes: 'greenB',
+                            action: function () {
+                                window.location.href = "/Account/Login?returnUrl=%2FRedeem&IsRedirect=True"
+                            }
+                        }
+                    ]
+                });
+            }
+            else if (data.status == "success") {
+                $.sweetModal({
+                    content: data.message,
+                    title: 'Nhận quà thành công',
+                    icon: $.sweetModal.ICON_SUCCESS,
+                    buttons: [
+                        {
+                            label: 'Trung tâm khách hàng',
+                            classes: 'greenB',
+                            action: function () {
+                                window.location.href = "/Manage/UserInformation"
+                            }
+                        },
+                        {
+                            label: 'Về trang chủ',
+                            classes: 'redB'
+                        }
+                    ]
+                });
+            }
+        }
+        function sendError() {
+            $.sweetModal({
+                content: "Có lỗi khi gửi dữ liệu. Vui lòng thử lại sau",
+                title: 'Không thực hiện được',
+                icon: $.sweetModal.ICON_ERROR,
+                buttons: [
+                    {
+                        label: 'Đồng ý',
+                        classes: 'redB'
+                    }
+                ]
+            });
+        }
+    </script>
+}

@@ -1,0 +1,109 @@
+﻿@model Kingflix.Models.AppUser
+
+@{
+    ViewBag.Title = "Chỉnh sửa thành viên";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(a => a.Id)
+    @Html.HiddenFor(a => a.Email)
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title mt-2 mb-4">Thông tin tài khoản</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                        <input class="form-control" disabled value="@Model.Email" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="mt-2">
+                            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Gentle, htmlAttributes: new { @class = "control-label" })
+                        @Html.EnumDropDownListFor(model => model.Gentle, "", htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        <div class="mt-2">
+                            @Html.ValidationMessageFor(model => model.Gentle, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Birthday, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="mt-2">
+                            @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="mt-2">
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="back">
+                <div class="form-group text-center">
+                    <a href="@Url.Action("Index")" class="btn btn-gradient-primary btn-rounded btn-sm">Quay lại</a>
+                    <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-sm">Lưu lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mt-2 mb-4">Dịch vụ sử dụng</h4>
+        <div class="service-netflix">
+            <div class="mt-4">
+                @Html.Action("GetProfile", new { userId = Model.Id, type = Kingflix.Domain.Enumerables.TypeOfCategory.Netflix })
+            </div>
+        </div>
+        <hr />
+        <div class="service-netflix">
+            <div class="mt-4">
+                @Html.Action("GetProfile", new { userId = Model.Id, type = Kingflix.Domain.Enumerables.TypeOfCategory.Spotify })
+            </div>
+        </div>
+    </div>
+</div>
+
+        @Html.Action("GetOrderHistory", new { userId = Model.Id })
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $.validator.methods.date = function (value, element) {
+                return this.optional($("#Birthday")) || moment(value, "L", true).isValid();
+            }
+
+            $('#Birthday').datetimepicker({
+                format: "L",
+                locale: moment.locale("vi"),
+                icons: {
+                    previous: 'mdi mdi-chevron-left',
+                    next: 'mdi mdi-chevron-right',
+                },
+            })
+
+        });
+    </script>
+}

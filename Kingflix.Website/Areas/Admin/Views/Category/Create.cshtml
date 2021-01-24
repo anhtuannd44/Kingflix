@@ -1,0 +1,279 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Domain.DomainModel.Category
+
+@{
+    ViewBag.Title = "Thêm loại tài khoản";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "Category", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-9">
+            <div class="form-group mb-4 mt-0">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control bg-white", @placeholder = "Tên loại tài khoản" })
+                <div class="mt-1">
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="">Tùy chỉnh giá của gói</h6>
+                </div>
+                <div class="card-body py-0">
+                    <div class="error-arrea row mb-2">
+                        <div class="col-md-5">
+                            <div class="d-block mt-2">
+                                <span class="field-validation-valid text-danger pt-2" data-valmsg-for="Month" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="d-block mt-2">
+                                <span class="field-validation-valid text-danger pt-2" data-valmsg-for="Price" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 col-2">
+                            Hiện?
+                        </div>
+                        <div class="col-md-2 col-4">
+                            <p class="text-center">Số tháng</p>
+                        </div>
+                        <div class="col-md-3 col-5">
+                            <p class="text-center">Số tiền</p>
+                        </div>
+                        <div class="col-md-2 col-5">
+                            <p class="text-center">Khuyến mãi</p>
+                        </div>
+                        <div class="col-md-3 col-5">
+                            <p class="text-center">Neo text</p>
+                        </div>
+                        <div class="col-md-1 col-2 text-center">
+                            Xóa
+                        </div>
+                    </div>
+                    <div class="price-area" id="priceArea">
+                        <div class="form-group row">
+                            <div class="col-md-1 text-center">
+                                <input type="hidden" value="true" id="IsShow_1" name="IsShow" />
+                                <div class="form-check m-0">
+                                    <label class="form-check-label text-muted form-check-success">
+                                        <input type="checkbox" class="form-check-input is-show" value="true" data-target="IsShow_1"><i class="input-helper text-success"></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <input class="form-control" placeholder="Nhập số tháng" data-val="true" data-val-number="Số tháng phải là một số." name="Month" type="text">
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control" placeholder="Nhập giá tiền" data-val="true" data-val-number="Giá tiền phải là một số." name="Price" type="text">
+                            </div>
+                            <div class="col-md-2">
+                                <input class="form-control" placeholder="Giá khuyến mãi (nếu có)" required name="Prices" type="text">
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control" placeholder="Nhập text neo" required name="TextFixed" type="text">
+                            </div>
+                            <div class="col-md-1 text-center">
+                                <button class="btn btn-danger btn-rounded p-2 remove-price" data-toggle="tooltip" data-title="Hủy" type="button"><i class="mdi mdi-delete"></i></button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="text-center mb-3">
+                        <button class="btn btn-primary btn-rounded add-price btn-sm" type="button">Thêm loại giá</button>
+                    </div>
+                </div>
+            </div>
+            <div id="guarantee" style="display: none">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Giá gói bảo hành</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                        @Html.TextBoxFor(model => model.GuaranteePrice, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Nội dung gói bảo hành</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                        @Html.TextAreaFor(model => model.Guarantee, new { @class = "textarea text-area-0" })
+                    </div>
+                </div>
+            </div>
+            <div id="otherCategory">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Chi tiết sản phẩm</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                        @Html.TextAreaFor(model => model.Details, new { @class = "textarea text-area-1" })
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Dịch vụ (Hiển thị bên phải sản phẩm chi tiết)</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                        @Html.TextAreaFor(model => model.Service, new { @class = "textarea text-area-2" })
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Chi tiết khuyến mãi (Nếu có)</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                        @Html.TextAreaFor(model => model.PromotionInfo, new { @class = "textarea text-area-3" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card position-relative">
+                <div class="card-header">
+                    <h3 class="card-title">Ảnh Cover</h3>
+                </div>
+                <div class="card-body">
+                    <div class="preview-image w-100">
+                        <div class="image-box ratio-4-3">
+                            <img id="previewCover" class="img-fluid rounded-top image" src="~/Content/image/No_Picture.jpg">
+                        </div>
+                        <div class="position-absolute d-none" id="removeCover" style="top: 5px; right:10px">
+                            <a class="text-primary" data-toggle="tooltip" title="Xóa hình cover" style="font-size: 19px"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                    <input type="text" hidden id="ImageId" name="ImageId" data-toggle="modal" data-target="#ModalTemplate-Img" />
+                    <label for="ImageId" class="btn btn-gradient-info btn-rounded mt-3 btn-block btn-sm">Chọn Hình Cover</label>
+                    <p class="my-2 font-italic small text-center">Hình này sẽ làm hình ảnh đại diện cho bài viết</p>
+                </div>
+            </div>
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="">Trạng thái gói tài khoản</h6>
+                    <div class="form-group">
+                        @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                    </div>
+                    <h6 class="">Loại sản phẩm</h6>
+                    <div class="form-group">
+                        @Html.EnumDropDownListFor(model => model.TypeOfAccount, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                    </div>
+                    <h6 class="">Chọn loại tài khoản</h6>
+                    <div class="form-group row">
+                        <div class="col-md-7 col-6">
+                            @Html.EnumDropDownListFor(model => model.Type, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        </div>
+                        <div class="col-md-5 col-6">
+                            <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-block ">Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).on("change", "#Type", function () {
+            if ($(this).val() == 1) {
+                $("#guarantee").show();
+                $("#otherCategory").hide();
+            }
+            else {
+                $("#guarantee").hide();
+                $("#otherCategory").show();
+            }
+        })
+
+        var dem = 1;
+        $(".add-price").click(function () {
+            dem = dem + 1;
+            $("#priceArea").append(addText(dem));
+        })
+        $(document).on("click", ".remove-price", function () {
+            $(this).parent().parent().remove();
+        })
+        $(document).on("click", ".is-show", function () {
+            var target = $(this).data("target");
+            if ($(this).is(":checked")) {
+                $("#" + target).val("true");
+            }
+            else {
+                $("#" + target).val("false");
+            }
+        })
+
+        function addText(dem) {
+            var text = "<div class='form-group row'>"
+                + "<div class='col-md-1'>"
+                + "<input type='hidden' value='true' id='IsShow_" + dem.toString() + "' name='IsShow' />"
+                + "<div class='form-check'>"
+                + "<label class='form-check-label text-muted form-check-success'>"
+                + "<input type='checkbox' class='form-check-input is-show' data-target='IsShow_" + dem.toString() + "' checked><i class='input-helper text-success'></i>"
+                + "</label>"
+                + "</div>"
+                + "</div>"
+                + "<div class='col-md-2'>"
+                + "<input class='form-control' placeholder='Nhập số tháng' data-val='true' data-val-number='Số tháng phải là một số.' data-val-required='Có ít nhất một mục 'số tháng' trống' name='Month' type='text'>"
+                + "</div>"
+                + "<div class='col-md-3'>"
+                + "<input class='form-control' placeholder='Nhập giá tiền' data-val='true' data-val-number='Giá tiền phải là một số.' data-val-required='Có ít nhất một mục 'số tiền' trống' name='Price' type='text'>"
+                + "</div>"
+                + "<div class='col-md-2'>"
+                + "<input class='form-control' placeholder='Nhập số tháng' data-val='true' name='Prices' type='text' data-val-number='Giá tiền phải là một số.'>"
+                + "</div>"
+                + "<div class='col-md-3'>"
+                + "<input class='form-control' placeholder='Text neo' name='TextFixed' type='text'>"
+                + "</div>"
+                + "<div class='col-md-1'>"
+                + "<button class='btn btn-danger btn-rounded p-2 remove-price' data-toggle='tooltip' data-title='Hủy' type='button'><i class='mdi mdi-delete'></i></button>"
+                + "</div>"
+                + "</div>";
+            return text;
+        }
+        $("#ImageId").click(function () {
+            var cover = $(this).val().split(",");
+            loadLibraryImage(false, cover, false);
+        });
+        $("#submitModalImage").click(function () {
+            if ($(this).data("is-multi")) {
+                renderSelectedImage(getListImageSelect());
+            }
+            else {
+                var image = getSingleImageSelect();
+                if ($(this).data("textarea")) {
+                    if (image != "" && image != undefined) {
+                        addToTextArea(image);
+                    }
+                }
+                else {
+                    if (image != "" && image != undefined) {
+                        $("#ImageId").val(image);
+                        $("#previewCover").attr("src", "../../Content/Upload/Images/" + image);
+                        $("#removeCover").removeClass("d-none");
+                    }
+                    else {
+                        $("#ImageId").val(null);
+                        $("#previewCover").attr("src", "../../Content/img/No_Picture.JPG");
+                        $("#removeCover").addClass("d-none");
+                    }
+                }
+            }
+            $("#ModalTemplate-Img").modal('hide');
+        });
+        $("#removeCover").click(function () {
+            $("#previewCover").attr("src", "../../Content/img/No_Picture.jpg");
+            $("#ImageId").val("No_Picture.JPG");
+            $("#removeCover").addClass("d-none");
+        });
+
+    </script>
+}

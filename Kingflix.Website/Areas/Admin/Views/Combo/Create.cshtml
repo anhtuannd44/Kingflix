@@ -1,0 +1,182 @@
+﻿@model Kingflix.Domain.DomainModel.Combo
+@{
+    ViewBag.Title = "Thêm Combo";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "Combo", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Thông tin Combo</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Các sản phẩm trong Combo</h4>
+                    <div id="categoryAreas">
+                        @Html.Action("GetCategoryList")
+                    </div>
+                    <div class="text-center mb-3">
+                        <button class="btn btn-primary btn-rounded add-category btn-sm" type="button">Thêm sản phẩm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="">Tùy chọn đăng</h6>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group row">
+                        <div class="col-md-7">
+                            @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        </div>
+                        <div class="col-md-5">
+                            <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-block">Hoàn tất</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*Ảnh Bài Viết*@
+            <div class="card position-relative">
+                <div class="card-header">
+                    <h3 class="card-title">Ảnh Cover</h3>
+                </div>
+                <div class="card-body">
+                    <div class="preview-image w-100">
+                        <div class="image-box ratio-4-3">
+                            <img id="previewCover" class="img-fluid rounded-top image" src="~/Content/image/No_Picture.jpg">
+                        </div>
+                        <div class="position-absolute d-none" id="removeCover" style="top: 5px; right:10px">
+                            <a class="text-primary" data-toggle="tooltip" title="Xóa hình cover" style="font-size: 19px"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                    <input type="text" hidden id="ImageId" name="ImageId" data-toggle="modal" data-target="#ModalTemplate-Img" />
+                    <label for="ImageId" class="btn btn-gradient-info btn-rounded mt-3 btn-block btn-sm">Chọn Hình Cover</label>
+                    <p class="my-2 font-italic small text-center">Hình này sẽ làm hình ảnh đại diện cho bài viết</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $.validator.methods.date = function (value, element) {
+                return this.optional(element) || moment(value, "L", true).isValid();
+            }
+
+            $('#DateEnd').datetimepicker({
+                format: "L",
+                locale: moment.locale("vi"),
+                icons: {
+                    previous: 'mdi mdi-chevron-left',
+                    next: 'mdi mdi-chevron-right',
+                },
+            })
+        });
+        $(document).on("change", ".categry-id", function () {
+            var elm = $(this);
+            loadSpinner();
+
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("GetMonthList")",
+                    data: {
+                        categoryid: elm.val()
+                    },
+                    success: function (data) {
+                        elm.parent().parent().children(".month-id").first().children("select").html(data);
+                        exitSpinner();
+                    },
+                    error: function () {
+                        toastr.error("Có lỗi khi gửi dữ liệu, vui lòng thử lại")
+                    }
+                })
+        })
+        $(".add-category").click(function () {
+            $.ajax({
+                method: "GET",
+                url: "@Url.Action("GetCategoryList")",
+                success: function (data) {
+                    $("#categoryAreas").append(data);
+                    exitSpinner();
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu, vui lòng thử lại")
+                }
+            })
+        })
+        $(document).on("click", ".remove-category-month", function () {
+            $(this).parent().parent().parent().remove();
+        })
+        $("#ImageId").click(function () {
+            var cover = $(this).val().split(",");
+            loadLibraryImage(false, cover, false);
+        });
+        $("#submitModalImage").click(function () {
+            if ($(this).data("is-multi")) {
+                renderSelectedImage(getListImageSelect());
+            }
+            else {
+                var image = getSingleImageSelect();
+                if ($(this).data("textarea")) {
+                    if (image != "" && image != undefined) {
+                        addToTextArea(image);
+                    }
+                }
+                else {
+                    if (image != "" && image != undefined) {
+                        $("#ImageId").val(image);
+                        $("#previewCover").attr("src", "../../Content/Upload/Images/" + image);
+                        $("#removeCover").removeClass("d-none");
+                    }
+                    else {
+                        $("#ImageId").val(null);
+                        $("#previewCover").attr("src", "../../Content/img/No_Picture.JPG");
+                        $("#removeCover").addClass("d-none");
+                    }
+                }
+            }
+            $("#ModalTemplate-Img").modal('hide');
+        });
+        $("#removeCover").click(function () {
+            $("#previewCover").attr("src", "../../Content/img/No_Picture.jpg");
+            $("#ImageId").val("No_Picture.JPG");
+            $("#removeCover").addClass("d-none");
+        });
+    </script>
+}
+
+

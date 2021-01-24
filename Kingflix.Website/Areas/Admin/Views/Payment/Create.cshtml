@@ -1,0 +1,182 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Domain.DomainModel.Payment
+
+@{
+    ViewBag.Title = "Thêm phương thức";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@using (Html.BeginForm("Create", "Payment", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group mb-4 mt-0">
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control bg-white", @placeholder = "VD: Thanh toán qua Momo, Chuyển khoản qua ngân hàng Vietcombank, ..." })
+                <div class="mt-1">
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AccountNumber, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="mt-2">
+                            @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Description, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="mt-2">
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AccountName, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.AccountName, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="form-group" id="AccountAddressArea" style="display: none">
+                        @Html.LabelFor(model => model.AccountAddress, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.AccountAddress, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="mt-2">
+                            @Html.ValidationMessageFor(model => model.AccountAddress, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Nội dung chi tiết</h3>
+                </div>
+                <div class="card-body pt-0">
+                    @Html.TextAreaFor(model => model.Content, new { @class = "textarea text-area-0" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="">Loại phương thức thanh toán</h6>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group">
+                        <select id="Type" name="Type" class="form-control select2-hidden-search">
+                            <option value="4">@PaymentType.EWallet.GetEnumDisplayName()</option>
+                            <option value="5">@PaymentType.Bank.GetEnumDisplayName()</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" id="submitFormButton" class="btn btn-gradient-primary btn-rounded btn-block">Hoàn tất</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="card position-relative">
+                        <div class="card-header">
+                            <h3 class="card-title">Logo đại diện</h3>
+                        </div>
+                        <div class="card-body">
+                            <input type="file" name="file" id="file" class="upload-show" hidden>
+                            <div class="image-box ratio-1-1">
+                                <img id="previewLogo" class="img-fluid rounded-top image" src="~/Content/image/No_Picture.jpg">
+                            </div>
+                            <label for="file" class="btn btn-gradient-info btn-rounded mt-3 btn-block btn-sm">Chọn hình</label>
+                            <p class="my-2 font-italic small text-center">Logo ngân hàng hoặc ví điện tử</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" id="qrArea">
+                    <div class="card position-relative">
+                        <div class="card-header">
+                            <h3 class="card-title">Ảnh QR thanh toán</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="preview-image w-100">
+                                <div class="image-box ratio-1-1">
+                                    <img id="previewCover" class="img-fluid rounded-top image" src="~/Content/image/No_Picture.jpg">
+                                </div>
+                                <div class="position-absolute d-none" id="removeCover" style="top: 5px; right:10px">
+                                    <a class="text-primary" data-toggle="tooltip" title="Xóa hình cover" style="font-size: 19px"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                            <input type="text" hidden id="ImageId" name="ImageId" data-toggle="modal" data-target="#ModalTemplate-Img" />
+                            <label for="ImageId" class="btn btn-gradient-info btn-rounded mt-3 btn-block btn-sm">Chọn hình thanh toán</label>
+                            <p class="my-2 font-italic small text-center">Hình mã QR thanh toán ví điện tử</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("#ImageId").click(function () {
+            var cover = $(this).val().split(",");
+            loadLibraryImage(false, cover, false);
+        });
+        $("#removeCover").click(function () {
+            $("#previewCover").attr("src", "../../Content/img/No_Picture.jpg");
+            $("#ImageId").val("No_Picture.JPG");
+            $("#removeCover").addClass("d-none");
+        });
+        $("#Type").change(function () {
+            if ($(this).val() == 4) {
+                $("#AccountAddressArea").hide();
+                $("#qrArea").show();
+            }
+            else {
+                $("#AccountAddressArea").show();
+                $("#qrArea").hide();
+            }
+        })
+        $("#submitModalImage").click(function () {
+
+            var image = getSingleImageSelect();
+            if ($(this).data("textarea")) {
+                if (image != "" && image != undefined) {
+                    addToTextArea(image);
+                }
+            }
+            else {
+                if (image != "" && image != undefined) {
+                    $("#ImageId").val(image);
+                    $("#previewCover").attr("src", "../../Content/Upload/Images/" + image);
+                    $("#removeCover").removeClass("d-none");
+                }
+                else {
+                    $("#ImageId").val(null);
+                    $("#previewCover").attr("src", "../../Content/img/No_Picture.JPG");
+                    $("#removeCover").addClass("d-none");
+                }
+            }
+
+            $("#ModalTemplate-Img").modal('hide');
+        });
+        $("#file").change(function () {
+            readURL(this);
+            var file = $("#file").val();
+            if (file != undefined) {
+                $("#buttonSubmit").show();
+            }
+        });
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#previewLogo').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}

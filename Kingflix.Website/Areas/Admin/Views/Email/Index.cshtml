@@ -1,0 +1,74 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Models.ViewModel.EmailViewModel
+@{
+    ViewBag.Title = "Email";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("SendEmail", "Email", new AjaxOptions
+{
+    OnBegin = "loadSpinner",
+    OnComplete = "exitSpinner",
+    OnSuccess = "SendMailSuccess"
+}
+, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card pt-5">
+                <div class="card-body pt-0">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="Type" class="control-label">Chọn loại Email gửi</label>
+                            @Html.EnumDropDownListFor(model => model.Type, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        </div>
+                    </div>
+                    @Html.Action("GetEmailTemplateList", "Email")
+                    <div class="form-group" id="emailList">
+                        <label for="EmailList" class="control-label">Chọn Email người dùng</label>
+                        <select class="form-control select2" multiple="multiple" id="EmailList" name="EmailList" required>
+                        </select>
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-success btn-rounded" type="submit">Xác nhận gửi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section scripts {
+    <script>
+
+        $("#Type").change(function () {
+            $("#emailList").html("");
+            var elm = $(this);
+            if (elm.val() == 2) {
+                $("#emailTemplateList").show();
+            }
+            else {
+                $("#emailTemplateList").hide();
+            }
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetUserEmail","Email")",
+                data: {
+                    Type: elm.val()
+                },
+                success: function (data) {
+                    $("#emailList").html(data);
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu");
+                }
+            })
+        })
+
+        function SendMailSuccess(data) {
+            toastr.success(data.message);
+        }
+    </script>
+}

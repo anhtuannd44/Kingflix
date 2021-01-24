@@ -1,0 +1,174 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Domain.DomainModel.Blog
+@{
+    ViewBag.Title = "Thêm bài viết";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using (Html.BeginForm("Create", "BlogAdmin", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group mb-4 mt-0">
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control bg-white", @placeholder = "Tiêu đề" })
+                <div class="mt-1">
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Tóm tắt bài viết</h3>
+                </div>
+                <div class="card-body pt-0">
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Nội dung bài viết</h3>
+                </div>
+                <div class="card-body pt-0">
+                    @Html.TextAreaFor(model => model.BlogContent, new { @class = "textarea text-area-1" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Đăng</h3>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group row">
+                        <div class="col-md-7">
+                            @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        </div>
+                        <div class="col-md-5">
+                            <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-block">Hoàn tất</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @**Danh mục*@
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Danh mục bài viết</h3>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group">
+                        @Html.DropDownList("BlogCategoryId", null , htmlAttributes: new { @class = "form-control select2" })
+                        <div class="mt-2">
+                            @Html.ValidationMessageFor(model => model.BlogCategoryId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Ảnh Bài Viết*@
+            <div class="card position-relative">
+                <div class="card-header">
+                    <h3 class="card-title">Ảnh Cover</h3>
+                </div>
+                <div class="card-body">
+                    <div class="preview-image w-100">
+                        <div class="image-box ratio-4-3">
+                            <img id="previewCover" class="img-fluid rounded-top image" src="~/Content/image/No_Picture.jpg">
+                        </div>
+                        <div class="position-absolute d-none" id="removeCover" style="top: 5px; right:10px">
+                            <a class="text-primary" data-toggle="tooltip" title="Xóa hình cover" style="font-size: 19px"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                    <input type="text" hidden id="ImageId" name="ImageId" data-toggle="modal" data-target="#ModalTemplate-Img" />
+                    <label for="ImageId" class="btn btn-gradient-info btn-rounded mt-3 btn-block btn-sm">Chọn Hình Cover</label>
+                    <p class="my-2 font-italic small text-center">Hình này sẽ làm hình ảnh đại diện cho bài viết</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Cấu hình SEO</h3>
+                </div>
+                <div class="card-body">
+                    <h5>Đường dẫn URL</h5>
+                    <div class="form-group mt-0">
+                        @Html.TextBoxFor(model => model.Url, new { @class = "form-control", @placeholder = "VD: ten-bai-viet-12345" })
+                    </div>
+                    <h5>Thẻ Description (2 - 4 câu)</h5>
+                    <div class="form-group mt-0">
+                        @Html.TextAreaFor(model => model.MetaDescription, new { @class = "form-control", @placeholder = "Mục này sẽ hiển thị khi tìm kiếm google, dán link facebook, ..." })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $("#ImageId").click(function () {
+            var cover = $(this).val().split(",");
+            loadLibraryImage(false, cover, false);
+        });
+
+        $("#uploadImageList").click(function () {
+            var imageList = $("#imageAlbum").val().split(",");
+            loadLibraryImage(true, imageList, false);
+        });
+
+        $("#submitModalImage").click(function () {
+            if ($(this).data("is-multi")) {
+                renderSelectedImage(getListImageSelect());
+            }
+            else {
+                var image = getSingleImageSelect();
+                if ($(this).data("textarea")) {
+                    if (image != "" && image != undefined) {
+                        addToTextArea(image);
+                    }
+                }
+                else {
+                    if (image != "" && image != undefined) {
+                        $("#ImageId").val(image);
+                        $("#previewCover").attr("src", "../../Content/Upload/Images/" + image);
+                        $("#removeCover").removeClass("d-none");
+                    }
+                    else {
+                        $("#ImageId").val(null);
+                        $("#previewCover").attr("src", "../../Content/img/No_Picture.JPG");
+                        $("#removeCover").addClass("d-none");
+                    }
+                }
+            }
+            $("#ModalTemplate-Img").modal('hide');
+        });
+
+        $("#removeCover").click(function () {
+            $("#previewCover").attr("src", "../../Content/img/No_Picture.jpg");
+            $("#ImageId").val("No_Picture.JPG");
+            $("#removeCover").addClass("d-none");
+        });
+
+        function renderSelectedImage(listImage) {
+            $.ajax({
+                method: "POST",
+                url: "/Image/LoadSelectImage",
+                data: {
+                    imageAlbum: listImage
+                },
+                success: function (data) {
+                    $("#renderImage").html(data);
+                    $("#imageAlbum").val(listImage);
+                },
+                error: function () {
+                    toastr.error("Có lỗi xảy ra, vui lòng thử lại", 'Thất bại!');
+                }
+            });
+        };
+    </script>
+
+}

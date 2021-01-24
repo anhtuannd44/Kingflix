@@ -1,0 +1,72 @@
+﻿@using Kingflix.Domain.Enumerables 
+@model IEnumerable<Kingflix.Domain.DomainModel.EmailHistory>
+
+<div class="modal-header border-0 pb-0">
+    <h4 class="card-title font-weight-bold mb-0">Lịch sử Email</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" class="mdi mdi-close"></span>
+    </button>
+</div>
+<div class="modal-body py-3">
+    @if (Model.Count() != 0 )
+    {
+    <table class="table table-bordered table-hover shadow">
+        <thead>
+            <tr>
+                <td>Thời gian</td>
+                <td>Gửi đến Email</td>
+                <td>Loại Email gửi</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DateSend.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td class="text-success">@item.Email</td>
+                    <td>
+                        @if (item.Type == EmailTypeHistory.Exprired)
+                        {
+                            <p class="m-0">@EmailTypeHistory.Exprired.GetEnumDisplayName()</p>
+                        }
+                        else if (item.Type == EmailTypeHistory.PreExpired)
+                        {
+                            <p class="m-0">@EmailTypeHistory.PreExpired.GetEnumDisplayName()</p>
+                        }
+                        else if (item.Type == EmailTypeHistory.OrderSuccess)
+                        {
+                            <p class="m-0">@EmailTypeHistory.OrderSuccess.GetEnumDisplayName()</p>
+                        }
+                        else if (item.Type == EmailTypeHistory.Custom)
+                        {
+                            <p class="m-0">@EmailTypeHistory.Custom.GetEnumDisplayName()</p>
+                        }
+                        else if (item.Type == EmailTypeHistory.OrderCancel)
+                        {
+                            <p class="m-0">@EmailTypeHistory.OrderCancel.GetEnumDisplayName()</p>
+                        }
+                        else if (item.Type == EmailTypeHistory.OrderAccept)
+                        {
+                            <p class="m-0">@EmailTypeHistory.OrderAccept.GetEnumDisplayName()</p>
+                        }
+                        else if (item.Type == EmailTypeHistory.ExtendSuccess)
+                        {
+                            <p class="m-0">@EmailTypeHistory.ExtendSuccess.GetEnumDisplayName()</p>
+                        }
+                        else if (item.Type == EmailTypeHistory.ExtendAccept)
+                        {
+                            <p class="m-0">@EmailTypeHistory.ExtendAccept.GetEnumDisplayName()</p>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+    else
+    {
+        <div class="text-center py-3">
+            <p class="text-white">Lịch sử gửi Email trống</p>
+        </div>
+    }
+</div>

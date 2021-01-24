@@ -1,0 +1,157 @@
+﻿@using Kingflix.Domain.Enumerables
+@model Kingflix.Domain.DomainModel.Product
+
+@{
+    ViewBag.Title = "Tạo tài khoản";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "Product", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Thông tin tài khoản</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.ProductId, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.Password } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DateEnd, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.DateEnd, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.DateEnd } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label" })
+                                @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control select2" })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="CycleArea" style="display: none">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Cycle, htmlAttributes: new { @class = "control-label" })
+                                @Html.EnumDropDownListFor(model => model.Cycle, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.Cycle, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="profileArea">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Thông tin Profile</h4>
+                        <div class="profileCreate">
+                            @for (int i = 0; i <= 4; i++)
+                            {
+                                if (i == 3)
+                                {
+                                    continue;
+                                }
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="ProfileList[@i].Name" class="control-label">Profile thứ @(i+1)</label>
+                                            @Html.Editor("Profile[" + i + "].Name", new { htmlAttributes = new { @class = "form-control", @required = "required", @Value = "Profile" + (i + 1).ToString() } })
+                                            <div class="mt-2">
+                                                @Html.ValidationMessage("Profile[" + i + "].Name", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="ProfileList[@i].Name" class="control-label">Mã PIN cho Profille @(i+1)</label>
+                                            @Html.Editor("Profile[" + i + "].Pincode", new { htmlAttributes = new { @class = "form-control", @Value = "111" + (i + 1) } })
+                                            <div class="mt-2">
+                                                @Html.ValidationMessage("Profile[" + i + "].Pincode", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="text-right mt-3">
+                            <a class="m-0 btn-success btn-sm add-profile btn-rounded" style="cursor: pointer">Thêm Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            @*Submit Form Card*@
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="">Tùy chọn đăng</h6>
+                </div>
+                <div class="card-body py-0">
+                    <div class="form-group row">
+                        <div class="col-md-7">
+                            @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                        </div>
+                        <div class="col-md-5">
+                            <button type="submit" id="submitFormButton" class="btn btn-gradient-primary btn-rounded btn-block">Hoàn tất</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            $.validator.methods.date = function (value, element) {
+                return this.optional(element) || moment(value, "L", true).isValid();
+            }
+
+            $('#DateEnd').datetimepicker({
+                format: "L",
+                locale: moment.locale("vi"),
+                icons: {
+                    previous: 'mdi mdi-chevron-left',
+                    next: 'mdi mdi-chevron-right',
+                },
+            })
+        });
+        $(document).on("change", "#CategoryId", function () {
+            if ($(this).val() == NETFLIX2) {
+                $("#CycleArea").show();
+            }
+            else {
+                $("#CycleArea").hide();
+            }
+        })
+    </script>
+}

@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="shortcut icon" href="~/Content/image/favicon.png" />
+    <title>@ViewBag.Title - Kingflix</title>
+    <meta property="og:title" content="Kingflix - Tài khoản bản quyền">
+    <meta property="og:description" content="Shop tài khoản bản quyền lớn và uy tín nhất Việt Nam. Bán tài khoản netflix, spotify, youtube, ... bản quyền giá rẻ, uy tín, nhanh chóng. Steam wallet, Steam code, CD Key Steam, CSGO , tài khoản bản quyền giá rẻ">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://divineshop.vn/">
+    <meta name="description" content="Shop tài khoản bản quyền lớn và uy tín nhất Việt Nam. Bán tài khoản netflix, spotify, youtube, ... bản quyền giá rẻ, uy tín, nhanh chóng. Steam wallet, Steam code, CD Key Steam, CSGO , tài khoản bản quyền giá rẻ">
+    <meta name="keywords" content="kingflix, kingflix.vn, kingflix giá rẻ, tài khoản netflix giá rẻ, netflix, tài khoản spotify, mua game bản quyền, mua tài khoản netflix giá rẻ">
+
+    @Styles.Render("~/Content/template-css")
+    @Styles.Render("~/Content/style-css")
+    @Scripts.Render("~/bundles/modernizr")
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-177844864-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-177844864-1');
+    </script>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/5f57b662f0e7167d000e8483/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
+</head>
+<body>
+    <nav class="navbar bg-white px-md-5 px-2 py-3 border-bottom">
+        <a class="brand-logo" href="~/"><img src="~/Content/image/logo.png" alt="logo" height="80" /></a>
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <a href="@Url.Action("Login", "Account")" class="navbar-text ml-auto btn btn-primary">Đăng nhập</a>
+        }
+        else
+        {
+            <a href="@Url.Action("UserInformation", "Manage")" class="navbar-text ml-auto btn btn-primary px-2">Thông tin tài khoản</a>
+        }
+    </nav>
+    @RenderBody()
+
+    <footer>
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="footer-content">
+                            <div>
+                                <h6 class="text-white">Về Kingflix</h6>
+                            </div>
+                            <div class="policy">
+                                <a href="https://help.kingflix.vn/gioi-thieu/gioi-thieu-ve-kingflix" class="footer-link">Giới thiệu về Kingflix</a>
+                                <a href="https://help.kingflix.vn/gioi-thieu/tai-khoan-netflix-la-gi" class="footer-link">Tài khoản Netflix là gì?</a>
+                                <a href="https://help.kingflix.vn/dieu-khoan-dich-vu" class="footer-link">Điều khoản dịch vụ</a>
+                                <a href="https://help.kingflix.vn/chinh-sach-bao-mat" class="footer-link">Chính sách bảo mật</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <h6 class="text-white">Hỗ trợ khách hàng</h6>
+                        </div>
+                        <div class="footer-content">
+                            <div class="policy">
+                                <a href="https://help.kingflix.vn/bao-hanh/lien-he-ho-tro" class="footer-link">Bạn có câu hỏi? Liên hệ với chúng tôi</a>
+                                <a href="https://help.kingflix.vn/cac-cau-hoi-thuong-gap" class="footer-link">Các câu hỏi thường gặp</a>
+                                <a href="https://help.kingflix.vn/" class="footer-link">Trung tâm trợ giúp</a>
+                                <a href="https://help.kingflix.vn/huong-dan-mua-hang" class="footer-link">Hướng dẫn đặt hàng</a>
+                                <a href="https://help.kingflix.vn/bao-hanh/thong-tin-bao-hanh" class="footer-link">Chế độ bảo hành</a>
+                                <a href="mailto:hotro@kingflix.vn" class="footer-link">Hỗ trợ khách hàng: hotro@kingflix.vn</a>
+                                <a href="mailto:security@kingflix.vn" class="footer-link">Báo lỗi bảo mật: security@kingflix.vn</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <h6 class="text-white">Kết nối với chúng tôi</h6>
+                        </div>
+                        <div class="footer-content">
+                            <div class="policy">
+                                @Html.Action("GetFooterSocial","Home")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    @Html.Partial("ModalTemplate/_ModalImagePartial")
+
+    <div id="spinnerLoading" class="spinner-loading" style="display: none;">
+        <img src="~/Content/image/logo.png" style="opacity: .15" />
+        <img src="~/Content/image/loading.svg" alt="Loading..." />
+    </div>
+
+    @Scripts.Render("~/bundles/template-js")
+    @Scripts.Render("~/bundles/home-js")
+    @Scripts.Render("~/bundles/order-js")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        NProgress.start();
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $('.select2').select2({
+                language: "vi"
+            });
+
+            $('.select2-hidden-search').select2({
+                minimumResultsForSearch: -1,
+                language: "vi"
+            });
+        })
+
+        var interval = setInterval(function () { NProgress.inc(); }, 1000);
+
+        // Trigger finish when page fully loaded
+        $(window).on("load", function () {
+            clearInterval(interval);
+            NProgress.done();
+        });
+        jQuery(window).on("unload", function () {
+            NProgress.start();
+        });
+
+    </script>
+</body>
+</html>

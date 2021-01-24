@@ -1,0 +1,202 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.Review>
+
+@{
+    ViewBag.Title = "Đánh giá - Bình luận";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="card">
+    <div class="card-body">
+        <div class="clearfix">
+            <h4 class="card-title mt-2 float-left">@ViewBag.Title</h4>
+
+            <div class="position-relative float-right">
+                <p class="d-inline-block">Chọn danh loại: </p>
+                <div class="d-inline-block ml-2">
+                    <ul class="nav-custom mt-2 mb-0 pl-0">
+                        <li><a class="@(ViewBag.Status == null?"active":"")" href="@Url.Action("Index")"><i class="mdi mdi-slack mr-1"></i>Tất cả</a></li>
+                        <li><a class="@(ViewBag.Status == ReviewStatus.Pending?"active":"")" href="@Url.Action("Index", new { status = ReviewStatus.Pending})"><i class="mdi mdi-slack mr-1"></i>Chưa duyệt</a></li>
+                        <li><a class="@(ViewBag.Status == ReviewStatus.Accept?"active":"")" href="@Url.Action("Index", new { status = ReviewStatus.Accept})"><i class="mdi mdi-slack mr-1"></i>Đã duyệt</a></li>
+                        <li><a class="@(ViewBag.Status == ReviewStatus.Spam?"active":"")" href="@Url.Action("Index", new { status = ReviewStatus.Spam})"><i class="mdi mdi-slack mr-1"></i>Spam</a></li>
+                        <li><a class="@(ViewBag.Status == ReviewStatus.Trash?"active":"")" href="@Url.Action("Index", new { status = ReviewStatus.Trash})"><i class="mdi mdi-delete mr-1"></i>Thùng rác</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr />
+        @if (Model.Count() != 0)
+        {
+            <table class="table table-bordered table-hover"
+                   data-toggle="table"
+                   data-search="true"
+                   data-sort-name="name"
+                   data-sort-order="desc"
+                   data-pagination="true"
+                   data-page-size="15">
+                <thead class="">
+                    <tr>
+                        <th class="text-left font-weight-bold" data-sortable="true"> Nội dung </th>
+                        <th class="text-center font-weight-bold" data-sortable="true"> Trạng thái </th>
+                        <th class="text-center font-weight-bold" data-sortable="true"> Loại bình luận </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-left review-item">
+                                <p class="mb-0 text-danger">
+                                    @(string.IsNullOrEmpty(item.UserInformation.FullName)?item.UserInformation.Email:item.UserInformation.FullName)
+                                    @if (item.Star != 0)
+                                    {
+                                        <span class="star" style="font-size: 1.25rem; line-height: 1rem">
+                                            <i class="mdi mdi-star" style="color: #ff6a00;"></i>
+                                            @for (int i = 2; i <= 5; i++)
+                                            {
+                                                if (item.Star >= i)
+                                                {
+                                                    <i class="mdi mdi-star" style="color: #ff6a00; margin-left: -7px"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="mdi mdi-star" style="color: #c4c4c4; margin-left: -7px"></i>
+                                                }
+                                            }
+                                        </span>
+                                    }
+                                </p>
+                                <p class="mb-1" style="display: -webkit-box;max-height: 73px; -webkit-line-clamp: 2; -webkit-box-orient: vertical; width: 100%; white-space: normal; overflow: hidden !important; text-overflow: ellipsis;">@item.Content</p>
+                                <div class="action" style="opacity: 0">
+                                    <a href="@Url.Action("Edit", new { id = item.ReviewId})" class="text-primary" style="font-size: .85rem;">Xem</a> |
+                                    @if (item.Status == ReviewStatus.Accept)
+                                    {
+                                        <a href="#" class="text-warning change-status" style="font-size: .85rem;" data-id="@item.ReviewId" data-status="@ReviewStatus.Spam">Đánh dấu Spam</a> @:|
+                                        <a href="#" class="text-danger change-status" style="font-size: .85rem;" data-id="@item.ReviewId" data-status="@ReviewStatus.Trash">Thùng rác</a> @:|
+                                    }
+                                    else if (item.Status == ReviewStatus.Pending)
+                                    {
+
+                                        <a href="#" class="text-success change-status" style="font-size: .85rem;" data-id="@item.ReviewId" data-status="@ReviewStatus.Accept">Phê duyệt</a> @:|
+                                        <a href="#" class="text-warning change-status" style="font-size: .85rem;" data-id="@item.ReviewId" data-status="@ReviewStatus.Spam">Đánh dấu Spam</a> @:|
+                                        <a href="#" class="text-danger change-status" style="font-size: .85rem;" data-id="@item.ReviewId" data-status="@ReviewStatus.Trash">Thùng rác</a> @:|
+                                    }
+                                    else if (item.Status == ReviewStatus.Spam)
+                                    {
+                                        <a href="#" class="text-success change-status" style="font-size: .85rem;" data-id="@item.ReviewId" data-status="@ReviewStatus.Accept">Phê duyệt</a> @:|
+                                        <a href="#" class="text-danger change-status" style="font-size: .85rem;" data-id="@item.ReviewId" data-status="@ReviewStatus.Trash">Thùng rác</a> @:|
+                                    }
+                                    else if (item.Status == ReviewStatus.Trash)
+                                    {
+                                        <a href="#" class="text-success change-status" style="font-size: .85rem;" data-id="@item.ReviewId" data-status="@ReviewStatus.Accept">Phê duyệt</a> @:|
+                                        <a href="#" class="text-warning change-status" style="font-size: .85rem;" data-id="@item.ReviewId" data-status="@ReviewStatus.Spam">Đánh dấu Spam</a> @:|
+                                    }
+                                    <a href="#" class="text-secondary remove" style="font-size: .85rem;" data-id="@item.ReviewId">Xóa hoàn toàn</a>
+                                </div>
+                            </td>
+
+                            <td class="text-center">
+                                @if (item.Status == ReviewStatus.Accept)
+                                {
+                                    <p class="m-0 badge badge-success">Đã duyệt</p>
+                                }
+                                else if (item.Status == ReviewStatus.Pending)
+                                {
+                                    <p class="m-0 badge badge-warning">Đang đợi duyệt</p>
+                                }
+                                else if (item.Status == ReviewStatus.Spam)
+                                {
+                                    <p class="m-0 badge badge-danger">Spam</p>
+                                }
+                                else if (item.Status == ReviewStatus.Trash)
+                                {
+                                    <p class="m-0 badge badge-secondary">Thùng rác</p>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (item.ReplyFor == null)
+                                {
+                                    <p class="m-0 badge badge-success">Gốc</p>
+                                }
+                                else
+                                {
+                                    <p class="m-0 badge badge-warning">Trả lời</p>
+
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="text-center">
+                <p>Chưa có dữ liệu</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).on({
+            mouseenter: function () {
+                $(this).children(".action").css("opacity", 1);
+            },
+            mouseleave: function () {
+                $(this).children(".action").css("opacity", 0);
+            }
+        }, ".review-item");
+
+        $(document).on("click", ".change-status", function () {
+            var id = $(this).data("id");
+            var status = $(this).data("status");
+            loadSpinner();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("ChangeStatus")",
+                data: {
+                    id: id,
+                    status: status
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000)
+                    }
+                },
+                error: function () {
+                    exitSpinner();
+                    toastr.error("Có lỗi xảy ra. Vui lòng thử lại");
+                }
+            })
+        })
+
+        $(document).on("click", ".remove", function () {
+            var id = $(this).data("id");
+            var r = confirm("Bạn có muốn xóa bình luận - đánh giá này hoàn toàn không?");
+            if (r == true) {
+                loadSpinner();
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("Delete")",
+                    data: { id: id },
+                    success: function (data) {
+                        if (data.status == "success") {
+                            toastr.success(data.message);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000)
+                        }
+                    },
+                    error: function () {
+                        exitSpinner();
+                        toastr.error("Có lỗi xảy ra. Vui lòng thử lại");
+                    }
+                })
+            }
+        })
+    </script>
+}

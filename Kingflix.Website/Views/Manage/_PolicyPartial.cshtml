@@ -1,0 +1,9 @@
+﻿@model Kingflix.Domain.DomainModel.Setting
+
+@if (ViewBag.IsNull == "False")
+{
+    <div>
+        @Html.Raw(Model.Content)
+    </div>
+}
+

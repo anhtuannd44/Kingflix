@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kingflix.Website", "Kingflix.Website\Kingflix.Website.csproj", "{79CDD265-10E6-4DFC-B812-10A4B474A272}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kingflix.Domain", "Kingflix.Domain\Kingflix.Domain.csproj", "{6890D687-0482-4C31-A1A4-51409224F01A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kingflix.Services", "Kingflix.Services\Kingflix.Services.csproj", "{0C465D03-447E-4FE6-8781-7F8BA8DEF154}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kingflix.Utilities", "Kingflix.Utilities\Kingflix.Utilities.csproj", "{44BA2192-129A-4D41-B03F-072940900CF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79CDD265-10E6-4DFC-B812-10A4B474A272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79CDD265-10E6-4DFC-B812-10A4B474A272}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79CDD265-10E6-4DFC-B812-10A4B474A272}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79CDD265-10E6-4DFC-B812-10A4B474A272}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6890D687-0482-4C31-A1A4-51409224F01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6890D687-0482-4C31-A1A4-51409224F01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6890D687-0482-4C31-A1A4-51409224F01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6890D687-0482-4C31-A1A4-51409224F01A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C465D03-447E-4FE6-8781-7F8BA8DEF154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C465D03-447E-4FE6-8781-7F8BA8DEF154}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C465D03-447E-4FE6-8781-7F8BA8DEF154}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C465D03-447E-4FE6-8781-7F8BA8DEF154}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44BA2192-129A-4D41-B03F-072940900CF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44BA2192-129A-4D41-B03F-072940900CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44BA2192-129A-4D41-B03F-072940900CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44BA2192-129A-4D41-B03F-072940900CF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {696B485E-2B11-4280-ABD7-8F7F4883B69F}
+	EndGlobalSection
+EndGlobal
