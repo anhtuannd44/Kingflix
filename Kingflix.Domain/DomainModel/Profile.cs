@@ -32,19 +32,20 @@ namespace Kingflix.Domain.DomainModel
 
         public DateTime? DateModified { get; set; }
 
+        public DateTime DateStart { get; set; }
+        public DateTime DateEnd { get; set; }
+        public string Note { get; set; }
         [Display(Name = "Tài khoản")]
         public string ProductId { get; set; } //ForeignKey
 
         public string UserId { get; set; } //ForeignKey
-
-        public DateTime DateStart { get; set; }
-        public DateTime DateEnd { get; set; }
-        public string Note { get; set; }
         public string OrderId { get; set; }
 
         [ForeignKey("UserId")]
         public virtual AppUser UserInformation { get; set; }
+        [ForeignKey("ProductId")]
         public virtual Product Products { get; set; }
+        [ForeignKey("OrderId")]
         public virtual Order Orders { get; set; }
         public ICollection<ExtendProfile> EntendProfiles { get; set; }
 

@@ -36,7 +36,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
 
         List<NotificationViewModel> GetListNoti()
         {
-            var order = _orderRepository.Filter(a => a.Status == OrderStatus.Pending).ToList();
+            var order = _orderRepository.Filter(a => a.Status == OrderStatus.WaitingForPay).ToList();
             var support = _supportRepository.Filter(a => a.Status == SupportStatus.Pending).ToList();
             List<NotificationViewModel> noti = new List<NotificationViewModel>();
             foreach (var item in order)

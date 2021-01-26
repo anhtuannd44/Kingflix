@@ -236,7 +236,7 @@ namespace Kingflix.Controllers
         //            {
         //                if (order.DateCreated.AddMinutes(60) < DateTime.Now)
         //                {
-        //                    var createUrl = await _apiService.SendOrderToBaoKim(order.OrderId, order.Price, "Thanh toán đơn hàng " + order.OrderId, "https://kingflix.vn", "https://kingflix.vn", "https://kingflix.vn", userInformation.Email, userInformation.PhoneNumber, string.IsNullOrEmpty(userInformation.FullName) ? userInformation.Email : userInformation.FullName, userInformation.Address, Convert.ToInt32(PaymentType));
+        //                    var createUrl = await _apiService._BaoKim(order.OrderId, order.Price, "Thanh toán đơn hàng " + order.OrderId, "https://kingflix.vn", "https://kingflix.vn", "https://kingflix.vn", userInformation.Email, userInformation.PhoneNumber, string.IsNullOrEmpty(userInformation.FullName) ? userInformation.Email : userInformation.FullName, userInformation.Address, Convert.ToInt32(PaymentType));
         //                    if (createUrl.status == "success")
         //                    {
         //                        order.PaymentUrl = createUrl.redirect_url;

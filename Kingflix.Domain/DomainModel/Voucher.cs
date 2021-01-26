@@ -57,23 +57,7 @@ namespace Kingflix.Domain.DomainModel
         public VoucherFor VoucherFor { get; set; }
 
         public VoucherStatus Status { get; set; }
-
         public int UseCount = 0;
-        //{
-        //    get
-        //    {
-        //        using (var db = new AppDbContext())
-        //        {
-        //            var count = 0;
-        //            foreach (var item in VoucherChilds.ToList())
-        //            {
-        //                count += item.UseCount;
-        //            }
-        //            return count + db.Order.Where(a => a.VoucherId == VoucherId && a.Status == OrderStatus.Done).Count();
-        //        }
-        //    }
-        //}
-
         public virtual ICollection<VoucherChild> VoucherChilds { get; set; }
         public virtual ICollection<Voucher_Category> Voucher_Category { get; set; }
     }

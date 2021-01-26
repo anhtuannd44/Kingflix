@@ -11,6 +11,7 @@ using System.Web;
 using Kingflix.Utilities;
 using System.Linq.Expressions;
 using Kingflix.Services.Interfaces;
+using System.Web.Mvc;
 
 namespace Kingflix.Services
 {
@@ -63,7 +64,7 @@ namespace Kingflix.Services
                 list = list.Where(a => a.Status == status);
 
             if (!isAcceptPayment)
-                list = list.Where(a => a.File != null && a.Status == OrderStatus.Pending);
+                list = list.Where(a => a.File != null && a.Status == OrderStatus.WaitingForPay);
             return list.OrderByDescending(a => a.DateCreated).ToList();
         }
         public IEnumerable<Order> GetOrderList(Expression<Func<Order, bool>> predicate = null)
@@ -92,8 +93,6 @@ namespace Kingflix.Services
                     {
                         profileAvailable.ForEach(a => _profileRepository.Update(a));
                         order.Status = OrderStatus.Done;
-                        order.stat = apiId;
-                        _orderRepository.Update(order);
                         order.IsSendMail = false;
                         var sendMail = _emailService.SendOrderSuccess(order);
                         if (sendMail)
@@ -107,7 +106,6 @@ namespace Kingflix.Services
                             };
                             _emailHistoryRepository.Create(emailHistory);
                         }
-                        _unitOfWork.SaveChanges();
                         result.status = "success";
                         result.message = "Thành công! Đơn đã được cập nhật!";
                     }
@@ -115,7 +113,11 @@ namespace Kingflix.Services
                     {
                         result.status = "error";
                         result.message = "Thất bại! Số Profile còn lại ít hơn Order. Vui lòng kiểm tra lại";
+                        order.Status = OrderStatus.Paid;
                     }
+                    order.ApiOrderId = apiId;
+                    _orderRepository.Update(order);
+                    _unitOfWork.SaveChanges();
                 }
                 else
                     result = EditOrderUpdate(order, status, cancelNote);
@@ -203,7 +205,7 @@ namespace Kingflix.Services
         }
         public int GetOrderNotiCount()
         {
-            return _orderRepository.GetAll().Where(a => a.Status == OrderStatus.Pending).Count();
+            return _orderRepository.GetAll().Where(a => a.Status == OrderStatus.WaitingForPay).Count();
         }
         public OrderInformationViewModel CheckPromotion(string code, string categoryId, double month, int profile, string combo, string userId, bool isAuthenticated)
         {
@@ -222,7 +224,7 @@ namespace Kingflix.Services
                 }
                 else
                 {
-                    var checkOrder = _orderRepository.Filter(a => a.VoucherId == code && (a.Status == OrderStatus.Done || a.Status == OrderStatus.Pending)).Count();
+                    var checkOrder = _orderRepository.Filter(a => a.VoucherId == code && (a.Status == OrderStatus.Done || a.Status == OrderStatus.WaitingForPay)).Count();
                     if (checkOrder > 0)
                     {
                         result.Status = "error";
@@ -370,13 +372,12 @@ namespace Kingflix.Services
                     {
                         OrderId = "NETFLIX" + HelperFunction.RandomString(4),
                         DateCreated = DateTime.Now,
-                        Status = OrderStatus.Pending,
+                        Status = OrderStatus.WaitingForPay,
                         Price = order.Price,
                         UserId = userId,
                         PaymentId = order.PaymentMethod,
                         VoucherId = order.VoucherId,
                         IsSendMail = false,
-                        stat = "p",
                         AmountMoney = amount
                     };
                     result.OrderId = orderItem.OrderId;
@@ -406,47 +407,26 @@ namespace Kingflix.Services
                     var paymentId = _paymentRepository.Find(paymentMethod).Type;
                     if (PaymentType == PaymentType.Visa || PaymentType == PaymentType.QRCode || PaymentType == PaymentType.InternetBanking)
                     {
-                        var createUrl = await _apiService.SendOrderToBaoKim(orderItem.OrderId, orderItem.Price, "Thanh toán đơn hàng " + orderItem.OrderId, "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId, "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId, "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId, user.Email, user.PhoneNumber, string.IsNullOrEmpty(user.FullName) ? user.Email : user.FullName, user.Address, Convert.ToInt32(paymentId));
-                        if (createUrl.status == "success")
-                        {
-                            result.status = "success";
-                            result.message = "Thành công! Đang chuyển hướng đến cổng thanh toán";
-                            result.redirect_url = createUrl.redirect_url;
-                        }
-                        else
-                        {
-                            result.status = "error";
-                            result.message = "Thất bại. Vui lòng kiểm tra lại hoặc tiến hành đặt hàng lại";
-                        }
+                        result = await _apiService.SendOrderToBaoKim(orderItem.OrderId, orderItem.Price, "Thanh toán đơn hàng " + orderItem.OrderId, "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId, "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId, "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId, user.Email, user.PhoneNumber, string.IsNullOrEmpty(user.FullName) ? user.Email : user.FullName, user.Address, Convert.ToInt32(paymentId));
                     }
                     else if (PaymentType == PaymentType.Card)
                     {
-                        var paymentCard = await _apiService.PaymentCard(orderItem.OrderId, telco, amount, code, serial);
-                        if (paymentCard.status == "success")
-                        {
-                            result.status = "success";
-                            result.message = "Thành công! Đang chuyển hướng đến cổng thanh toán";
-                            result.redirect_url = paymentCard.redirect_url;
-                            orderItem.Status = OrderStatus.Pending;
-                            orderItem.stat = "c";
-                            orderItem.ApiOrderId = result.APIOrderId;
-                            _orderRepository.Create(orderItem);
-                            if (orderDetailsList.Count > 0)
-                                _orderDetailsRepository.CreateRange(orderDetailsList);
-                            _unitOfWork.SaveChanges();
-                        }
-                        else
-                        {
-                            result.status = "error";
-                            result.message = paymentCard.message;
-                        }
+                        result = await _apiService.PaymentCard(orderItem.OrderId, telco, amount, code, serial);
                     }
                     else if (PaymentType == PaymentType.EWallet || PaymentType == PaymentType.Bank)
                     {
-
                         result.status = "success";
                         result.message = "Thành công! Đơn hàng đã được xác nhận";
                         result.redirect_url = "/Order/PaymentOther?orderId=" + orderItem.OrderId;
+                    }
+                    //Lưu thông tin Order và chi tiết
+                    if (result.status == "success")
+                    {
+                        orderItem.ApiOrderId = result.APIOrderId ?? string.Empty;
+                        _orderRepository.Create(orderItem);
+                        if (orderDetailsList.Count > 0)
+                            _orderDetailsRepository.CreateRange(orderDetailsList);
+                        _unitOfWork.SaveChanges();
                     }
                 }
                 catch (Exception ex)

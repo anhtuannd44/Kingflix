@@ -18,25 +18,13 @@ namespace Kingflix.Domain.DomainModel
         public int FlashSaleId { get; set; }
 
         public string Title { get; set; }
+        [StringLength(1000)]
         public string Cover { get; set; }
         public DateTime TimeStart { get; set; }
         public DateTime TimeEnd { get; set; }
 
         [ForeignKey("Cover")]
         public virtual Image Images { get; set; }
-
         public virtual ICollection<FlashSaleCategory> FlashSaleCategories { get; set; }
-
-        //[NotMapped]
-        //public List<Category> AllCategoryList
-        //{
-        //    get
-        //    {
-        //        using (var dbs = new AppDbContext())
-        //        {
-        //            return dbs.Categories.Where(a => a.Type != TypeOfCategory.Netflix).ToList();
-        //        }
-        //    }
-        //}
     }
 }

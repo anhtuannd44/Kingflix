@@ -136,7 +136,7 @@ namespace Kingflix.Services
                 {
                     subject = "Kingflix.vn - Hoàn tất đơn hàng #" + order.OrderId;
                 }
-                else if (order.Status == OrderStatus.Pending)
+                else if (order.Status == OrderStatus.WaitingForPay)
                 {
                     subject = "Kingflix.vn - Đơn hàng mới #" + order.OrderId;
                 }
@@ -195,7 +195,7 @@ namespace Kingflix.Services
                 {
                     subject = "Kingflix.vn - Hoàn tất đơn hàng #" + order.OrderId;
                 }
-                else if (order.Status == OrderStatus.Pending)
+                else if (order.Status == OrderStatus.WaitingForPay)
                 {
                     subject = "Kingflix.vn - Đơn hàng mới #" + order.OrderId;
                 }
@@ -241,7 +241,7 @@ namespace Kingflix.Services
                 {
                     subject = "Kingflix.vn - Hoàn tất đơn hàng #" + order.OrderId;
                 }
-                else if (order.Status == OrderStatus.Pending)
+                else if (order.Status == OrderStatus.WaitingForPay)
                 {
                     subject = "Kingflix.vn - Đơn hàng mới #" + order.OrderId;
                 }

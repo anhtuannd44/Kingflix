@@ -27,7 +27,5 @@ namespace Kingflix.Domain.DomainModel
         public virtual Price Prices { get; set; }
         public virtual FlashSale FlashSales { get; set; }
 
-        [NotMapped]
-        public List<Price> PriceList { get; set; } = new List<Price>();
     }
 }

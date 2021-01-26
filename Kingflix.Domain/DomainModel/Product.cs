@@ -1,4 +1,4 @@
-﻿using Kingflix.Doamin.ViewModel;
+﻿using Kingflix.Domain.ViewModel;
 using Kingflix.Domain.Enumerables;
 using System;
 using System.Collections.Generic;
@@ -35,16 +35,19 @@ namespace Kingflix.Domain.DomainModel
         public DateTime DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
         public ProductStatus Status { get; set; }
-        public string ImageId { get; set; }
         public int? ReplaceProduct { get; set; }
-
-        [Display(Name = "Loại tài khoản")]
-        public string CategoryId { get; set; }
 
         [Display(Name = "Chu kỳ")]
         public Cycle Cycle { get; set; }
 
+        [Display(Name = "Loại tài khoản")]
+        public string CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
         public virtual Category Categories { get; set; }
+
+        [StringLength(1000)]
+        public string ImageId { get; set; }
+        [ForeignKey("ImageId")]
         public virtual Image Image { get; set; }
 
         [Display(Name = "Thứ tự nhóm tài khoản")]

@@ -1,4 +1,4 @@
-﻿namespace Kingflix.Doamin.ViewModel
+﻿namespace Kingflix.Domain.ViewModel
 { 
     public class ProfileViewModel
     {

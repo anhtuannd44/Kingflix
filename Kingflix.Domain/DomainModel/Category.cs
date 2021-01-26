@@ -26,7 +26,7 @@ namespace Kingflix.Domain.DomainModel
         [Display(Name = "Tên gói")]
         public string Name { get; set; }
         public TypeOfAccount TypeOfAccount { get; set; }
-        public TypeOfCategory Type { get; set; }
+        public TypeOfCategory Type { get; set; } //Type Of Category: Netflix/Upsale/Orther
         public DateTime DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
         [AllowHtml]
@@ -44,6 +44,7 @@ namespace Kingflix.Domain.DomainModel
         public string ColorSecondary { get; set; }
         public string ColorShadow { get; set; }
         public Status Status { get; set; }
+        [ForeignKey("ImageId")]
         public virtual Image Images { get; set; }
         
         public virtual ICollection<Product> Products { get; set; }

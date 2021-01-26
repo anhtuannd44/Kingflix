@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -15,6 +14,15 @@ namespace Kingflix.Domain.DomainModel.IdentityModel
 {
     public class AppUser : IdentityUser
     {
+        public AppUser()
+        {
+            Orders = new HashSet<Order>();
+            KingCoins = new HashSet<KingCoin>();
+            Profiles = new HashSet<Profile>();
+            Reviews = new HashSet<Review>();
+            Supports = new HashSet<Support>();
+        }
+
         [Display(Name = "Họ và tên")]
         public string FullName { get; set; }
         [Display(Name = "Địa chỉ")]
@@ -39,6 +47,14 @@ namespace Kingflix.Domain.DomainModel.IdentityModel
         public DateTime? TimeLastLogin { get; set; }
         public DateTime TimeStep2 { get; set; }
         public byte[] Avatar { get; set; }
+        
+        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<KingCoin> KingCoins { get; set; }
+        public virtual ICollection<Profile> Profiles { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Support> Supports { get; set; }
+
+       
         [NotMapped]
         public bool IsSelected { get; set; } = false;
 
@@ -55,25 +71,6 @@ namespace Kingflix.Domain.DomainModel.IdentityModel
         public MemberShip MemberShip { get; }
 
         [NotMapped]
-        public bool IsAdmin { get; }
-        //{
-        //    get
-        //    {
-        //        using (var db = new ApplicationDbContext())
-        //        {
-        //            var UserManager = new UserManager<AppUser>(new UserStore<AppUser>(db));
-        //            var role = UserManager.GetRoles(Id);
-        //            foreach (var item in role)
-        //            {
-        //                if (item == "Admin")
-        //                    return true;
-        //            }
-        //            return false;
-        //        }
-        //    }
-        //}
-
-        [NotMapped]
         public int ReferralCount
         {
             get
@@ -81,26 +78,9 @@ namespace Kingflix.Domain.DomainModel.IdentityModel
                 return Orders.AsEnumerable().Where(a => a.VoucherId == ReferralCode && a.Status == OrderStatus.Done).Count();
             }
         }
-
-        public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<KingCoin> KingCoins { get; set; }
-        public virtual ICollection<Profile> Profiles { get; set; }
-        public virtual ICollection<Review> Reviews { get; set; }
-        public virtual ICollection<Support> Supports { get; set; }
-
-        public AppUser()
-        {
-            Orders = new HashSet<Order>();
-            KingCoins = new HashSet<KingCoin>();
-            Profiles = new HashSet<Profile>();
-            Reviews = new HashSet<Review>();
-            Supports = new HashSet<Support>();
-        }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<AppUser> manager)
         {
-            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             ClaimsIdentity userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            // Add custom user claims here
             return userIdentity;
         }
     }

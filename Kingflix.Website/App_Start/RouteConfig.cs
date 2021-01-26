@@ -54,11 +54,11 @@ namespace Kingflix.Website
             //     defaults: new { controller = "Jobs", action = "Index", id = UrlParameter.Optional }
             // );
 
-            // routes.MapRoute(
-            //    name: "BaoTri",
-            //    url: "bao-tri",
-            //    defaults: new { area = "Admin", controller = "BaoTri", action = "Index" }
-            //);
+            routes.MapRoute(
+               name: "BaoTri",
+               url: "bao-tri",
+               defaults: new { area = "Admin", controller = "BaoTri", action = "Index" }
+           );
 
             routes.MapRoute(
                  "",

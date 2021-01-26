@@ -239,7 +239,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
                     }
                 }
             };
-            var order = _orderService.GetOrderDetailsList(a => a.Status == OrderStatus.Done).ToList();
+            var order = _orderService.GetOrderDetailsList(a => a.Orders.Status == OrderStatus.Done).ToList();
             if (!string.IsNullOrEmpty(categoryId))
                 order = order.Where(a => a.CategoryId == categoryId).ToList();
             if (month != null)

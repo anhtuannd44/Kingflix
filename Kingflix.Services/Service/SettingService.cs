@@ -341,7 +341,9 @@ namespace Kingflix.Services
         {
             var downpage = new Setting()
             {
-                SettingId = "DownPage",
+                SettingId = "BaoTri",
+                Content = "Xin lỗi quý khách vì sự bất tiện này, vui lòng quay lại sau ít phút.",
+                Title = "BẢO TRÌ HỆ THỐNG!",
                 IsDownPage = false
             };
             _settingRepository.Create(downpage);
@@ -351,19 +353,19 @@ namespace Kingflix.Services
 
         public Setting GetDownpage()
         {
-            var downpage = _settingRepository.GetById("DownPage");
+            var downpage = _settingRepository.GetById("BaoTri");
             if (downpage == null)
                 downpage = CreateDownpageIfNull();
             return downpage;
         }
-        public void UpdateDownpage(Setting policy)
+        public void UpdateDownpage(Setting downpage)
         {
-            var item = _settingRepository.Find("Policy");
-            if (policy == null)
+            var item = _settingRepository.Find("BaoTri");
+            if (downpage == null)
                 item = CreateDownpageIfNull();
-            item.Title = policy.Title;
-            item.Content = policy.Content;
-            item.Status = policy.Status;
+            item.Title = downpage.Title;
+            item.Content = downpage.Content;
+            item.Status = downpage.Status;
             _settingRepository.Update(item);
             _unitOfWork.SaveChanges();
         }

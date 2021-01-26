@@ -9,7 +9,7 @@ using System.Data;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using Kingflix.Services.Interfaces;
 using Kingflix.Domain.Enumerables;
-using Kingflix.Doamin.ViewModel;
+using Kingflix.Domain.ViewModel;
 using Kingflix.Domain.ViewModel;
 
 namespace Kingflix.Website.Areas.Admin.Controllers

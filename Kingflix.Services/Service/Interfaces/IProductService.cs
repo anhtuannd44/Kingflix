@@ -1,4 +1,4 @@
-﻿using Kingflix.Doamin.ViewModel;
+﻿using Kingflix.Domain.ViewModel;
 using Kingflix.Domain.DomainModel;
 using Kingflix.Domain.Enumerables;
 using Kingflix.Domain.ViewModel;

@@ -26,7 +26,7 @@ namespace Kingflix.Controllers
 
             if (notificationAPI.order.stat == "c")
             {
-                _orderService.UpdateOrder(notificationAPI.order.mrc_order_id, OrderStatus.Done, null, false, "c");
+                _orderService.UpdateOrder(notificationAPI.order.mrc_order_id, OrderStatus.Done, null, false);
             }
         }
 

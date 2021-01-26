@@ -80,8 +80,6 @@
     <Compile Include="DomainModel\Blog.cs" />
     <Compile Include="DomainModel\BlogCategory.cs" />
     <Compile Include="DomainModel\CardTemplate.cs" />
-    <Compile Include="DomainModel\Cart.cs" />
-    <Compile Include="DomainModel\CartLine.cs" />
     <Compile Include="DomainModel\Category.cs" />
     <Compile Include="DomainModel\CategoryNetflixDetails.cs" />
     <Compile Include="DomainModel\EmailHistory.cs" />
@@ -93,7 +91,6 @@
     <Compile Include="DomainModel\Homepage.cs" />
     <Compile Include="DomainModel\IdentityModel\AppRole.cs" />
     <Compile Include="DomainModel\IdentityModel\AppUser.cs" />
-    <Compile Include="DomainModel\DbEntity.cs" />
     <Compile Include="DomainModel\Image.cs" />
     <Compile Include="DomainModel\KingCoin.cs" />
     <Compile Include="DomainModel\Order.cs" />

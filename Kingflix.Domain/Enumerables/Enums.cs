@@ -47,10 +47,12 @@ namespace Kingflix.Domain.Enumerables
     {
         [Display(Name = "Hoàn tất")]
         Done = 0,
+        [Display(Name = "Chưa thanh toán")]
+        WaitingForPay = 1,
         [Display(Name = "Đang xử lý")]
-        Pending = 1,
+        Paid = 2,
         [Display(Name = "Đã hủy")]
-        Cencelled = 2,
+        Cencelled = 3,
     }
 
     public enum OrderType

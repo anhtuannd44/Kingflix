@@ -145,7 +145,7 @@ namespace Kingflix.Controllers
             var userId = User.Identity.GetUserId();
             var profile = db.Profile.ToList().Where(a => a.UserId == userId && a.Products.Categories.Type == Type).ToList();
             ViewBag.IsPending = "False";
-            var order = db.Order.Where(a => a.UserId == userId && a.Status == OrderStatus.Pending).Count();
+            var order = db.Order.Where(a => a.UserId == userId && a.Status == OrderStatus.WaitingForPay).Count();
             if (order > 0)
                 ViewBag.IsPending = "True";
             if (Type == TypeOfCategory.Netflix)
@@ -184,10 +184,10 @@ namespace Kingflix.Controllers
             var model = new ReferralReportViewModel()
             {
                 ClickCountDay = order.Where(a => a.DateCreated.Date == today).Count(),
-                ClickPendingDay = order.Where(a => a.Status == OrderStatus.Pending && a.DateCreated.Date == today).Count(),
+                ClickPendingDay = order.Where(a => a.Status == OrderStatus.WaitingForPay && a.DateCreated.Date == today).Count(),
                 ClickSuccessDay = order.Where(a => a.Status == OrderStatus.Done && a.DateCreated.Date == today).Count(),
                 ClickCountMonth = order.Where(a => a.DateCreated.Month == thisMonth && a.DateCreated.Year == thisYear).Count(),
-                ClickPendingMonth = order.Where(a => a.Status == OrderStatus.Pending && a.DateCreated.Month == thisMonth && a.DateCreated.Year == thisYear).Count(),
+                ClickPendingMonth = order.Where(a => a.Status == OrderStatus.WaitingForPay && a.DateCreated.Month == thisMonth && a.DateCreated.Year == thisYear).Count(),
                 ClickSuccessMonth = order.Where(a => a.Status == OrderStatus.Done && a.DateCreated.Month == thisMonth && a.DateCreated.Year == thisYear).Count()
             };
             return PartialView("_ReferralPartial", model);
@@ -559,7 +559,7 @@ namespace Kingflix.Controllers
                         Price = price,
                         UserId = userId,
                         DateCreated = DateTime.Now,
-                        Status = OrderStatus.Pending
+                        Status = OrderStatus.WaitingForPay
                     };
                     db.Order.Add(extend);
                     db.SaveChanges();
@@ -732,8 +732,7 @@ namespace Kingflix.Controllers
                     Type = OrderType.GiftCode,
                     UserId = userId,
                     Price = price,
-                    stat = "p",
-                    Status = OrderStatus.Pending,
+                    Status = OrderStatus.WaitingForPay,
                     DateCreated = DateTime.Now,
                     IsUserGiftCode = false
                 };
@@ -774,7 +773,6 @@ namespace Kingflix.Controllers
                                     OrderId = order.OrderId,
                                     CategoryId = category.CategoryId,
                                     Month = category.Month,
-                                    Status = OrderStatus.Pending,
                                     ImageId = category.Categories.ImageId,
                                     Count = 1,
                                     CategoryName = category.Categories.Name

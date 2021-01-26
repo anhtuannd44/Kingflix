@@ -41,8 +41,10 @@ namespace Kingflix.Domain.DomainModel
 
         public Status Status { get; set; }
 
-        public byte[] Logo { get; set; } 
+        public byte[] Logo { get; set; }
+        [StringLength(1000)]
         public string ImageId { get; set; }
+        [ForeignKey("ImageId")]
         public virtual Image Images { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }

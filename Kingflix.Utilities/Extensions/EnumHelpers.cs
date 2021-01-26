@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-
 namespace Kingflix.Utilities.Extensions
 {
     public static class EnumHelpers

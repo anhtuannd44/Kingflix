@@ -23,10 +23,12 @@ namespace Kingflix.Domain.DomainModel
         public string SubContentColor { get; set; }
         public string Link { get; set; }
         public string YoutubeId { get; set; }
+        [StringLength(1000)]
         public string ImageId { get; set; }
         public string BackgroundColor { get; set; }
         public string TextFixed { get; set; }
         public int OrderBy { get; set; }
+        [ForeignKey("ImageId")]
         public virtual Image Image { get; set; }
     }
 }

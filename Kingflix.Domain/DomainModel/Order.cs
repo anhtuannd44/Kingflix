@@ -24,23 +24,14 @@ namespace Kingflix.Domain.DomainModel
         public string ApiOrderId { get; set; }
         [Display(Name = "Tổng cộng")]
         public double Price { get; set; }
+
+        public double AmountMoney { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Thời gian đặt hàng")]
         public DateTime DateCreated { get; set; }
         public DateTime? DateModified { get; set; }
         public DateTime? DateConfirm { get; set; }
-
-        public DateTime DateConfirmShow
-        {
-            get
-            {
-                return DateConfirm ?? DateTime.MinValue;
-            }
-        }
-        [Display(Name = "Số tiền khách đã thanh toán")]
-        [Range(0, double.MaxValue, ErrorMessage = "Số tiền phải lớn hơn 0")]
-        public double AmountMoney { get; set; }
-        public OrderStatus Status { get; set; }
         public byte[] File { get; set; }
         public string UserId { get; set; }
         public bool IsSendMail {get;set;}
@@ -49,7 +40,6 @@ namespace Kingflix.Domain.DomainModel
         public string VoucherId { get; set; }
         public int? PaymentId { get; set; }
         public string CancelNote { get; set; }
-        public string stat { get; set; }
         public int? CardTemplate { get; set; }
         public bool IsDelivery { get; set; }
         public string DeliveryName { get; set; }
@@ -60,16 +50,25 @@ namespace Kingflix.Domain.DomainModel
         public string DeliveryMessage { get; set; }
         public bool IsUserGiftCode { get; set; }
         public string UserUseGiftCode { get; set; }
+        public OrderStatus Status { get; set; }
 
         [ForeignKey("PaymentId")]
         public virtual Payment Payments { get; set; }
         [ForeignKey("UserId")]
         public virtual AppUser UserInformation { get; set; }
 
-        [UIHint("Profile")]
         public virtual ICollection<Profile> Profiles { get; set; }        
         public virtual ICollection<ExtendProfile> ExtendProfiles { get; set; }
         public virtual ICollection<OrderDetails> OrderDetails { get; set; }
 
+
+        [NotMapped]
+        public DateTime DateConfirmShow
+        {
+            get
+            {
+                return DateConfirm ?? DateTime.MinValue;
+            }
+        }
     }
 }

@@ -115,7 +115,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         public ActionResult Delete(string id)
         {
             var result = new ResultViewModel();
-            var orderHasVoucher = _orderService.GetOrderList(a => a.VoucherId == id && a.Status == OrderStatus.Pending);
+            var orderHasVoucher = _orderService.GetOrderList(a => a.VoucherId == id && a.Status == OrderStatus.WaitingForPay);
             if (orderHasVoucher.Count() != 0)
             {
                 result.status = "error";
