@@ -135,7 +135,7 @@ namespace Kingflix.Controllers
             return View();
         }
 
-        public ActionResult Payment(string promoCode, string categoryId, double month, int profile, string combo )
+        public ActionResult Payment(string promoCode, string categoryId, double month, int profile, string upsale)
         {
             if (Session["order"] == null)
                 return RedirectToAction("Step1");
@@ -150,13 +150,13 @@ namespace Kingflix.Controllers
             }
             var model = _paymentService.GetPaymentList();
             OrderViewModel orders = Session["order"] as OrderViewModel;
-            orders.Price = _orderService.CheckPromotion(promoCode, categoryId, month, profile, combo, userId, true).Total;
+            orders.Price = _orderService.CheckPromotion(promoCode, categoryId, month, profile, upsale, userId, true).Total;
             ViewBag.Total = orders.Price;
             return View(model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> ConfirmPayment(int? paymentMethod, TypeOfCategory Type, PaymentType PaymentType, string code, string serial, string telco, int amount)
+        public async Task<ActionResult> ConfirmPayment(int? paymentMethod, PaymentType PaymentType, string code, string serial, string telco, int amount)
         {
             var result = new ResultViewModel();
             if ((PaymentType == PaymentType.EWallet || PaymentType == PaymentType.Bank) && !IsValidCaptcha(Request["g-recaptcha-response"]))
@@ -186,7 +186,7 @@ namespace Kingflix.Controllers
             else
             {
                 var userId = User.Identity.GetUserId();
-                result = await _orderService.ConfirmPayment(order, paymentMethod,Type, PaymentType, code, serial, telco, amount, userId);
+                result = await _orderService.ConfirmPayment(order, paymentMethod, PaymentType, code, serial, telco, amount, userId);
             }
             return Json(result, JsonRequestBehavior.DenyGet);
         }

@@ -20,29 +20,29 @@ namespace Kingflix.Services
         public APIService()
         {
         }
-        public string GenerateUrlRedirect(string mrc_order_id, double total_amount, string description, string url_success, string url_cancel, string url_detail, string customer_email, string customer_phone, string customer_name, string customer_address, int? bpm_id)
+        public string GenerateUrlRedirect(DataSendToBaoKim data)
         {
             JwtObject form_params = new JwtObject
                 {
-                    { "mrc_order_id", mrc_order_id },           // Mã đơn hàng
-                    { "total_amount", total_amount },           // Tổng tiền
-                    { "description", description },             // Tóm tắt đơn hàng
-                    { "url_success", url_success },             // Link trả về khi hoàn thanh toán thành công
+                    { "mrc_order_id", data.mrc_order_id },           // Mã đơn hàng
+                    { "total_amount", data.total_amount },           // Tổng tiền
+                    { "description", data.description },             // Tóm tắt đơn hàng
+                    { "url_success", data.url_success },             // Link trả về khi hoàn thanh toán thành công
                     { "merchant_id", Const.merchant_id },       // Mã Merchant
-                    { "url_detail", url_detail },               // Url chi tiết đơn hàng (redirect lại khi khách hủy đơn)
+                    { "url_detail", data.url_detail },               // Url chi tiết đơn hàng (redirect lại khi khách hủy đơn)
                     { "accept_bank", 1 },                       // Chấp nhận thanh toán bằng thẻ ATM ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
                     { "accept_cc", 1 },                         // Chấp nhận thanh toán bằng thẻ Tín dụng ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
                     { "accept_qrpay", 1 },                      // Chấp nhận thanh toán bằng QR code ? (Chấp nhận: 1, Không chấp nhận: 0, default: 0)
                     { "accept_e_wallet", 1 },                   // Chấp nhận thanh toán bằng Ví điện tử ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
-                    { "url_cancel", url_cancel },               //Url dùng để gửi thông báo cho website bán hàng, chat, ... khi đơn hàng thanh toán thành công, cho phép notify đến nhiều url, cách nhau bởi dấu ,
-                    { "customer_email", customer_email },
+                    { "url_cancel", data.url_cancel },               //Url dùng để gửi thông báo cho website bán hàng, chat, ... khi đơn hàng thanh toán thành công, cho phép notify đến nhiều url, cách nhau bởi dấu ,
+                    { "customer_email", data.customer_email },
                     { "webhooks", Const.webook_success },
-                    { "customer_phone", customer_phone },
-                    { "customer_name", customer_name },
-                    { "customer_address", string.IsNullOrEmpty(customer_address)?"Không":customer_address }
+                    { "customer_phone", data.customer_phone },
+                    { "customer_name", data.customer_name },
+                    { "customer_address", data.customer_address }
                 };
-            if (bpm_id != null)
-                form_params.Add("bpm_id", bpm_id.Value);
+            if (data.bpm_id != null)
+                form_params.Add("bpm_id", data.bpm_id.Value);
 
             //Payload
             var payload = GetPayloadOfToken();
@@ -81,7 +81,7 @@ namespace Kingflix.Services
             redirect_url += "customer_name=" + form_params["customer_name"].Value + "&";
             redirect_url += "customer_address=" + form_params["customer_address"].Value + "&";
 
-            if (bpm_id != null)
+            if (data.bpm_id != null)
                 redirect_url += "bpm_id=" + form_params["bpm_id"].Value + "&";
 
             redirect_url += "jwt=" + payload["jwt"].Value;
@@ -164,30 +164,27 @@ namespace Kingflix.Services
                 return Convert.ToBase64String(hashmessage).Replace("=", "").Replace("/", "_").Replace("+", "-");
             }
         }
-       
-        
-
-        public async Task<ResultViewModel> SendOrderToBaoKim(string mrc_order_id, double total_amount, string description, string url_success, string url_cancel, string url_detail, string customer_email, string customer_phone, string customer_name, string customer_address, int? bpm_id)
+        public async Task<ResultViewModel> SendOrderToBaoKim(DataSendToBaoKim dataSend)
         {
             var result = new ResultViewModel();
             try
             {
-                string redirect_url = GenerateUrlRedirect(mrc_order_id, total_amount, description, url_success, url_cancel, url_detail, customer_email, customer_phone, customer_name, customer_address, bpm_id);
+                string redirect_url = GenerateUrlRedirect(dataSend);
 
                 //Gửi Event đến Bảo Kim và nhận data trả về
                 HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.PostAsync(redirect_url, null);
                 HttpContent content = response.Content;
                 var a = content.ReadAsStringAsync();
-                var data = await content.ReadAsAsync<PaymentAPIResult>();
+                var dataResponsed = await content.ReadAsAsync<PaymentAPIResult>();
 
                 //Nếu thành công!
-                if (data.code == 0)
+                if (dataResponsed.code == 0)
                 {
                     result.status = "success";
                     result.message = "Thành công! Đơn hàng của bạn được giữ trong 60 phút. Hãy hoàn thành thanh toán của bạn!";
-                    result.redirect_url = data.data.payment_url;
-                    result.APIOrderId = data.data.order_id;
+                    result.redirect_url = dataResponsed.data.payment_url;
+                    result.APIOrderId = dataResponsed.data.order_id;
                 }
                 else
                 {

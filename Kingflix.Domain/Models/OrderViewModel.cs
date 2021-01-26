@@ -11,15 +11,6 @@ namespace Kingflix.Domain.ViewModel
         public List<Category> NetflixList = new List<Category>();
         public OrderInformationViewModel OrderInformation = new OrderInformationViewModel();
     }
-    public class OrderViewModel
-    {
-        public string VoucherId { get; set; }
-        public int? PaymentMethod { get; set; }
-        public OrderType OrderType { get; set; }
-        public double Price { get; set; }
-        public List<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
-
-    }
     public class OrderInformationViewModel
     {
         public string Status { get; set; }
@@ -29,6 +20,17 @@ namespace Kingflix.Domain.ViewModel
         public double Total { get; set; }
         public VoucherViewModel VoucherInformation = new VoucherViewModel();
     }
+
+    public class OrderViewModel
+    {
+        public string VoucherId { get; set; }
+        public int? PaymentMethod { get; set; }
+        public OrderType OrderType { get; set; }
+        public double Price { get; set; }
+        public List<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
+
+    }
+   
     public class VoucherViewModel
     {
         public string VoucherId { get; set; }
@@ -36,11 +38,18 @@ namespace Kingflix.Domain.ViewModel
         [AllowHtml]
         public string VoucherPolicy { get; set; }
     }
-
-    public class OrderList
+    public class DataSendToBaoKim
     {
-        public string CategoryId { get; set; }
-        public int Count { get; set; }
-        public double Month { get; set; }
+        public string mrc_order_id { get; set; }
+        public double total_amount { get; set; }
+        public string description { get; set; }
+        public string url_success { get; set; }
+        public string url_cancel { get; set; }
+        public string url_detail { get; set; }
+        public string customer_email { get; set; }
+        public string customer_phone { get; set; }
+        public string customer_name { get; set; }
+        public string customer_address { get; set; }
+        public int? bpm_id { get; set; }
     }
 }

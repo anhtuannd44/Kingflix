@@ -1,32 +1,40 @@
 ﻿@using Kingflix.Domain.Enumerables
 @using Kingflix.Utilities
 @model Kingflix.Domain.ViewModel.Step1ViewModel
-@{ ViewBag.Title = "Đăng ký gói";
-                Layout = "~/Views/Shared/_OrderLayout.cshtml";
-                var i = 1; }
+@{
+    ViewBag.Title = "Đăng ký gói";
+    Layout = "~/Views/Shared/_OrderLayout.cshtml";
+    var i = 1;
+}
 @foreach (var item in Model.NetflixList)
 {
     var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
-<style>
-    .active.label-badge {
-        background: @item.Color;
-    }
-    .netflix-plan-@dem {
-        background: @item.ColorSecondary;
-        box-shadow: 0 0px 6px @item.ColorShadow;
-    }
-    .active.netflix-plan-@dem {
-        background: @item.Color;
-    }
-    .active.plan-@dem i, .active.plan-@dem .check-text, .plan-@dem .select.price-list {
-        color: @item.Color;
-    }
-</style>}
+    <style>
+            .active.label-badge {
+                background: @item.Color;
+            }
+            .netflix-plan-@dem {
+                background: @item.ColorSecondary;
+                box-shadow: 0 0px 6px @item.ColorShadow;
+            }
+            .active.netflix-plan-@dem {
+                background: @item.Color;
+            }
+            .active.plan-@dem i, .active.plan-@dem .check-text, .plan-@dem .select.price-list {
+                color: @item.Color;
+            }
+    </style>
+}
+
 <section>
     <div class="container order">
         <div class="head sticky-top">
             <h1 class="text-black font-weight-bold order-title">Chọn gói Netflix của bạn</h1>
-            <p class="text-dark">Tất cả các gói <strong>đều được bảo hành</strong>. Nhận tài khoản xem phim với <strong>3 bước đơn giản</strong></p>
+            <p class="text-dark">
+                Tất cả các gói
+                <strong>đều được bảo hành</strong>. Nhận tài khoản xem phim với
+                <strong>3 bước đơn giản</strong>
+            </p>
             <div class="">
                 <h4 class="step-button d-inline-block p-1 p-md-2">Bước 1</h4>
                 <h4 class="step-content d-inline-block"> Chọn gói phù hợp với bạn</h4>
@@ -41,6 +49,7 @@
                     @foreach (var item in Model.NetflixList)
                     {
                         var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
+
         <div class="col plan plan-@dem" data-plan="plan-@dem">
             <div class="netflix-plan text-center mx-auto position-relative rounded netflix-plan-@dem">
                 <div class="position-absolute netflix-plan-area">
@@ -49,6 +58,7 @@
             </div>
             <div class="position-absolute label-badge"></div>
         </div>}
+
                 </div>
             </div>
         </div>
@@ -60,6 +70,7 @@
                     @foreach (var item in Model.NetflixList)
                     {
                         var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
+
         <div class="col plan plan-@dem" data-plan="plan-@dem">
             <div class="netflix-plan text-center mx-auto position-relative rounded netflix-plan-@dem">
                 <div class="position-absolute netflix-plan-area">
@@ -68,6 +79,7 @@
             </div>
             <div class="position-absolute label-badge"></div>
         </div>}
+
                 </div>
             </div>
         </div>
@@ -85,6 +97,7 @@
                         @foreach (var item in Model.NetflixList)
                         {
                             var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
+
             <div class="col price-col plan-@dem" data-plan="plan-@dem">
                 <div class="netflix-price text-center">
                     @{ var j = 0;}
@@ -93,36 +106,47 @@
 
     <p class="price-list @(dem != 2 ? "" : j == 0 ? "select" : "") @(j>2?"price-list-orther":"")" style="display:@(j>2?"none":"block")" data-month="@price.Month" data-category="@item.CategoryId">
         <span class="d-none d-md-block" style="font-size: 1rem">
-            @string.Format("{0:0,0 ₫}", price.SetPrice)/<span style="font-size: .85rem">@price.Month tháng</span> <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
+            @string.Format("{0:0,0 ₫}", price.SetPrice)/
+            <span style="font-size: .85rem">@price.Month tháng</span>
+            <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
             <br />
             @if (price.Prices.HasValue)
             {
+
 <del style="font-size: .95rem">@string.Format("{0:0,0 ₫}", price.Prices)</del>
                         <br />}
             @if (!string.IsNullOrEmpty(price.TextFixed))
             {
+
 <span class="badge badge-primary">@price.TextFixed</span>}
+
         </span>
         <span class="d-block d-md-none" style="font-size: 1rem; line-height: 1rem">
             @string.Format("{0:0,0 ₫}", price.SetPrice)
+
             <br />
-            <span style="font-size: .75rem; color:#7e8082; font-weight: 400">(@price.Month tháng)</span> <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
+            <span style="font-size: .75rem; color:#7e8082; font-weight: 400">(@price.Month tháng)</span>
+            <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
             <br />
             @if (price.Prices.HasValue)
             {
+
 <del style="font-size: .75rem">@string.Format("{0:0,0 ₫}", price.Prices)</del>
                         <br />}
+
         </span>
     </p>j++;
-                    }
+}
+
                 </div>
             </div>i++;
-                        }
+        }
 
                     </div>
                     <div class="text-center">
                         <p class="price-list-show-more font-weight-bold text-primary d-block" id="showMore" style="cursor: pointer" value="NotActive">
                             Xem thêm
+
                             <i class="mdi mdi-chevron-down mt-1" id="iconPriceShow" style="font-size: 1.25rem; vertical-align: middle"></i>
                         </p>
                     </div>
@@ -131,6 +155,7 @@
             @{i = 0;}
             @foreach (var item in Model.ListCategoryDetails)
             {
+
 <div class="row align-items-center border-top py-3">
     <div class="@(Model.NetflixList.Count == 4?"col-md-3 col-12":Model.NetflixList.Count == 3?"col-md-4 col-12":"col-md-6 col-12")">
         <p class="text-black m-0">@item.Name</p>
@@ -142,36 +167,47 @@
                 foreach (var category in Model.NetflixList)
                 {
                     var dem = category.CategoryId == Const.NETFLIX0 ? 0 : category.CategoryId == Const.NETFLIX1 ? 1 : category.CategoryId == Const.NETFLIX2 ? 2 : category.CategoryId == Const.NETFLIX3 ? 3 : 4;
+
 <div class="col text-center plan plan-@dem" data-plan="plan-@dem">
     @if (item.CheckNetflix1.Value)
     {
+
 <i class="mdi mdi-check"></i> }
-                        else
-                        {
+else
+{
+
 <i class="mdi mdi-close"></i>}
+
 </div> }
-                }
-                else
-                {
-                    foreach (var category in Model.NetflixList)
-                    {
-                        var dem = category.CategoryId == Const.NETFLIX0 ? 0 : category.CategoryId == Const.NETFLIX1 ? 1 : category.CategoryId == Const.NETFLIX2 ? 2 : category.CategoryId == Const.NETFLIX3 ? 3 : 4;
+}
+else
+{
+foreach (var category in Model.NetflixList)
+{
+var dem = category.CategoryId == Const.NETFLIX0 ? 0 : category.CategoryId == Const.NETFLIX1 ? 1 : category.CategoryId == Const.NETFLIX2 ? 2 : category.CategoryId == Const.NETFLIX3 ? 3 : 4;
+
 <div class="col text-center plan plan-@dem" data-plan="plan-@dem">
     @if (item.ContentNetflix1 == "True")
     {
+
 <i class="mdi mdi-check"></i> }
-                        else if (item.ContentNetflix1 == "False")
-                        {
+else if (item.ContentNetflix1 == "False")
+{
+
 <i class="mdi mdi-close"></i> }
-                        else
-                        {
+else
+{
+
 <p class="mt-2 mb-0 check-text">@item.ContentNetflix1</p>}
+
 </div>}
-                }
+}
+
         </div>
     </div>
 </div> if (i == 3)
-                {
+{
+
 <div class="row align-items-center border-top py-2">
     <div class="col-md-4 col-12">
         <p class="text-black m-0 d-none d-md-block product-title">Chọn số profile muốn mua</p>
@@ -184,23 +220,26 @@
             <span class="plus">+</span>
         </div>
     </div>
-</div>                }
-                i++;
-            }
+</div>}
+i++;
+}
+
             <div id="EndFix"></div>
             @Html.Action("GetCombo")
 
             @using (Html.BeginForm("CheckPromotion", null, FormMethod.Post, new { @id = "promoCodeForm", @class = "h-100" }))
             {
-@Html.AntiForgeryToken()
+                @Html.AntiForgeryToken()
                 @Html.Hidden("categoryId")
-                                @Html.Hidden("month")
-                                                @Html.Hidden("profile")
-                                                                @Html.Hidden("combo")
-                                                                                @Html.Hidden("total")
-                                                                                                <div id="orderInformation">
-                                                                                                    @Html.Partial("_OrderInformationPartial", Model.OrderInformation)
-                                                                                                </div>            }
+                @Html.Hidden("month")
+                @Html.Hidden("profile")
+                @Html.Hidden("combo")
+                @Html.Hidden("total")
+
+<div id="orderInformation">
+    @Html.Partial("_OrderInformationPartial", Model.OrderInformation)
+</div>}
+
         </div>
         <div class="order-footer text-center my-4">
             <div class="row">
@@ -213,6 +252,7 @@
 </section>
 
 @section scripts{
+
     <script>
 
         //Scroll Fix Top Netfix
@@ -517,5 +557,6 @@
         $(document).on("click", ".check-promotion", function () {
             submitForm();
         })
+
     </script>
 }

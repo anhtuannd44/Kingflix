@@ -817,37 +817,37 @@ namespace Kingflix.Controllers
             return PartialView("_PaymentDetailsPartial", model);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> ConfirmPayment(int? paymentMethod, string orderId)
-        {
-            var result = new ResultViewModel();
-            try
-            {
-                var order = db.Order.Find(orderId);
-                var userId = User.Identity.GetUserId();
-                var user = db.Users.Find(userId);
-                var createUrl = await _apiService.SendOrderToBaoKim(order.OrderId, order.Price, "Thanh toán đơn hàng " + order.OrderId, "https://kingflix.vn/Manage/giftcodelist", "https://kingflix.vn/Manage/giftcodelist", "https://kingflix.vn/Manage/giftcodelist", user.Email, user.PhoneNumber, string.IsNullOrEmpty(user.FullName) ? user.Email : user.FullName, user.Address, null);
-                if (createUrl.status == "success")
-                {
-                    result.status = "success";
-                    result.redirect_url = createUrl.redirect_url;
-                    result.message = "Thành công, trang sẽ được chuyển hướng để thanh toán";
-                }
-                else
-                {
-                    result.status = "error";
-                    result.redirect_url = "#";
-                    result.message = "Thất bại! Vui lòng thử lại sau";
-                }
-            }
-            catch
-            {
-                result.status = "error";
-                result.redirect_url = "#";
-                result.message = "Thất bại! Vui lòng thử lại sau";
-            }
-            return Json(result, JsonRequestBehavior.DenyGet);
-        }
+        //[HttpPost]
+        //public async Task<ActionResult> ConfirmPayment(int? paymentMethod, string orderId)
+        //{
+        //    var result = new ResultViewModel();
+        //    try
+        //    {
+        //        var order = db.Order.Find(orderId);
+        //        var userId = User.Identity.GetUserId();
+        //        var user = db.Users.Find(userId);
+        //        var createUrl = await _apiService.SendOrderToBaoKim(order.OrderId, order.Price, "Thanh toán đơn hàng " + order.OrderId, "https://kingflix.vn/Manage/giftcodelist", "https://kingflix.vn/Manage/giftcodelist", "https://kingflix.vn/Manage/giftcodelist", user.Email, user.PhoneNumber, string.IsNullOrEmpty(user.FullName) ? user.Email : user.FullName, user.Address, null);
+        //        if (createUrl.status == "success")
+        //        {
+        //            result.status = "success";
+        //            result.redirect_url = createUrl.redirect_url;
+        //            result.message = "Thành công, trang sẽ được chuyển hướng để thanh toán";
+        //        }
+        //        else
+        //        {
+        //            result.status = "error";
+        //            result.redirect_url = "#";
+        //            result.message = "Thất bại! Vui lòng thử lại sau";
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        result.status = "error";
+        //        result.redirect_url = "#";
+        //        result.message = "Thất bại! Vui lòng thử lại sau";
+        //    }
+        //    return Json(result, JsonRequestBehavior.DenyGet);
+        //}
 
         [HttpPost]
         public ActionResult OrderCancel(string orderId)

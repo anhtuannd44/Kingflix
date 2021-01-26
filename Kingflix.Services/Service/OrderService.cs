@@ -207,7 +207,7 @@ namespace Kingflix.Services
         {
             return _orderRepository.GetAll().Where(a => a.Status == OrderStatus.WaitingForPay).Count();
         }
-        public OrderInformationViewModel CheckPromotion(string code, string categoryId, double month, int profile, string combo, string userId, bool isAuthenticated)
+        public OrderInformationViewModel CheckPromotion(string code, string categoryId, double month, int profile, string upsale, string userId, bool isAuthenticated)
         {
             var result = new OrderInformationViewModel();
             var voucher = new VoucherResultViewModel();
@@ -220,7 +220,7 @@ namespace Kingflix.Services
                 if (userReferral.Id == userId)
                 {
                     result.Status = "notAuth";
-                    result.Message = "Bạn không thể dùng mã cho chính bạn!";
+                    result.Message = "<p class='text-danger'>Bạn không thể dùng mã cho chính bạn!</p>";
                 }
                 else
                 {
@@ -228,12 +228,12 @@ namespace Kingflix.Services
                     if (checkOrder > 0)
                     {
                         result.Status = "error";
-                        result.Message = "Mã khuyến mãi này đã được sử dụng hoặc hết hạn!";
+                        result.Message = "<p class='text-danger'>Mã khuyến mãi này đã được sử dụng hoặc hết hạn!</p>";
                     }
                     else if (!isAuthenticated)
                     {
                         result.Status = "error";
-                        result.Message = "Bạn phải đăng nhập mới áp dụng được mã giới thiệu!";
+                        result.Message = "<p class='text-danger'>Bạn phải đăng nhập mới áp dụng được mã giới thiệu!</p>";
                     }
                     else
                     {
@@ -308,13 +308,13 @@ namespace Kingflix.Services
                     else
                     {
                         result.Status = "Error";
-                        result.Message = "Mã khuyến mãi không áp dụng cho gói của bạn!";
+                        result.Message = "<p class='text-danger'>Mã khuyến mãi không áp dụng cho gói của bạn!</p>";
                     }
                 }
             }
             else if (!string.IsNullOrEmpty(code) && string.IsNullOrEmpty(result.Message))
             {
-                result.Message = "Mã khuyến mãi hết hạn hoặc đã sử dụng!";
+                result.Message = "<p class='text-danger'>Mã khuyến mãi hết hạn hoặc đã sử dụng!</p>";
             }
             if (result.PriceSale > result.Price)
                 result.PriceSale = result.Price;
@@ -324,9 +324,9 @@ namespace Kingflix.Services
 
             result.Total = result.Price - result.PriceSale;
 
-            if (!string.IsNullOrEmpty(combo))
+            if (!string.IsNullOrEmpty(upsale))
             {
-                var ComboArray = combo.Split(',');
+                var ComboArray = upsale.Split(',');
                 foreach (var item in ComboArray)
                 {
                     if (!string.IsNullOrEmpty(item))
@@ -350,7 +350,7 @@ namespace Kingflix.Services
                 return false;
             return true;
         }
-        public async Task<ResultViewModel> ConfirmPayment(OrderViewModel order, int? paymentMethod, TypeOfCategory Type, PaymentType PaymentType, string code, string serial, string telco, int amount, string userId)
+        public async Task<ResultViewModel> ConfirmPayment(OrderViewModel order, int? paymentMethod, PaymentType PaymentType, string code, string serial, string telco, int amount, string userId)
         {
             var result = new ResultViewModel();
 
@@ -377,6 +377,7 @@ namespace Kingflix.Services
                         UserId = userId,
                         PaymentId = order.PaymentMethod,
                         VoucherId = order.VoucherId,
+                        Type = OrderType.Order,
                         IsSendMail = false,
                         AmountMoney = amount
                     };
@@ -403,11 +404,31 @@ namespace Kingflix.Services
                             }
                         }
                     }
+                   
+                    _orderRepository.Create(orderItem);
+                    if (orderDetailsList.Count > 0)
+                        _orderDetailsRepository.CreateRange(orderDetailsList);
+                    _unitOfWork.SaveChanges();
+
                     var user = _userRepository.GetById(userId);
                     var paymentId = _paymentRepository.Find(paymentMethod).Type;
                     if (PaymentType == PaymentType.Visa || PaymentType == PaymentType.QRCode || PaymentType == PaymentType.InternetBanking)
                     {
-                        result = await _apiService.SendOrderToBaoKim(orderItem.OrderId, orderItem.Price, "Thanh toán đơn hàng " + orderItem.OrderId, "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId, "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId, "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId, user.Email, user.PhoneNumber, string.IsNullOrEmpty(user.FullName) ? user.Email : user.FullName, user.Address, Convert.ToInt32(paymentId));
+                        var dataSendToBaoKim = new DataSendToBaoKim()
+                        {
+                            mrc_order_id = orderItem.OrderId,
+                            total_amount = orderItem.Price,
+                            description = "Thanh toán đơn hàng " + orderItem.OrderId,
+                            url_success = "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId,
+                            url_cancel = "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId,
+                            url_detail = "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId,
+                            customer_email = user.Email,
+                            customer_phone = user.PhoneNumber ?? "0000000000",
+                            customer_name = user.FullName ?? user.Email,
+                            customer_address = user.Address ?? "Không có thông tin",
+                            bpm_id = Convert.ToInt32(paymentId)
+                        };
+                        result = await _apiService.SendOrderToBaoKim(dataSendToBaoKim);
                     }
                     else if (PaymentType == PaymentType.Card)
                     {
@@ -423,9 +444,7 @@ namespace Kingflix.Services
                     if (result.status == "success")
                     {
                         orderItem.ApiOrderId = result.APIOrderId ?? string.Empty;
-                        _orderRepository.Create(orderItem);
-                        if (orderDetailsList.Count > 0)
-                            _orderDetailsRepository.CreateRange(orderDetailsList);
+                        _orderRepository.Update(orderItem);
                         _unitOfWork.SaveChanges();
                     }
                 }
