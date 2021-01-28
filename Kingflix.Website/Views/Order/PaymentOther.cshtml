@@ -37,12 +37,12 @@
                             {
                                 case OrderStatus.WaitingForPay:
                                     {
-                                        <span class="badge badge-success">@OrderStatus.WaitingForPay.GetEnumDisplayName()</span>
+                                        <span class="badge badge-danger">@OrderStatus.WaitingForPay.GetEnumDisplayName()</span>
                                         break;
                                     }
                                 case OrderStatus.Paid:
                                     {
-                                        <span class="badge badge-success">@OrderStatus.Paid.GetEnumDisplayName()</span>
+                                        <span class="badge badge-warning">@OrderStatus.Paid.GetEnumDisplayName()</span>
                                         break;
                                     }
                                 case OrderStatus.Done:
@@ -52,7 +52,7 @@
                                     }
                                 case OrderStatus.Cencelled:
                                     {
-                                        <span class="badge badge-success">@OrderStatus.Cencelled.GetEnumDisplayName()</span>
+                                        <span class="badge badge-dark">@OrderStatus.Cencelled.GetEnumDisplayName()</span>
                                         break;
                                     }
                                 default:
@@ -112,14 +112,15 @@
                 <div class="card card-shadow mb-4">
                     <div class="card-body">
                         <h4 class="mb-4">Thông tin thanh toán</h4>
+                        @if (Model.Payments.Logo != null)
+                        {
+                            <div class="text-center">
+                                <img width="80" src="@imgSrc" />
+                            </div>
+                        }
                         <hr />
                         <p>
                             Hình thức thanh toán: <strong id="Name">@Model.Payments.Name</strong>
-                            <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#Name" data-toggle="tooltip" data-title="Sao chép"></i>
-                        </p>
-                        <p>
-                            Nội dung chuyển khoản: <strong id="Content">Thanh toan don hang @Model.OrderId</strong>
-                            <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#Content" data-toggle="tooltip" data-title="Sao chép"></i>
                         </p>
                         <p>
                             Số tài khoản: <strong id="AccountNumber">@Model.Payments.AccountNumber</strong>
@@ -129,19 +130,21 @@
                             Chủ tài khoản: <strong id="AccountName">@Model.Payments.AccountName</strong>
                             <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#AccountName" data-toggle="tooltip" data-title="Sao chép"></i>
                         </p>
+                         <p>
+                            Nội dung chuyển khoản: <strong id="Content">Thanh toan don hang @Model.OrderId</strong>
+                            <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#Content" data-toggle="tooltip" data-title="Sao chép"></i>
+                        </p>
                         @if (Model.Payments.Type == PaymentType.EWallet)
                         {
-                            <div class="text-center">
-                                <img src="~/Content/Upload/Images/@Model.Payments.ImageId" width="400" />
-                            </div>
-                        }
-                        else
-                        {
-                            <p>
-                                Chi nhánh: <strong id="AccountAddress">@Model.Payments.AccountAddress</strong>
-                                <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#AccountAddress" data-toggle="tooltip" data-title="Sao chép"></i>
-                            </p>
-                        }
+                    <div class="text-center">
+                        <img src="~/Content/Upload/Images/@Model.Payments.ImageId" width="400" />
+                    </div> }
+                else
+                {
+                    <p>
+                        Chi nhánh: <strong id="AccountAddress">@Model.Payments.AccountAddress</strong>
+                        <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#AccountAddress" data-toggle="tooltip" data-title="Sao chép"></i>
+                    </p>}
 
                     </div>
                 </div>

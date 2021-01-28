@@ -1,4 +1,4 @@
-﻿@using Kingflix.Domain.Enumerables
+﻿@using Kingflix.Utilities
 @model Kingflix.Domain.DomainModel.Product
 
 @{
@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6" id="CycleArea" style="display: @(Model.CategoryId == NETFLIX2?"block":"none")">
+                        <div class="col-md-6" id="CycleArea" style="display: @(Model.CategoryId == Const.NETFLIX2?"block":"none")">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Cycle, htmlAttributes: new { @class = "control-label" })
                                 @Html.EnumDropDownListFor(model => model.Cycle, htmlAttributes: new { @class = "form-control select2-hidden-search" })
@@ -73,13 +73,11 @@
             <div class="card">
                 <div class="card-body py-0">
                     <h6 class=" my-4">Trạng thái tài khoản</h6>
-                    <div class="form-group row">
-                        <div class="col-md-7">
-                                @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
-                        </div>
-                        <div class="col-md-5">
-                            <button type="submit" id="submitFormButton" class="btn btn-gradient-primary btn-rounded btn-block px-1">Hoàn tất</button>
-                        </div>
+                    <div class="form-group">
+                        @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" id="submitFormButton" class="btn btn-gradient-primary btn-rounded btn-block px-1 btn-sm">Hoàn tất</button>
                     </div>
                 </div>
             </div>

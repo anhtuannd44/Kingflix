@@ -211,6 +211,7 @@ namespace Kingflix.Services
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = await client.PostAsync(redirect_url, null);
                 HttpContent content = response.Content;
+                var a = await content.ReadAsStringAsync();
                 var data = await content.ReadAsAsync<PaymentCardResult>();
 
                 if (data.code == 0)

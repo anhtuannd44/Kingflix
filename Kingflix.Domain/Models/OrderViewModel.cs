@@ -24,13 +24,25 @@ namespace Kingflix.Domain.ViewModel
     public class OrderViewModel
     {
         public string VoucherId { get; set; }
+        public string CategoryId { get; set; }
+        public double Month { get; set; }
+        public int Profile { get; set; }
         public int? PaymentMethod { get; set; }
         public OrderType OrderType { get; set; }
         public double Price { get; set; }
         public List<OrderDetails> OrderDetails { get; set; } = new List<OrderDetails>();
 
     }
-   
+
+    public class OrderDetailsInputViewModel
+    {
+        public string CategoryId { get; set; }
+        public double Month { get; set; }
+        public bool IsGuarantee { get; set; }
+        public bool IsKingflixAccount { get; set; }
+        public string UserAccount { get; set; }
+        public string UserPassword { get; set; }
+    }
     public class VoucherViewModel
     {
         public string VoucherId { get; set; }

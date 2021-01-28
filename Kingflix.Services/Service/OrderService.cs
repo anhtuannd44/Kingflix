@@ -11,7 +11,6 @@ using System.Web;
 using Kingflix.Utilities;
 using System.Linq.Expressions;
 using Kingflix.Services.Interfaces;
-using System.Web.Mvc;
 
 namespace Kingflix.Services
 {
@@ -64,7 +63,7 @@ namespace Kingflix.Services
                 list = list.Where(a => a.Status == status);
 
             if (!isAcceptPayment)
-                list = list.Where(a => a.File != null && a.Status == OrderStatus.WaitingForPay);
+                list = list.Where(a => a.File != null && (a.Status == OrderStatus.WaitingForPay || a.Status == OrderStatus.Paid));
             return list.OrderByDescending(a => a.DateCreated).ToList();
         }
         public IEnumerable<Order> GetOrderList(Expression<Func<Order, bool>> predicate = null)
@@ -74,6 +73,24 @@ namespace Kingflix.Services
         public Order GetOrderById(string orderId)
         {
             return _orderRepository.GetById(orderId);
+        }
+
+        public bool EditOrder(Order order)
+        {
+            try
+            {
+                foreach (var item in order.OrderDetails)
+                {
+                    _orderDetailsRepository.Update(item);
+                }
+                _orderRepository.Update(order);
+                _unitOfWork.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public ResultViewModel UpdateOrder(string orderId, OrderStatus status, string cancelNote, bool confirmUserAccount, string apiId = null)
@@ -188,7 +205,7 @@ namespace Kingflix.Services
             try
             {
                 order.Status = status;
-                order.CancelNote = status == OrderStatus.Cencelled ? cancelNote : string.Empty;
+                order.CancelNote = status == OrderStatus.Cancelled ? cancelNote : string.Empty;
                 order.DateConfirm = DateTime.Now;
                 order.IsSendMail = false;
                 _orderRepository.Update(order);
@@ -203,11 +220,7 @@ namespace Kingflix.Services
             }
             return result;
         }
-        public int GetOrderNotiCount()
-        {
-            return _orderRepository.GetAll().Where(a => a.Status == OrderStatus.WaitingForPay).Count();
-        }
-        public OrderInformationViewModel CheckPromotion(string code, string categoryId, double month, int profile, string upsale, string userId, bool isAuthenticated)
+        public OrderInformationViewModel CheckPromotion(string code, string categoryId, double month, int profile, List<OrderDetailsInputViewModel> upsale, string userId, bool isAuthenticated)
         {
             var result = new OrderInformationViewModel();
             var voucher = new VoucherResultViewModel();
@@ -220,7 +233,7 @@ namespace Kingflix.Services
                 if (userReferral.Id == userId)
                 {
                     result.Status = "notAuth";
-                    result.Message = "<p class='text-danger'>Bạn không thể dùng mã cho chính bạn!</p>";
+                    result.Message = "Bạn không thể dùng mã cho chính bạn!";
                 }
                 else
                 {
@@ -228,19 +241,19 @@ namespace Kingflix.Services
                     if (checkOrder > 0)
                     {
                         result.Status = "error";
-                        result.Message = "<p class='text-danger'>Mã khuyến mãi này đã được sử dụng hoặc hết hạn!</p>";
+                        result.Message = "Mã khuyến mãi này đã được sử dụng hoặc hết hạn!";
                     }
                     else if (!isAuthenticated)
                     {
                         result.Status = "error";
-                        result.Message = "<p class='text-danger'>Bạn phải đăng nhập mới áp dụng được mã giới thiệu!</p>";
+                        result.Message = "Bạn phải đăng nhập mới áp dụng được mã giới thiệu!";
                     }
                     else
                     {
                         result.Status = "Success";
                         result.VoucherInformation.VoucherId = code;
                         result.VoucherInformation.VoucherName = "Ưu đãi chương trình giới thiệu";
-                        result.VoucherInformation.VoucherPolicy = "<p> - Mã giới thiệu áp dụng cho lần đầu tiên mua hàng</p>";
+                        result.VoucherInformation.VoucherPolicy = "<p> - Mã giới thiệu áp dụng cho lần đầu tiên mua hàng";
                         voucher.Value = 50 - userReferral.PercentForReferral;
                         voucher.TypePromotion = VoucherType.Both;
                         voucher.TypeResult = VoucherResult.Referral;
@@ -308,13 +321,13 @@ namespace Kingflix.Services
                     else
                     {
                         result.Status = "Error";
-                        result.Message = "<p class='text-danger'>Mã khuyến mãi không áp dụng cho gói của bạn!</p>";
+                        result.Message = "Mã khuyến mãi không áp dụng cho gói của bạn!";
                     }
                 }
             }
             else if (!string.IsNullOrEmpty(code) && string.IsNullOrEmpty(result.Message))
             {
-                result.Message = "<p class='text-danger'>Mã khuyến mãi hết hạn hoặc đã sử dụng!</p>";
+                result.Message = "Mã khuyến mãi hết hạn hoặc đã sử dụng!";
             }
             if (result.PriceSale > result.Price)
                 result.PriceSale = result.Price;
@@ -324,20 +337,15 @@ namespace Kingflix.Services
 
             result.Total = result.Price - result.PriceSale;
 
-            if (!string.IsNullOrEmpty(upsale))
+            if (upsale != null)
             {
-                var ComboArray = upsale.Split(',');
-                foreach (var item in ComboArray)
+                foreach (var item in upsale)
                 {
-                    if (!string.IsNullOrEmpty(item))
+                    var comboItem = _priceRepository.Find(item.CategoryId, item.Month);
+                    if (comboItem != null)
                     {
-                        var comboDetailArray = item.Split('-');
-                        var comboItem = _priceRepository.Find(comboDetailArray[0], Convert.ToDouble(comboDetailArray[1]));
-                        if (comboItem != null)
-                        {
-                            result.Total += ((comboItem.Prices ?? comboItem.SetPrice) + (comboDetailArray[2] == "1" ? comboItem.Categories.GuaranteePrice : 0));
-                            result.Price += ((comboItem.Prices ?? comboItem.SetPrice) + (comboDetailArray[2] == "1" ? comboItem.Categories.GuaranteePrice : 0));
-                        }
+                        result.Total += ((comboItem.Prices ?? comboItem.SetPrice) + (item.IsGuarantee ? comboItem.Categories.GuaranteePrice : 0));
+                        result.Price += ((comboItem.Prices ?? comboItem.SetPrice) + (item.IsGuarantee ? comboItem.Categories.GuaranteePrice : 0));
                     }
                 }
             }
@@ -345,7 +353,7 @@ namespace Kingflix.Services
         }
         public bool IsPromotionValid(string promoId, string userId)
         {
-            var order = _orderRepository.Filter(a => a.Status != OrderStatus.Cencelled && a.UserId == userId && a.VoucherId == promoId).ToList();
+            var order = _orderRepository.Filter(a => a.Status != OrderStatus.Cancelled && a.UserId == userId && a.VoucherId == promoId).ToList();
             if (order.Count != 0)
                 return false;
             return true;
@@ -359,11 +367,6 @@ namespace Kingflix.Services
                 result.status = "error";
                 result.message = "Bạn chưa nhập đủ dữ liệu để thanh toán. Vui lòng kiểm tra lại!";
             }
-            else if (amount < order.Price && PaymentType == PaymentType.Card)
-            {
-                result.status = "error";
-                result.message = "Thất bại! Mệnh giá thẻ phải lớn hơn hoặc bằng số tiền cần thanh toán!";
-            }
             else
             {
                 try
@@ -373,7 +376,7 @@ namespace Kingflix.Services
                         OrderId = "NETFLIX" + HelperFunction.RandomString(4),
                         DateCreated = DateTime.Now,
                         Status = OrderStatus.WaitingForPay,
-                        Price = order.Price,
+                        Price = 0,
                         UserId = userId,
                         PaymentId = order.PaymentMethod,
                         VoucherId = order.VoucherId,
@@ -382,29 +385,68 @@ namespace Kingflix.Services
                         AmountMoney = amount
                     };
                     result.OrderId = orderItem.OrderId;
+                    var netflix = _priceRepository.Find(order.CategoryId, order.Month);
+                    var orderDetailsList = new List<OrderDetails>() {
+                         new OrderDetails()
+                         {
+                                CategoryId = order.CategoryId,
+                                CategoryName = netflix.Categories.Name,
+                                OrderId = orderItem.OrderId,
+                                Month = netflix.Month,
+                                Count = order.Profile,
+                                ImageId = netflix.Categories.ImageId,
+                                IsGuarantee = true,
+                                IsKingflixAccount = true,
+                                UserAccount = string.Empty,
+                                UserPassword = string.Empty
+                         }
+                    };
 
-                    var orderDetailsList = new List<OrderDetails>();
-                    if (order.OrderDetails != null)
+                    foreach (var item in order.OrderDetails)
+                    {
+                        var combo = _priceRepository.Find(item.CategoryId, item.Month);
+                        orderDetailsList.Add(new OrderDetails()
+                        {
+                            CategoryId = combo.CategoryId,
+                            CategoryName = combo.Categories.Name,
+                            OrderId = orderItem.OrderId,
+                            Month = combo.Month,
+                            Count = 1,
+                            ImageId = combo.Categories.ImageId,
+                            IsGuarantee = item.IsGuarantee,
+                            IsKingflixAccount = item.IsKingflixAccount,
+                            UserAccount = item.UserAccount,
+                            UserPassword = item.UserPassword
+                        });
+                        order.Price += combo.Prices ?? combo.SetPrice;
+                    }
+
+                    //Tính giá cuối cùng
+                    var listCombo = new List<OrderDetailsInputViewModel>();
+                    if (order.OrderDetails.Count > 0)
                     {
                         foreach (var item in order.OrderDetails)
                         {
-                            var combo = _priceRepository.Find(item.CategoryId, item.Month);
-                            if (combo != null)
+                            listCombo.Add(new OrderDetailsInputViewModel()
                             {
-                                orderDetailsList.Add(new OrderDetails()
-                                {
-                                    CategoryId = combo.CategoryId,
-                                    CategoryName = combo.Categories.Name,
-                                    OrderId = orderItem.OrderId,
-                                    Month = combo.Month,
-                                    Count = 1,
-                                    ImageId = combo.Categories.ImageId,
-                                    IsGuarantee = item.IsGuarantee
-                                });
-                            }
+                                CategoryId = item.CategoryId,
+                                Month = item.Month,
+                                IsGuarantee = item.IsGuarantee,
+                                IsKingflixAccount = item.IsKingflixAccount,
+                                UserAccount = item.UserAccount,
+                                UserPassword = item.UserPassword
+                            });
                         }
                     }
-                   
+                    order.Price = CheckPromotion(order.VoucherId, order.CategoryId, order.Month, order.Profile, listCombo, userId, true).Total;
+
+                    if (amount < order.Price && PaymentType == PaymentType.Card)
+                    {
+                        result.status = "error";
+                        result.message = "Thất bại! Mệnh giá thẻ phải lớn hơn hoặc bằng số tiền cần thanh toán!";
+                        return result;
+                    }
+
                     _orderRepository.Create(orderItem);
                     if (orderDetailsList.Count > 0)
                         _orderDetailsRepository.CreateRange(orderDetailsList);

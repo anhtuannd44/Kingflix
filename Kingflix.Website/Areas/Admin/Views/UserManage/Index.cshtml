@@ -38,9 +38,9 @@
                 </div>
             </div>
             <div class="float-right">
-                <a href="@Url.Action("Create","Product")" class="btn btn-gradient-primary btn-sm btn-rounded create-product">Thêm tài khoản</a>
-                <a href="@Url.Action("DeleteUser", "UserManage")" class="btn btn-gradient-warning btn-sm btn-rounded create-product text-dark">Xóa người dùng</a>
-                <a href="@Url.Action("DeleteProduct", "UserManage")" class="btn btn-danger btn-sm btn-rounded create-product">Xóa tài khoản hết hạn</a>
+                <a href="@Url.Action("Create","Product")" class="btn btn-gradient-primary btn-sm btn-rounded">Thêm tài khoản</a>
+                <a href="@Url.Action("DeleteUser", "UserManage")" class="btn btn-gradient-warning btn-sm btn-rounded text-dark">Xóa người dùng</a>
+                <a href="@Url.Action("DeleteProduct", "UserManage")" class="btn btn-danger btn-sm btn-rounded">Xóa tài khoản hết hạn</a>
             </div>
         </div>
         <div id="productList">
@@ -299,52 +299,6 @@
             $("#fileName").html($(this).val())
         })
 
-        $("#CreateProductForm").submit(function (e) {
-            e.preventDefault();
-            var vcfData = new FormData($('#CreateProductForm')[0]);
-            var form = $(this);
-            var url = form.attr('action');
-            $.ajax({
-                method: "POST",
-                url: url,
-                data: vcfData,
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    if (data.status == "success") {
-                        toastr.success(data.message);
-                        setTimeout(function () {
-                            location.reload();
-                        }, 1000);
-                    } else {
-                        toastr.error(data.message);
-                    }
-                },
-                error: function () {
-                    toastr.error("Có lỗi khi gửi dữ liệu. Vui lòng thử lại");
-                }
-            });
-        });
-
-        //Create product
-        $(document).on("click", ".create-product", function () {
-            $.ajax({
-                method: "GET",
-                url: "@Url.Action("Create","Product")",
-                beforeSend: function () {
-                    loadSpinner();
-                },
-                success: function (data) {
-                    $("#modalContentLg").html(data);
-                },
-                error: function () {
-                    toastr.error("Có lỗi khi gửi dữ liệu")
-                },
-                complete: function () {
-                    exitSpinner();
-                }
-            })
-        })
 
     $(document).on("click", ".remove-profile", function () {
         var profileId = $(this).data("id");

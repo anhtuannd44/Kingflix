@@ -49,37 +49,35 @@
                     @foreach (var item in Model.NetflixList)
                     {
                         var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
-
-        <div class="col plan plan-@dem" data-plan="plan-@dem">
-            <div class="netflix-plan text-center mx-auto position-relative rounded netflix-plan-@dem">
-                <div class="position-absolute netflix-plan-area">
-                    <p class="m-0">@item.Name</p>
-                </div>
-            </div>
-            <div class="position-absolute label-badge"></div>
-        </div>}
-
+                        <div class="col plan plan-@dem" data-plan="plan-@dem">
+                            <div class="netflix-plan text-center mx-auto position-relative rounded netflix-plan-@dem">
+                                <div class="position-absolute netflix-plan-area">
+                                    <p class="m-0">@item.Name</p>
+                                </div>
+                            </div>
+                            <div class="position-absolute label-badge"></div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
     <div class="container order" style="display: none" id="plans2">
         <div class="row">
-            <div class="offset-md-3 col-md-9 col-12">
+            <div class="@(Model.NetflixList.Count == 4?"offset-md-3 col-md-9 col-12": Model.NetflixList.Count == 3?"offset-md-4 col-md-8 col-12":"offset-md-6 col-md-6 col-12")">
                 <div class="row product-category" style="padding: 0 2px;">
                     @foreach (var item in Model.NetflixList)
                     {
                         var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
-
-        <div class="col plan plan-@dem" data-plan="plan-@dem">
-            <div class="netflix-plan text-center mx-auto position-relative rounded netflix-plan-@dem">
-                <div class="position-absolute netflix-plan-area">
-                    <p class="m-0">@item.Name</p>
-                </div>
-            </div>
-            <div class="position-absolute label-badge"></div>
-        </div>}
-
+                        <div class="col plan plan-@dem" data-plan="plan-@dem">
+                            <div class="netflix-plan text-center mx-auto position-relative rounded netflix-plan-@dem">
+                                <div class="position-absolute netflix-plan-area">
+                                    <p class="m-0">@item.Name</p>
+                                </div>
+                            </div>
+                            <div class="position-absolute label-badge"></div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -98,55 +96,50 @@
                         {
                             var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
 
-            <div class="col price-col plan-@dem" data-plan="plan-@dem">
-                <div class="netflix-price text-center">
-                    @{ var j = 0;}
-                    @foreach (var price in item.Prices.Where(a => a.IsShow).OrderBy(a => a.Month))
-                    {
-
-    <p class="price-list @(dem != 2 ? "" : j == 0 ? "select" : "") @(j>2?"price-list-orther":"")" style="display:@(j>2?"none":"block")" data-month="@price.Month" data-category="@item.CategoryId">
-        <span class="d-none d-md-block" style="font-size: 1rem">
-            @string.Format("{0:0,0 ₫}", price.SetPrice)/
-            <span style="font-size: .85rem">@price.Month tháng</span>
-            <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
-            <br />
-            @if (price.Prices.HasValue)
-            {
-
-<del style="font-size: .95rem">@string.Format("{0:0,0 ₫}", price.Prices)</del>
-                        <br />}
-            @if (!string.IsNullOrEmpty(price.TextFixed))
-            {
-
-<span class="badge badge-primary">@price.TextFixed</span>}
-
-        </span>
-        <span class="d-block d-md-none" style="font-size: 1rem; line-height: 1rem">
-            @string.Format("{0:0,0 ₫}", price.SetPrice)
-
-            <br />
-            <span style="font-size: .75rem; color:#7e8082; font-weight: 400">(@price.Month tháng)</span>
-            <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
-            <br />
-            @if (price.Prices.HasValue)
-            {
-
-<del style="font-size: .75rem">@string.Format("{0:0,0 ₫}", price.Prices)</del>
-                        <br />}
-
-        </span>
-    </p>j++;
-}
-
-                </div>
-            </div>i++;
-        }
-
+                            <div class="col price-col plan-@dem" data-plan="plan-@dem">
+                                <div class="netflix-price text-center">
+                                    @{ var j = 0;}
+                                    @foreach (var price in item.Prices.Where(a => a.IsShow).OrderBy(a => a.Month))
+                                    {
+                                        <p class="price-list @(dem != 2 ? "" : j == 0 ? "select" : "") @(j>2?"price-list-orther":"")" style="display:@(j>2?"none":"block")" data-month="@price.Month" data-category="@item.CategoryId">
+                                            <span class="d-none d-md-block" style="font-size: 1rem">
+                                                @string.Format("{0:0,0 ₫}", price.SetPrice)/
+                                                <span style="font-size: .85rem">@price.Month tháng</span>
+                                                <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
+                                                <br />
+                                                @if (price.Prices.HasValue)
+                                                {
+                                                    <del style="font-size: .95rem">@string.Format("{0:0,0 ₫}", price.Prices)</del>
+                                                    <br />
+                                                }
+                                                @if (!string.IsNullOrEmpty(price.TextFixed))
+                                                {
+                                                    <span class="badge badge-primary">@price.TextFixed</span>
+                                                }
+                                            </span>
+                                            <span class="d-block d-md-none" style="font-size: 1rem; line-height: 1rem">
+                                                @string.Format("{0:0,0 ₫}", price.SetPrice)
+                                                <br />
+                                                <span style="font-size: .75rem; color:#7e8082; font-weight: 400">(@price.Month tháng)</span>
+                                                <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
+                                                <br />
+                                                @if (price.Prices.HasValue)
+                                                {
+                                                    <del style="font-size: .75rem">@string.Format("{0:0,0 ₫}", price.Prices)</del>
+                                                    <br />
+                                                }
+                                            </span>
+                                        </p>
+                                        j++;
+                                    }
+                                    </div>
+                            </div>
+                            i++;
+                        }
                     </div>
                     <div class="text-center">
                         <p class="price-list-show-more font-weight-bold text-primary d-block" id="showMore" style="cursor: pointer" value="NotActive">
                             Xem thêm
-
                             <i class="mdi mdi-chevron-down mt-1" id="iconPriceShow" style="font-size: 1.25rem; vertical-align: middle"></i>
                         </p>
                     </div>
@@ -155,91 +148,77 @@
             @{i = 0;}
             @foreach (var item in Model.ListCategoryDetails)
             {
-
-<div class="row align-items-center border-top py-3">
-    <div class="@(Model.NetflixList.Count == 4?"col-md-3 col-12":Model.NetflixList.Count == 3?"col-md-4 col-12":"col-md-6 col-12")">
-        <p class="text-black m-0">@item.Name</p>
-    </div>
-    <div class="@(Model.NetflixList.Count == 4?"col-md-9 col-12":Model.NetflixList.Count == 3?"col-md-8 col-12":"col-md-6 col-12")">
-        <div class="row align-items-center">
-            @if (item.Type != CategoryDetailsType.Support && item.Type != CategoryDetailsType.TimeAcceptOrder && item.Type != CategoryDetailsType.ScreenCount)
-            {
-                foreach (var category in Model.NetflixList)
+                <div class="row align-items-center border-top py-3">
+                    <div class="@(Model.NetflixList.Count == 4?"col-md-3 col-12":Model.NetflixList.Count == 3?"col-md-4 col-12":"col-md-6 col-12")">
+                        <p class="text-black m-0">@item.Name</p>
+                    </div>
+                    <div class="@(Model.NetflixList.Count == 4?"col-md-9 col-12":Model.NetflixList.Count == 3?"col-md-8 col-12":"col-md-6 col-12")">
+                        <div class="row align-items-center">
+                            @if (item.Type != CategoryDetailsType.Support && item.Type != CategoryDetailsType.TimeAcceptOrder && item.Type != CategoryDetailsType.ScreenCount)
+                            {
+                                foreach (var category in Model.NetflixList)
+                                {
+                                    var dem = category.CategoryId == Const.NETFLIX0 ? 0 : category.CategoryId == Const.NETFLIX1 ? 1 : category.CategoryId == Const.NETFLIX2 ? 2 : category.CategoryId == Const.NETFLIX3 ? 3 : 4;
+                                    <div class="col text-center plan plan-@dem" data-plan="plan-@dem">
+                                        @if (item.CheckNetflix1.Value)
+                                        {
+                                            <i class="mdi mdi-check"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="mdi mdi-close"></i>
+                                        }
+                                    </div>
+                                }
+                             }
+                            else
+                            {
+                                foreach (var category in Model.NetflixList)
+                                {
+                                    var dem = category.CategoryId == Const.NETFLIX0 ? 0 : category.CategoryId == Const.NETFLIX1 ? 1 : category.CategoryId == Const.NETFLIX2 ? 2 : category.CategoryId == Const.NETFLIX3 ? 3 : 4;
+                                    <div class="col text-center plan plan-@dem" data-plan="plan-@dem">
+                                        @if (item.ContentNetflix1 == "True")
+                                        {
+                                            <i class="mdi mdi-check"></i>
+                                        }
+                                        else if (item.ContentNetflix1 == "False")
+                                        {
+                                            <i class="mdi mdi-close"></i>
+                                        }
+                                        else
+                                        {
+                                            <p class="mt-2 mb-0 check-text">@item.ContentNetflix1</p>
+                                        }
+                                    </div>
+                                }
+                             }
+                        </div>
+                    </div>
+                </div>
+                if (i == 3)
                 {
-                    var dem = category.CategoryId == Const.NETFLIX0 ? 0 : category.CategoryId == Const.NETFLIX1 ? 1 : category.CategoryId == Const.NETFLIX2 ? 2 : category.CategoryId == Const.NETFLIX3 ? 3 : 4;
+                    <div class="row align-items-center border-top py-2">
+                        <div class="col-md-4 col-12">
+                            <p class="text-black m-0 d-none d-md-block product-title">Chọn số profile muốn mua</p>
+                            <p class="text-black d-block d-md-none text-center product-title">Số profile</p>
+                        </div>
+                        <div class="col-md-8 col-12 text-center">
+                            <div class="qty d-inline-block">
+                                <span class="minus">-</span>
+                                <input type="text" class="count" name="netflixProfile" id="netflixProfile" value="1" disabled="">
+                                <span class="plus">+</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+                i++;
+            }
 
-<div class="col text-center plan plan-@dem" data-plan="plan-@dem">
-    @if (item.CheckNetflix1.Value)
-    {
-
-<i class="mdi mdi-check"></i> }
-else
-{
-
-<i class="mdi mdi-close"></i>}
-
-</div> }
-}
-else
-{
-foreach (var category in Model.NetflixList)
-{
-var dem = category.CategoryId == Const.NETFLIX0 ? 0 : category.CategoryId == Const.NETFLIX1 ? 1 : category.CategoryId == Const.NETFLIX2 ? 2 : category.CategoryId == Const.NETFLIX3 ? 3 : 4;
-
-<div class="col text-center plan plan-@dem" data-plan="plan-@dem">
-    @if (item.ContentNetflix1 == "True")
-    {
-
-<i class="mdi mdi-check"></i> }
-else if (item.ContentNetflix1 == "False")
-{
-
-<i class="mdi mdi-close"></i> }
-else
-{
-
-<p class="mt-2 mb-0 check-text">@item.ContentNetflix1</p>}
-
-</div>}
-}
-
-        </div>
-    </div>
-</div> if (i == 3)
-{
-
-<div class="row align-items-center border-top py-2">
-    <div class="col-md-4 col-12">
-        <p class="text-black m-0 d-none d-md-block product-title">Chọn số profile muốn mua</p>
-        <p class="text-black d-block d-md-none text-center product-title">Số profile</p>
-    </div>
-    <div class="col-md-8 col-12 text-center">
-        <div class="qty d-inline-block">
-            <span class="minus">-</span>
-            <input type="text" class="count" name="netflixProfile" id="netflixProfile" value="1" disabled="">
-            <span class="plus">+</span>
-        </div>
-    </div>
-</div>}
-i++;
-}
-
-            <div id="EndFix"></div>
-            @Html.Action("GetCombo")
-
-            @using (Html.BeginForm("CheckPromotion", null, FormMethod.Post, new { @id = "promoCodeForm", @class = "h-100" }))
-            {
-                @Html.AntiForgeryToken()
-                @Html.Hidden("categoryId")
-                @Html.Hidden("month")
-                @Html.Hidden("profile")
-                @Html.Hidden("combo")
-                @Html.Hidden("total")
-
-<div id="orderInformation">
-    @Html.Partial("_OrderInformationPartial", Model.OrderInformation)
-</div>}
-
+        <div id="EndFix"></div>
+        @Html.Action("GetCombo")
+            <div id="orderInformation">
+                @Html.Partial("_OrderInformationPartial", Model.OrderInformation)
+            </div>
         </div>
         <div class="order-footer text-center my-4">
             <div class="row">
@@ -250,11 +229,10 @@ i++;
         </div>
     </div>
 </section>
+@Html.AntiForgeryToken()
 
 @section scripts{
-
     <script>
-
         //Scroll Fix Top Netfix
         window.onscroll = function () { fixTop() };
         var plans = $("#plans");
@@ -274,7 +252,7 @@ i++;
             $('.count').prop('disabled', true);
             $(document).on('click', '.plus', function () {
                 $('.count').val(parseInt($('.count').val()) + 1);
-                submitForm();
+                SubmitForm("CheckPromotion");
             });
             $(document).on('click', '.minus', function () {
                 $('.count').val(parseInt($('.count').val()) - 1);
@@ -282,7 +260,7 @@ i++;
                     $('.count').val(1);
                 }
                 else {
-                    submitForm();
+                    SubmitForm("CheckPromotion");
                 }
             });
         });
@@ -302,8 +280,8 @@ i++;
                 $("#iconPriceShow").addClass("mdi-chevron-up");
             }
         })
-        $(document).on("click", ".combo-order", function () {
-            submitForm();
+        $(document).on("click", ".order-submit-step1", function () {
+           SubmitForm("ConfirmStep1");
         })
 
         $(document).ready(function () {
@@ -339,7 +317,7 @@ i++;
                 $("#priceList .price-list").removeClass("select");
                 $("." + plan + " .price-list").first().addClass("select");
             };
-            submitForm();
+            SubmitForm("CheckPromotion");
         })
 
         $(".price-list").click(function () {
@@ -351,84 +329,14 @@ i++;
                 $(".price-col").removeClass('active');
                 $("." + plan).addClass("active");
             }
-            submitForm();
+            SubmitForm("CheckPromotion")
         })
-
-
         $(function () {
             $(".plan-2").addClass("active");
-            AddDataToForm();
+            SubmitForm("CheckPromotion")
         })
 
-        $("#promoCodeForm").submit(function (e) {
-            e.preventDefault();
-            var form = $(this);
-            var url = form.attr('action');
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: form.serialize(),
-                success: function (data) {
-                    $("#orderInformation").html(data);
-                }
-            });
-        });
-        function AddDataToForm() {
-
-            var CategoryId, Month;
-            $(".price-list").each(function () {
-                if ($(this).hasClass("select")) {
-                    CategoryId = $(this).data("category");
-                    Month = $(this).data("month");
-                    return false;
-                }
-            })
-            var combo = "";
-            $(".combo-item").each(function () {
-                if ($(this).hasClass("active")) {
-                    var comboId = $(this).data("combo-id");
-                    $(".combo-option-" + comboId).each(function () {
-                        if ($(this).hasClass("active")) {
-                            combo += $(this).data("combo-category-id") + "-" + $(this).data("combo-month") + "-";
-                        }
-                    });
-                    $(".combo-guarantee-" + comboId).each(function () {
-                        if ($(this).hasClass("active")) {
-                            combo += $(this).data("guarantee") + "-";
-                        }
-                    })
-                    $(".combo-account-" + comboId).each(function () {
-                        if ($(this).hasClass("active")) {
-                            combo += $(this).data("account-client");
-                            if ($(this).data("account-client") == 1) {
-                                //Check input Tài khoản người dùng
-                                if ($("#userClient_" + comboId).val().length == 0 || $("#passClient_" + comboId).length == 0) {
-                                    toastr.error("Vui lòng kiểm tra Tên đăng nhập và Tài khoản của bạn trước khi gửi đơn hàng!");
-                                    isDone = false;
-                                }
-                                else {
-                                    combo += "-" + $("#userClient_" + comboId).val() + "-" + $("#passClient_" + comboId).val();
-                                }
-                            }
-                            combo += ",";
-                        }
-                    })
-                }
-            });
-            console.log(combo);
-            $("#categoryId").val(CategoryId);
-            $("#month").val(Month);
-            $("#profile").val($("#netflixProfile").val());
-            $("#combo").val(combo);
-
-        }
-
-        function submitForm() {
-            AddDataToForm();
-            $('#promoCodeForm').trigger('submit', true);
-        }
-
-        $(".order-submit-step1").click(function () {
+        function SubmitForm(type) {
             var isDone = true;
             var CategoryId, Month;
             $(".price-list").each(function () {
@@ -438,61 +346,83 @@ i++;
                     return false;
                 }
             })
-            var combo = "";
+            var combo = [];
             $(".combo-item").each(function () {
+                var singleObj = {};
                 if ($(this).hasClass("active")) {
                     var comboId = $(this).data("combo-id");
                     $(".combo-option-" + comboId).each(function () {
                         if ($(this).hasClass("active")) {
-                            combo += $(this).data("combo-category-id") + "-" + $(this).data("combo-month") + "-";
+                            singleObj['CategoryId'] = $(this).data("combo-category-id");
+                            singleObj['Month'] = $(this).data("combo-month");
                         }
                     });
                     $(".combo-guarantee-" + comboId).each(function () {
                         if ($(this).hasClass("active")) {
-                            combo += $(this).data("guarantee") + "-";
+                            singleObj['IsGuarantee'] = $(this).data("guarantee");
                         }
                     })
                     $(".combo-account-" + comboId).each(function () {
+                        singleObj['IsKingflixAccount'] = 0;
                         if ($(this).hasClass("active")) {
-                            combo += $(this).data("account-client");
-                            if ($(this).data("account-client") == 1) {
+                            if ($(this).data("account-client") == 0) {
+                                singleObj['IsKingflixAccount'] = 1;
                                 //Check input Tài khoản người dùng
                                 if ($("#userClient_" + comboId).val().length == 0 || $("#passClient_" + comboId).length == 0) {
                                     toastr.error("Vui lòng kiểm tra Tên đăng nhập và Tài khoản của bạn trước khi gửi đơn hàng!");
                                     isDone = false;
                                 }
                                 else {
-                                    combo += "-" + $("#userClient_" + comboId).val() + "-" + $("#passClient_" + comboId).val();
+                                    singleObj['UserAccount'] = $("#userClient_" + comboId).val();
+                                    singleObj['UserPassword'] = $("#passClient_" + comboId).val();
                                 }
                             }
-                            combo += ",";
                         }
                     })
                 }
+                combo.push(singleObj);
             });
-            if (isDone)
+
+            if (isDone) {
+                var url = "";
+                if (type == "CheckPromotion")
+                    url = "@Url.Action("CheckPromotion")";
+                else if (type == "ConfirmStep1")
+                    url = "@Url.Action("ConfirmStep1")";
+
                 $.ajax({
-                    method: "POST",
-                    url: "/Order/ConfirmStep1",
-                    beforeSend: function () {
-                        loadSpinner();
-                    },
+                    type: "POST",
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                    url: url,
                     data: {
+                        promoCode: $("#voucher").val(),
                         categoryId: CategoryId,
                         month: Month,
                         profile: $("#netflixProfile").val(),
-                        Total: $("#Total").val(),
-                        promoCode: $("#voucher").val(),
-                        combo: combo
+                        combo: combo,
+                        __RequestVerificationToken: $('[name="__RequestVerificationToken"]').val()
+                    },
+                    beforeSend: function () {
+                        loadSpinner();
                     },
                     success: function (data) {
-                        window.location.href = data;
+                        if (type == "CheckPromotion") {
+                            $("#orderInformation").html(data);
+                        }
+                        else {
+                            window.location.href = data;
+                        }
                     },
                     error: function () {
                         toastr.error("Có lỗi khi gửi dữ liệu, vui lòng thử lại");
-                    }
-                })
-        })
+                    },
+                    complete: function () {
+                        exitSpinner();
+                    },
+                });
+            }
+        }
+
         $(document).on("click", ".combo-select", function () {
             $(this).parent().children(".combo-select").removeClass("active");
             $(this).addClass("active");
@@ -501,7 +431,7 @@ i++;
             CheckOptionSelected(comboId);
         })
         $(document).on("click", ".combo-account-client", function () {
-            if ($(this).data("account-client") == 1) {
+            if ($(this).data("account-client") == 0) {
                 $(this).parent().parent().children(".account-client").show();
             }
             else {
@@ -555,7 +485,7 @@ i++;
             }
         }
         $(document).on("click", ".check-promotion", function () {
-            submitForm();
+            SubmitForm("CheckPromotion")
         })
 
     </script>

@@ -11,9 +11,10 @@
         base64 = Convert.ToBase64String(Model.File);
         imgSrc = String.Format("data:image/gif;base64,{0}", base64);
     }
+    int i = 0;
 }
 
-@using (Ajax.BeginForm("UpdateOrder", "OrderAdmin", new AjaxOptions
+@using (Ajax.BeginForm("Edit", "OrderAdmin", new AjaxOptions
 {
     HttpMethod = "POST",
     OnBegin = "loadSpinner",
@@ -23,7 +24,6 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(a => a.OrderId)
-
     <div class="row">
         <div class="col-md-8">
             <div class="card">
@@ -59,39 +59,73 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.VoucherId, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.VoucherId, new { htmlAttributes = new { @class = "form-control" } })
+                                <div class="mt-2">
+                                    @Html.ValidationMessageFor(model => model.VoucherId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Thông tin đơn hàng</h4>
-                </div>
-                <div class="card-body">
-                    @foreach (var item in Model.OrderDetails)
-                    {
+            @foreach (var item in Model.OrderDetails)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Thông tin đơn hàng</h4>
+                    </div>
+                    <div class="card-body">
+                        @Html.Hidden("OrderDetails["+i+"].OrderDetailsId", item.OrderDetailsId)
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <select id="CategoryId">
+                                    <label class="lable-control">Gói sản phẩm</label>
+                                    <select name="OrderDetails[@i].CategoryId" class="select2 select-hidden-search">
                                         @foreach (var category in (List<Category>)ViewData["CategoryId"])
                                         {
-                                            <option value="@category.CategoryId" @(category.CategoryId==item.CategoryId?"selected":"")>@category.Name</option>
-                                        }
+                                            <option value="@category.CategoryId" @(category.CategoryId == item.CategoryId ? "selected" : "")>@category.Name</option>
+                                            }
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    @Html.EditorFor(model => item.Month, new { htmlAttributes = new { @class = "form-control" } })
+                                    <label class="lable-control">Số tháng</label>
+                                    @Html.TextBox("OrderDetails[" + i + "].Month", item.Month, new { @class = "form-control" })
                                     <div class="mt-2">
                                         @Html.ValidationMessageFor(model => item.Month, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                             </div>
+                            @if (!item.IsKingflixAccount)
+                            {
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="lable-control">UserName của người dùng</label>
+                                        @Html.TextBox("OrderDetails[" + i + "].UserAccount", item.UserAccount, new { @class = "form-control" })
+                                        <div class="mt-2">
+                                            @Html.ValidationMessageFor(model => item.UserAccount, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="lable-control">Mật khẩu TK người dùng</label>
+                                        @Html.TextBox("OrderDetails[" + i + "].UserPassword", item.UserPassword, new { @class = "form-control" })
+                                        <div class="mt-2">
+                                            @Html.ValidationMessageFor(model => item.UserPassword, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                    }
+                    </div>
                 </div>
-            </div>
+                i++;
+            }
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title">Thông tin thanh toán</h4>
@@ -118,27 +152,21 @@
                     <h6 class="">Chọn trạng thái xử lý</h6>
                 </div>
                 <div class="card-body py-0">
-                    <div class="form-group row">
-                        <div class="col-md-7">
-                            <select name="Status" id="Status" class="form-control select2-hidden-search">
-                                <option value="@OrderStatus.Pending" @(OrderStatus.Pending == Model.Status ? "selected" : "")>@OrderStatus.Pending.GetEnumDisplayName()</option>
-                                <option value="@OrderStatus.Done" @(OrderStatus.Done == Model.Status ? "selected" : "")>@OrderStatus.Done.GetEnumDisplayName()</option>
-                                <option value="@OrderStatus.Cencelled" @(OrderStatus.Cencelled == Model.Status ? "selected" : "")>@OrderStatus.Cencelled.GetEnumDisplayName()</option>
-                            </select>
-                        </div>
-                        <div class="col-md-5">
-                            <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-block">Cập nhật</button>
-                        </div>
+                    <div class="form-group">
+                        @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control select2-hidden-search" })
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" id="submitFormButton" class="btn btn-gradient-success btn-rounded btn-block btn-sm">Cập nhật</button>
                     </div>
                     <p class="font-italic" style="display: none;" id="doneStatus">Sau khi xác nhận "Hoàn tất". Bạn không thể chỉnh sửa lại đơn hàng này.</p>
                     <p class="font-italic" style="display: none;" id="cancelStatus">Sau khi xác nhận "Đã hủy". Bạn không thể chỉnh sửa lại đơn hàng này.</p>
                 </div>
             </div>
-            <div class="card" id="cancelNote" style="display: @(string.IsNullOrEmpty(Model.CancelNote)?"":Model.CancelNote)">
+            <div class="card" id="cancelNote" style="display: @(Model.Status == OrderStatus.Cencelled?"none":"block")">
                 <div class="card-header">
                     <h6 class="">Thêm lý do hủy</h6>
                 </div>
-                <div class="card-body py-0">
+                <div class="card-body py-1">
                     <div class="form-group row">
                         @Html.TextAreaFor(model => model.CancelNote, new { @class = "form-control", @rows = 7 })
                     </div>
@@ -151,9 +179,11 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        $.validator.methods.date = function (value, element) {
-            return this.optional($("#DateEnd")) || moment(value, "L", true).isValid();
-        }
+        $(function () {
+            $.validator.methods.date = function (value, element) {
+                return this.optional(element) || moment(value, "DD.MM.YYYY", true).isValid();
+            }
+        });
         $(document).on("change", "#Status", function () {
             if ($("#Status option:selected").text() == "Hoàn tất") {
                 $("#doneStatus").show();
@@ -176,7 +206,7 @@
             if (data.status == "success") {
                 toastr.success(data.message);
                 setTimeout(function () {
-                    window.location.href = '@Url.Action("Index", new {status = OrderStatus.Pending })';
+                    window.location.href = '@Url.Action("Index", new {status = OrderStatus.WaitingForPay })';
                 }, 1000);
             }
             else {

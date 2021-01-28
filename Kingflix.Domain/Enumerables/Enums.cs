@@ -52,7 +52,7 @@ namespace Kingflix.Domain.Enumerables
         [Display(Name = "Đang xử lý")]
         Paid = 2,
         [Display(Name = "Đã hủy")]
-        Cencelled = 3,
+        Cancelled = 3,
     }
 
     public enum OrderType

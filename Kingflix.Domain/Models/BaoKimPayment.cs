@@ -47,16 +47,15 @@ namespace Kingflix.Domain.Models
     public class PaymentCardDetails
     {
         public int user_id { get; set; }
-        public int account_id { get; set; }
-        public int amount { get; set; }
-        public int freeze_amount { get; set; }
+        public string mrc_order_id { get; set; }
+        public int? txt_id { get; set; }
         public string pin { get; set; }
         public string serial { get; set; }
-        public int type { get; set; }
+        public string type { get; set; }
+        public int tmp_amount { get; set; }
+        public int discount { get; set; }
+        public string webhooks { get; set; }
         public int stat { get; set; }
-        public string description { get; set; }
-        public int fee_amount { get; set; }
-        public int fee_display { get; set; }
         public DateTime updated_at { get; set; }
         public DateTime created_at { get; set; }
         public string id { get; set; }

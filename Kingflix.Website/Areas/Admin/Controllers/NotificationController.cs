@@ -46,7 +46,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
                     Title = "Đơn mới từ " + item.UserInformation.FullName,
                     DateCreated = item.DateCreated,
                     Type = NotificationType.Order,
-                    Link = Url.Action("Edit","OrderAdmin", new { orderId = item.OrderId })
+                    Link = Url.Action("Edit", "OrderAdmin", new { orderId = item.OrderId })
                 });
             }
             foreach (var item in support)
@@ -60,7 +60,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
                     Link = Url.Action("Edit", "Supports", new { id = item.SupportId })
                 });
             }
-            return noti.OrderByDescending(a=>a.DateCreated).ToList();
+            return noti.OrderByDescending(a => a.DateCreated).ToList();
         }
         [HttpPost]
         public int GetNotiReview()
@@ -71,6 +71,11 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         public int GetUserManageNoti()
         {
             return _supportRepository.Filter(a => a.Status == SupportStatus.Pending).Count();
+        }
+        [HttpPost]
+        public int GetOrderNoti()
+        {
+            return _orderRepository.Filter(a => a.Status == OrderStatus.Paid || a.Status == OrderStatus.WaitingForPay).Count();
         }
     }
 }

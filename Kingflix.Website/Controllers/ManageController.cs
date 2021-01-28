@@ -856,7 +856,7 @@ namespace Kingflix.Controllers
             try
             {
                 var order = db.Order.Find(orderId);
-                order.Status = OrderStatus.Cencelled;
+                order.Status = OrderStatus.Cancelled;
                 db.Entry(order).State = EntityState.Modified;
                 db.SaveChanges();
                 result.status = "success";

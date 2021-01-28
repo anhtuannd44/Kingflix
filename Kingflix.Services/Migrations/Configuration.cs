@@ -49,7 +49,8 @@ namespace Kingflix.Services.Migrations
                     Email = email,
                     DateCreated = DateTime.Now,
                     EmailConfirmed = true,
-                    TimeStep2 = DateTime.Now
+                    TimeStep2 = DateTime.Now,
+                    PhoneNumber = "0903030303"
                 };
 
                 IdentityResult result = userManager.Create(newUser, password);

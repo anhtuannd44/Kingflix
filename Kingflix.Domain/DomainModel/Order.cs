@@ -37,6 +37,7 @@ namespace Kingflix.Domain.DomainModel
         public bool IsSendMail {get;set;}
         public string PaymentUrl { get; set; }
         public OrderType Type { get; set; }
+        [Display(Name = "Mã khuyến mãi")]
         public string VoucherId { get; set; }
         public int? PaymentId { get; set; }
         public string CancelNote { get; set; }

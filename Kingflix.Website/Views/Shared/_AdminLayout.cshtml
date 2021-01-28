@@ -109,7 +109,7 @@
                         <p class="position-absolute text-white bg-danger text-center" id="userManageNoti" style="top: 50%; right: 8px; transform: translate(-8px, -50%); font-size: 0.75rem; color: #fff; width: 22px; height: 22px; line-height: 22px; border-radius: 99%; font-weight: 600; display: none;"></p>
                     </li>
                     <li class="nav-item position-relative" id="Order">
-                        <a class="nav-link" href="@Url.Action("Index","OrderAdmin", new { status = OrderStatus.Pending})">
+                        <a class="nav-link" href="@Url.Action("Index","OrderAdmin", new { status = OrderStatus.WaitingForPay } )">
                             <i class="mdi mdi-book menu-icon"></i>
                             <span class="menu-title">Đơn hàng - Gia hạn</span>
                         </a>
@@ -384,9 +384,9 @@
             });
 
             //Check Notification Order
-            @*$.ajax({
+            $.ajax({
                 method: "POST",
-                url: "@Url.Action("GetOrderNoti","OrderAdmin")",
+                url: "@Url.Action("GetOrderNoti","Notification")",
                 success: function (data) {
                     if (data != 0) {
                         $("#orderNoti").html(data);
@@ -394,12 +394,12 @@
                         $(".count-symbol").show();
                     }
                 }
-            })*@
+            })
 
             //Check Notification UserManage
-            @*$.ajax({
+            $.ajax({
                 method: "POST",
-                url: "@Url.Action("GetUserManageNoti","Supports")",
+                url: "@Url.Action("GetUserManageNoti", "Notification")",
                 success: function (data) {
                     if (data != 0) {
                         $("#userManageNoti").html(data);
@@ -409,11 +409,11 @@
                         $(".count-symbol").show();
                     }
                 }
-            })*@
+            })
             //Check new Review
-            @*$.ajax({
+            $.ajax({
                 method: "POST",
-                url: "@Url.Action("GetNotiReview","Reviews")",
+                url: "@Url.Action("GetNotiReview", "Notification")",
                 success: function (data) {
                     if (data != 0) {
                         $("#reviewCount").html(data);
@@ -423,7 +423,7 @@
                         $(".count-symbol").show();
                     }
                 }
-            })*@
+            })
         })
 
         NProgress.start();

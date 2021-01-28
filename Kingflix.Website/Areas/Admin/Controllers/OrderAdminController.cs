@@ -6,6 +6,7 @@ using System.Web.UI.WebControls;
 using Kingflix.Domain.Enumerables;
 using Kingflix.Domain.ViewModel;
 using Kingflix.Domain.Abstract;
+using System.Collections.Generic;
 
 namespace Kingflix.Website.Areas.Admin.Controllers
 {
@@ -28,6 +29,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         {
             var model = _orderService.GetOrderWithUserNotNull(status, isAcceptPayment);
             ViewBag.Status = status;
+            ViewBag.IsAcceptPayment = isAcceptPayment ? "True" : "False";
             return View(model);
         }
 
@@ -46,14 +48,28 @@ namespace Kingflix.Website.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrderId,Month,Price,Profile,Status,CategoryId,CancelNote")] Order order)
+        public ActionResult Edit([Bind(Include = "OrderId,Month,Price,Profile,Status,CategoryId,CancelNote,DateCreated")] Order order, List<OrderDetails> OrderDetails)
         {
-            var orderItem = _orderService.GetOrderById(order.OrderId);
-            orderItem.Price = order.Price;
+            order.OrderDetails = OrderDetails;
+            var updateStatus = order.Status;
             ResultViewModel result = new ResultViewModel();
+            order.Status = order.Status == OrderStatus.Done ? OrderStatus.Paid : order.Status;
+
             if (ModelState.IsValid)
             {
-                result = _orderService.UpdateOrder(order.OrderId, order.Status, order.CancelNote, false);
+                var isSuccess = _orderService.EditOrder(order);
+                if (isSuccess)
+                {
+                    result.status = "success";
+                    result.message = "Đã lưu Order thành công!";
+                }   
+                if (updateStatus == OrderStatus.Done)
+                    result = _orderService.UpdateOrder(order.OrderId, order.Status, order.CancelNote, false);
+            }
+            else
+            {
+                result.status = "error";
+                result.message = "Lỗi nhập dữ liệu. Vui lòng kiểm tra lại dữ liệu chỉnh sửa và thử lại!";
             }
             return Json(result, JsonRequestBehavior.DenyGet);
         }
@@ -63,12 +79,6 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         {
             var result = _orderService.UpdateOrder(orderId, status, cancelNote, true);
             return Json(result, JsonRequestBehavior.DenyGet);
-        }
-
-        [HttpPost]
-        public int GetOrderNoti()
-        {
-            return _orderService.GetOrderNotiCount();
         }
     }
 }

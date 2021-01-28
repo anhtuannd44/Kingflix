@@ -5,6 +5,7 @@ using Kingflix.Services.Interfaces;
 using Kingflix.Utilities;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -34,14 +35,16 @@ namespace Kingflix.Controllers
             if (isAuthenticated)
                 userId = User.Identity.GetUserId();
 
-            if (Session["order"] == null) // Nếu giỏ hàng chưa được khởi tạo
+            if (Session["order"] != null) // Nếu giỏ hàng chưa được khởi tạo
+                Session["order"] = null;  // Khởi tạo Session["order"]
+            else
                 Session["order"] = new OrderViewModel();  // Khởi tạo Session["order"]
 
             Step1ViewModel model = new Step1ViewModel
             {
                 ListCategoryDetails = _productService.GetCategoryNetflixDetails(),
                 NetflixList = _productService.GetNetflixList(),
-                OrderInformation = _orderService.CheckPromotion(promoCode, Const.NETFLIX2, 1, 1, "", userId, isAuthenticated)
+                OrderInformation = _orderService.CheckPromotion(promoCode, Const.NETFLIX2, 1, 1, null, userId, isAuthenticated)
             };
             return View(model);
         }
@@ -53,7 +56,7 @@ namespace Kingflix.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CheckPromotion(string promoCode, string categoryId, double month, int profile, string combo)
+        public ActionResult CheckPromotion(string promoCode, string categoryId, double month, int profile, List<OrderDetailsInputViewModel> combo)
         {
             var userId = string.Empty;
             var isAuthenticated = User.Identity.IsAuthenticated;
@@ -65,11 +68,9 @@ namespace Kingflix.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConfirmStep1(string categoryId, double month, int profile, string promoCode, string combo)
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmStep1(string categoryId, double month, int profile, string promoCode, List<OrderDetailsInputViewModel> combo)
         {
-            if (Session["order"] == null)
-                return Json(Url.Action("Step1"));
-
             var price = _productService.GetCategoryPrice(categoryId, month);
             if (price == null)
                 return Json(Url.Action("Step1", new { promoCode }));
@@ -77,41 +78,32 @@ namespace Kingflix.Controllers
             OrderViewModel order = Session["order"] as OrderViewModel;
 
             order.VoucherId = promoCode;
+            order.CategoryId = categoryId;
+            order.Month = month;
+            order.Profile = profile;
             order.OrderType = OrderType.Order;
-            order.OrderDetails.Add(new OrderDetails()
+
+            if (combo != null)
             {
-                CategoryId = categoryId,
-                Month = month,
-                IsGuarantee = false,
-                IsKingflixAccount = true,
-                Count = profile
-            });
-            if (!string.IsNullOrEmpty(combo))
-            {
-                var ComboArray = combo.Split(',');
-                foreach (var item in ComboArray)
+                foreach (var item in combo)
                 {
-                    if (!string.IsNullOrEmpty(item))
-                    {
-                        var comboDetailArray = item.Split('-');
-                        var comboItem = _productService.GetCategoryPrice(comboDetailArray[0], Convert.ToDouble(comboDetailArray[1]));
-                        if (comboItem != null)
-                            order.OrderDetails.Add(new OrderDetails()
-                            {
-                                CategoryId = comboDetailArray[0],
-                                Month = Convert.ToDouble(comboDetailArray[1]),
-                                IsGuarantee = comboDetailArray[2] == "1",
-                                IsKingflixAccount = comboDetailArray[3] == "1",
-                                UserAccount = comboDetailArray[3] == "1" ? comboDetailArray[4] : string.Empty,
-                                UserPassword = comboDetailArray[3] == "1" ? comboDetailArray[5] : string.Empty,
-                                Count = 1
-                            });
-                    }
+                    var comboItem = _productService.GetCategoryPrice(item.CategoryId, item.Month);
+                    if (comboItem != null)
+                        order.OrderDetails.Add(new OrderDetails()
+                        {
+                            CategoryId = item.CategoryId,
+                            Month = item.Month,
+                            IsGuarantee = item.IsGuarantee,
+                            IsKingflixAccount = item.IsKingflixAccount,
+                            UserAccount = item.IsKingflixAccount ? item.UserAccount : string.Empty,
+                            UserPassword = item.IsKingflixAccount ? item.UserPassword : string.Empty,
+                            Count = 1
+                        });
                 }
             }
             if (User.Identity.IsAuthenticated)
             {
-                return Json(Url.Action("Payment", new { promoCode, categoryId, month, profile, combo }));
+                return Json(Url.Action("Payment"));
             }
             return Json(Url.Action("Register", new { returnUrl = Url.Action("Payment", new { promoCode }) }));
         }
@@ -135,22 +127,38 @@ namespace Kingflix.Controllers
             return View();
         }
 
-        public ActionResult Payment(string promoCode, string categoryId, double month, int profile, string upsale)
+        public ActionResult Payment()
         {
             if (Session["order"] == null)
                 return RedirectToAction("Step1");
+            OrderViewModel orders = Session["order"] as OrderViewModel;
             var userId = User.Identity.GetUserId();
             var userReferralCode = _userService.GetUserById(userId).ReferralCode;
-            if (!string.IsNullOrEmpty(promoCode))
+            if (!string.IsNullOrEmpty(orders.VoucherId))
             {
-                if (!_orderService.IsPromotionValid(promoCode, userId) || userReferralCode == promoCode)
+                if (!_orderService.IsPromotionValid(orders.VoucherId, userId) || userReferralCode == orders.VoucherId)
                 {
                     return RedirectToAction("VoucherError", new { error = 1 });
                 }
             }
             var model = _paymentService.GetPaymentList();
-            OrderViewModel orders = Session["order"] as OrderViewModel;
-            orders.Price = _orderService.CheckPromotion(promoCode, categoryId, month, profile, upsale, userId, true).Total;
+            var listCombo = new List<OrderDetailsInputViewModel>();
+            if (orders.OrderDetails.Count >0)
+            {
+                foreach (var item in orders.OrderDetails)
+                {
+                    listCombo.Add(new OrderDetailsInputViewModel()
+                    {
+                        CategoryId = item.CategoryId,
+                        Month = item.Month,
+                        IsGuarantee = item.IsGuarantee,
+                        IsKingflixAccount = item.IsKingflixAccount,
+                        UserAccount = item.UserAccount,
+                        UserPassword = item.UserPassword
+                    });
+                }
+            }
+            orders.Price = _orderService.CheckPromotion(orders.VoucherId, orders.CategoryId, orders.Month, orders.Profile, listCombo, userId, true).Total;
             ViewBag.Total = orders.Price;
             return View(model);
         }
@@ -260,40 +268,6 @@ namespace Kingflix.Controllers
         //    return RedirectToAction("Login", "Account", new { returnUrl = Url.Action("Details", new { orderId }) });
         //}
 
-        //public ActionResult ChangePayment(string orderId)
-        //{
-        //    if (User.Identity.IsAuthenticated)
-        //    {
-        //        var model = db.Payment.ToList();
-        //        var order = db.Order.Find(orderId);
-        //        if (order == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-
-        //        ViewBag.OrderId = orderId;
-        //        ViewBag.PaymentId = order.PaymentId;
-        //        ViewBag.Type = order.Payments.Type;
-        //        return View(model);
-        //    }
-        //    return RedirectToAction("Register", "Account", new { returnUrl = Url.Action("ChangePayment", new { orderId }) });
-        //}
-        //public ActionResult UpdatePayment(int PaymentId, string orderId)
-        //{
-        //    if (User.Identity.IsAuthenticated)
-        //    {
-        //        var order = db.Order.Find(orderId);
-        //        if (order == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        order.PaymentId = PaymentId;
-        //        db.Entry(order).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Details", new { orderId = orderId, promoCode = order.VoucherId });
-        //    }
-        //    return RedirectToAction("Register", "Account", new { returnUrl = Url.Action("ChangePayment", new { orderId }) });
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
