@@ -10,19 +10,14 @@ namespace Kingflix.Website.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly IRepository<Category> _categoryRepository;
-        private readonly IMailingService _mailingRepository;
+
         private readonly ISettingService _settingService;
 
         public HomeController(
-            IRepository<Category> categoryRepository,
-            IMailingService mailingRepository,
             ISettingService settingService,
             IMapper mapper)
             : base(mapper)
         {
-            _categoryRepository = categoryRepository;
-            _mailingRepository = mailingRepository;
             _settingService = settingService;
             _logger = LogManager.GetCurrentClassLogger();
         }

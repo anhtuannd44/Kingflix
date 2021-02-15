@@ -1,0 +1,38 @@
+﻿@model Kingflix.Models.ViewModel.SMSViewModel
+@{
+    ViewBag.Title = "SMS";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Ajax.BeginForm("SendSMS", "SMS", new AjaxOptions
+{
+    OnBegin = "loadSpinner",
+    OnComplete = "exitSpinner",
+    OnSuccess = "SendMailSuccess"
+}
+, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card pt-5">
+                <div class="card-body pt-0">
+                    @Html.Action("GetSMSTemplateList", "SMS")
+                    @Html.Action("GetUserPhone", "SMS")
+                    <div class="form-group text-center">
+                        <button class="btn btn-success btn-rounded" type="submit">Xác nhận gửi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section scripts {
+    <script>
+        function SendMailSuccess(data) {
+            toastr.success(data.message);
+        }
+    </script>
+}

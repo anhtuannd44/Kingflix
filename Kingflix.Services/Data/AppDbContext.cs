@@ -20,7 +20,7 @@ namespace Kingflix.Services.Data
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategoryNetflixDetails> CategoryNetflixDetails { get; set; }
         public virtual DbSet<Price> Price { get; set; }
-        public virtual DbSet<Domain.DomainModel.Payment> Payment { get; set; }
+        public virtual DbSet<Payment> Payment { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderDetails> OrderDetails { get; set; }
         public virtual DbSet<Profile> Profile { get; set; }
@@ -43,6 +43,8 @@ namespace Kingflix.Services.Data
         public virtual DbSet<FlashSaleCategory> FlashSaleCategories { get; set; }
         public virtual DbSet<GoogleForm> GoogleForm { get; set; }
         public virtual DbSet<CardTemplate> CardTemplates { get; set; }
+        public virtual DbSet<SMSHistory> SMSHistory { get; set; }
+        public virtual DbSet<SMSTemplate> SMSTemplates { get; set; }
 
         public AppDbContext() : base("KingflixDb")
         {
@@ -60,14 +62,13 @@ namespace Kingflix.Services.Data
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
 
-            //modelBuilder.Configurations.Add(new AddressEntityConfig());
-            //modelBuilder.Configurations.Add(new CategoryEntityConfig());
             modelBuilder.Configurations.Add(new UserEntityConfig());
-            //modelBuilder.Configurations.Add(new OrderEntityConfig());
-            //modelBuilder.Configurations.Add(new CartEntityConfig());
-            //modelBuilder.Configurations.Add(new CartLineEntityConfig());
-            //modelBuilder.Configurations.Add(new ProductEntityConfig());
-            //modelBuilder.Configurations.Add(new SubcategoryEntityConfig());
+
+            modelBuilder.Entity<AppUser>()
+                        .HasMany(c => c.SMSHistory)
+                        .WithOptional(c => c.UserInformation)
+                        .HasForeignKey(c => c.UserId)
+                        .WillCascadeOnDelete(false);
         }
     }
 }

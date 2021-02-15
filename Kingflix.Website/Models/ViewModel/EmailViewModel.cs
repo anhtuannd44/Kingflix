@@ -10,9 +10,4 @@ namespace Kingflix.Models.ViewModel
         public string[] EmailList { get; set; }
         public int EmailTemplateId { get; set; }
     }
-    public class EmailSendViewModel
-    {
-        public string Email { get; set; }
-        public List<Profile> Profile = new List<Profile>();
-    }
 }

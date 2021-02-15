@@ -1,62 +1,28 @@
-﻿@model Kingflix.Domain.DomainModel.Profile
-@{ 
-    Layout = null;
-}
-<html>
+﻿<html>
 <head>
     <style>
-        @@media screen and (max-width: 768px) {
+        @media screen and (max-width: 768px) {
             #body {
                 width: 100%;
             }
-
             .display {
                 display: block;
             }
-
             .flex-mid {
                 width: 100%;
             }
         }
-
-        @@media screen and (min-width: 768px) {
+        @media screen and (min-width: 768px) {
             #body {
                 width: 80%;
             }
-
             .display {
                 display: flex;
             }
-
             .flex-mid {
                 width: 50%;
             }
         }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-            table td, table th {
-                border: 1px solid #ddd;
-                padding: 8px;
-            }
-
-            table tr:nth-child(even) {
-                background-color: #f2f2f2;
-            }
-
-            table tr:hover {
-                background-color: #ddd;
-            }
-
-            table th {
-                padding-top: 12px;
-                padding-bottom: 12px;
-                text-align: left;
-                background-color: #e50914;
-                color: white;
-            }
         .logo-image img {
             padding: 10px 0;
         }
@@ -70,37 +36,35 @@
             </div>
             <div style="border-bottom: 1px solid #e6e6e6;">
                 <div style="padding: 30px 35px;">
-                    <p style="font-weight: bold;">Xin chào @Model.UserInformation.FullName</p>
+                    <p style="font-weight: bold;">Xin chào {FullName}</p>
                     <p>
-                        Kingflix thông báo đến bạn tài khoản đăng nhập Netflix đã được thay đổi! Bạn vui lòng sử dụng tài khoản mới để đăng nhập nhé!
-                    </p>
+                        Cảm ơn bạn đã quan tâm đến sản phẩm của Kingflix.vn.<br />
+                        Để có thể xem chi tiết đơn hàng của mình, bạn có thể
+                        <a href="{LinkOrder}" style="font-weight: 500; color:#e50914">Nhấn vào đây</a>
+                        </>
                 </div>
             </div>
             <div style="border-bottom: 1px solid #e6e6e6;">
                 <div style="padding: 30px 35px;">
-                    <p style="font-weight: bold; color: #ed343d; margin-bottom: 0">THÔNG TIN TÀI KHOẢN MỚI</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Email</th>
-                                <th>Mật khẩu</th>
-                                <th>Profile</th>
-                                <th>Mã PIN</th>
-                                <th>Ngày hết hạn</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                               <td>@Model.ProductId</td>
-                               <td>@Model.Products.Password</td>
-                               <td>@Model.Name</td>
-                               <td>@Model.Pincode</td>
-                               <td>@Model.DateEnd.ToString("dd/MM/yyyy")</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <p style="font-weight: bold; color: #ed343d; margin-bottom: 0">TRẠNG THÁI ĐƠN HÀNG</p>
+                    <div style="padding: 10px 20px; font-size: 14px;">
+                        <p style="margin: 0">Thông tin thanh toán</p>
+                        <div class="display">
+                            <div class="flex-mid">
+                                <p style="margin: 0"><strong>Mã đơn hàng</strong>: {OrderId}</p>
+                                <p style="margin: 0"><strong>Khách hàng</strong>: {FullName}</p>
+                                <p style="margin: 0"><strong>Email</strong>: {Email}</p>
+                                <p style="margin: 0"><strong>Số điện thoại</strong>: {PhoneNumber}</p>
+                            </div>
+                            <div class="flex-mid">
+                                <p style="margin: 0"><strong>Tình trạng</strong>: {Status}</p>
+                                <p style="margin: 0"><strong>Thời gian đặt hàng</strong>: {DateCreate}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            {ProductInformation}
             <div style="border-bottom: 1px solid #e6e6e6;">
                 <div style="padding: 30px 35px;">
                     <p>Nếu gặp bất kỳ thắc mắc nào, vui lòng phản hồi lại Email cho chúng tôi để được xử lý!</p>

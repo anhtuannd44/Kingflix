@@ -1,0 +1,113 @@
+﻿<html>
+<head>
+    <style>
+        @media screen and (max-width: 768px) {
+            #body {
+                width: 100%;
+            }
+
+            .display {
+                display: block;
+            }
+
+            .flex-mid {
+                width: 100%;
+            }
+        }
+
+        @media screen and (min-width: 768px) {
+            #body {
+                width: 80%;
+            }
+
+            .display {
+                display: flex;
+            }
+
+            .flex-mid {
+                width: 50%;
+            }
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            table td, table th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            table tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            table tr:hover {
+                background-color: #ddd;
+            }
+
+            table th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #e50914;
+                color: white;
+            }
+
+        .logo-image img {
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 100%; background: #f8f8f8; padding: 15px 0; font-size: 16px;">
+        <div id="body" style="margin: 0 auto; background: #ffffff;">
+            <div class="logo-image" style="border-bottom: 1px solid #e6e6e6; text-align: center;">
+                <img src="https://kingflix.vn/Content/image/logo.png" height="60" />
+            </div>
+            <div style="border-bottom: 1px solid #e6e6e6;">
+                <div style="padding: 30px 35px;">
+                    <p style="font-weight: bold;">Xin chào {FullName}</p>
+                    <p>
+                        Kinglix.vn xin thông báo đến bạn, tài khoản đã hết hạn! Để gia hạn, vui lòng
+                        <a href="{LinkOrder}" style="font-weight: 500; color:#e50914">Nhấn vào đây</a>
+                    </p>
+                </div>
+            </div>
+            <div style="border-bottom: 1px solid #e6e6e6;">
+                <div style="padding: 30px 35px;">
+                    <p style="font-weight: bold; color: #ed343d; margin-bottom: 0">THÔNG TIN TÀI KHOẢN</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Profile</th>
+                                <th>Ngày hết hạn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {Account}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="border-bottom: 1px solid #e6e6e6;">
+                <div style="padding: 30px 35px;">
+                    <p>Nếu gặp bất kỳ thắc mắc nào, vui lòng phản hồi lại Email cho chúng tôi để được xử lý!</p>
+                    <p style="margin: 0;">Trân trọng,</p>
+                    <p style="margin: 0;">KingFlix</p>
+                </div>
+            </div>
+            <div style="border-bottom: 2px solid #e6e6e6; background:#eee; font-size: 12px;">
+                <div style="padding: 30px 35px;">
+                    <p style="margin: 0;">KingFlix</p>
+                    <p style="margin: 0;">Website: <a href="https://kingflix.vn/">https://kingflix.vn</a></p>
+                    <p style="margin: 0;">Fanpage <a href="#">https://facebook.com/kingflix.vn</a></p>
+                    <p style="margin: 0;">Hotline <a href="tel:0344656565">0344656565</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

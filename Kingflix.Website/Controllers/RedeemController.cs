@@ -136,21 +136,9 @@ namespace Kingflix.Controllers
                             order.IsUserGiftCode = true;
                             order.UserUseGiftCode = userId;
                             db.Entry(order).State = EntityState.Modified;
+                            var sendMail = _emailService.SendOrder(order);
+                            db.EmailHistory.Add(sendMail);
                             db.SaveChanges();
-                            var sendMail = _emailService.SendOrderSuccess(order);
-                            if (sendMail)
-                            {
-                                order.IsSendMail = true;
-                                db.Entry(order).State = EntityState.Modified;
-                                db.SaveChanges();
-                                db.EmailHistory.Add(new EmailHistory()
-                                {
-                                    Email = order.UserInformation.Email,
-                                    DateSend = DateTime.Now,
-                                    Type = EmailTypeHistory.OrderAccept
-                                });
-                                db.SaveChanges();
-                            }
                             result.status = "success";
                             result.message = "Thành công! Bạn đã nhận được quà bằng Giftcode trị giá. Kiểm tra tại Trung tâm khách hàng";
                         }

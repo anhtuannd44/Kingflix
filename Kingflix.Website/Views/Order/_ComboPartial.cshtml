@@ -26,7 +26,7 @@
                                                 }
                                             </div>
                                             <div class="col-md-8 col-12 border-left mt-2">
-                                                <h5 class="text-center">@item.Name</h5>
+                                                <h5 class="text-center text-primary">@item.Name</h5>
                                                 <div class="d-block position-relative text-center" style="min-height: 30px;">
                                                     <div class="form-check mt-0" style="margin: auto; width: 30px;">
                                                         <label class="form-check-label text-muted form-check-success combo-check check-promotion" data-category-id="@item.CategoryId" data-combo-id="@i">
@@ -44,11 +44,11 @@
                                                     <p class="mb-1">Chọn gói</p>
                                                     @foreach (var price in item.Prices)
                                                     {
-                                                        <div class="combo-option row py-2 align-items-center combo-select check-promotion combo-option-@i" id="combo_option_@i" data-combo-id="@i" data-combo-category-id="@price.CategoryId" data-combo-month="@price.Month">
-                                                            <div class="col-md-6 col-6">
+                                                        <div class="combo-option position-relative bg-transparent p-2 clearfix combo-select check-promotion combo-option-@i" id="combo_option_@i" data-combo-id="@i" data-combo-category-id="@price.CategoryId" data-combo-month="@price.Month">
+                                                            <div class="float-left">
                                                                 <p class="m-0">@price.Month tháng</p>
                                                             </div>
-                                                            <div class="col-md-6 col-6 text-right">
+                                                            <div class="float-right text-right">
                                                                 @if (price.Prices.HasValue)
                                                                 {
                                                                     <span class="text-black">@string.Format("{0:C0}", price.Prices)</span>
@@ -59,6 +59,8 @@
                                                                     <span class="text-black">@string.Format("{0:C0}", price.SetPrice)</span>
                                                                 }
                                                             </div>
+                                                            <div class="ribbon"></div>
+                                                            <div class="ribbon-icon"><i class="mdi mdi-check text-white"></i></div>
                                                         </div>
                                                     }
                                                 </div>
@@ -66,16 +68,32 @@
                                                 <div class="guarantee">
                                                     <p class="mb-0 mt-2">Chọn bảo hành <span class="font-weight-bold text-primary">( +@string.Format("{0:C0}", item.GuaranteePrice) )</span></p>
                                                     <div class="combo-guarantee combo-select-area">
-                                                        <div class="p-2 combo-guarantee-option combo-option-select combo-select check-promotion combo-guarantee-@i" data-guarantee="1" data-combo-id="@i">Bảo hành</div>
-                                                        <div class="p-2 combo-guarantee-option combo-option-select combo-select check-promotion combo-guarantee-@i" data-guarantee="0" data-combo-id="@i">Không bảo hành</div>
+                                                        <div class="p-2 position-relative combo-guarantee-option combo-option-select combo-select check-promotion combo-guarantee-@i" data-guarantee="1" data-combo-id="@i">
+                                                            Bảo hành
+                                                            <div class="ribbon"></div>
+                                                            <div class="ribbon-icon"><i class="mdi mdi-check text-white"></i></div>
+                                                        </div>
+                                                        <div class="p-2 position-relative combo-guarantee-option combo-option-select combo-select check-promotion combo-guarantee-@i" data-guarantee="0" data-combo-id="@i">
+                                                            Không bảo hành
+                                                            <div class="ribbon"></div>
+                                                            <div class="ribbon-icon"><i class="mdi mdi-check text-white"></i></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <hr class="my-1" />
                                                 <div class="combo-account-client-area">
                                                     <p class="mb-0 mt-2">Chọn tài khoản</p>
                                                     <div class="combo-account">
-                                                        <div class="p-2 combo-account-client combo-option-select combo-select combo-account-@i" data-account-client="1" data-combo-id="@i">Kingflix cấp</div>
-                                                        <div class="p-2 combo-account-client combo-option-select combo-select combo-account-@i" data-account-client="0" data-combo-id="@i">Của bạn (Cá nhân)</div>
+                                                        <div class="p-2 position-relative combo-account-client combo-option-select combo-select combo-account-@i" data-account-client="1" data-combo-id="@i">
+                                                            Kingflix cấp
+                                                            <div class="ribbon"></div>
+                                                            <div class="ribbon-icon"><i class="mdi mdi-check text-white"></i></div>
+                                                        </div>
+                                                        <div class="p-2 position-relative combo-account-client combo-option-select combo-select combo-account-@i" data-account-client="0" data-combo-id="@i">
+                                                            Của bạn (Cá nhân)
+                                                            <div class="ribbon"></div>
+                                                            <div class="ribbon-icon"><i class="mdi mdi-check text-white"></i></div>
+                                                        </div>
                                                     </div>
                                                     <div class="mb-1 bg-light p-3 rounded pt-1 bg-white account-client shadow" style="display:none">
                                                         <div class="form-group mb-1">

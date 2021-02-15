@@ -75,7 +75,7 @@
                                 <div class="product-item-content px-3 text-center mb-3">
                                     <a class="product-item-title mt-3 pt-3" href="@Url.Action("Details", new { id = item.CategoryId })">@item.Name</a>
                                     <p class="product-item-price font-weight-bold">
-                                        @string.Format("{0:0,0 ₫}", item.Prices.OrderBy(a => a.Month).FirstOrDefault().SetPrice)
+                                        @string.Format("{0:C0}", item.Prices.OrderBy(a => a.Month).FirstOrDefault().SetPrice)
                                     </p>
                                     <a href="@Url.Action("Details", new { id = item.CategoryId })" class="btn btn-gradient-primary btn-sm btn-rounded">Mua ngay</a>
                                 </div>

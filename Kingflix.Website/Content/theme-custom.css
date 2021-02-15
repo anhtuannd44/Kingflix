@@ -673,13 +673,13 @@ body.dark-mode {
     color: #64fc0a !important;
 }
 .dark-mode .sidebar .nav .nav-item.active > .nav-link .menu-title {
-    color: #64fc0a
+    color: #e50914
 }
 .dark-mode .sidebar .nav .nav-item.active > .nav-link {
     background: #464647;
 }
 .dark-mode .sidebar .nav .nav-item.active > .nav-link i {
-    color: #64fc0a;
+    color: #e50914;
     background: #fff;
 }
 .dark-mode .sidebar .nav .nav-item.active > .nav-link i.menu-arrow {
@@ -1147,5 +1147,29 @@ div.pagination {
     height: 35px;
     margin-top: -35px;
     content: -webkit-gradient(linear,0% 100%,0% 0%,from(#f8f9fa),color-stop(.2,#f8f9fa),to(rgba(248, 249, 250,0)));
+    display: block;
+}
+.ribbon {
+    border-top-right-radius: 6px;
+    right: -1px;
+    top: -1px;
+    background: linear-gradient(to top right, transparent 0%, transparent 50%, #5aaf28 50%, #5aaf28 100%);
+    width: 23px;
+    height: 23px;
+    position: absolute;
+
+}
+.ribbon-icon {
+    position: absolute;
+    top: -4px;
+    right: -1px;
+}
+.ribbon-icon i {
+    font-size: 0.75rem !important;
+}
+.combo-select .ribbon, .combo-select .ribbon-icon {
+    display: none;
+}
+.combo-select.active .ribbon, .combo-select.active .ribbon-icon {
     display: block;
 }

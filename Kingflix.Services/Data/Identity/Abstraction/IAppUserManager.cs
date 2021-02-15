@@ -18,9 +18,12 @@ namespace Kingflix.Services.Data.Identity.Abstraction
         Task<bool> CheckPasswordAsync(AppUser user, string password);
         Task<IdentityResult> ConfirmEmailAsync(string userId, string token);
         Task<IdentityResult> CreateAsync(AppUser user, string password);
+        Task<IdentityResult> CreateAsync(AppUser user);
+        Task<IdentityResult> AddLoginAsync(string userId, UserLoginInfo login);
         Task<ClaimsIdentity> CreateIdentityAsync(AppUser user, string authenticationType);
         Task<IdentityResult> DeleteAsync(AppUser user);
         Task<AppUser> FindAsync(string userName, string password);
+        Task<AppUser> FindAsync(UserLoginInfo login);
         Task<AppUser> FindByEmailAsync(string email);
         Task<AppUser> FindByIdAsync(string userId);
         AppUser FindById(string userid);

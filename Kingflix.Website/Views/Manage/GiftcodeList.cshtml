@@ -57,7 +57,7 @@
                             </td>
                             <td class="text-center">
                                 <p class="m-0">
-                                    @string.Format("{0:0,0 ₫}", item.Price)
+                                    @string.Format("{0:C0}", item.Price)
                                 </p>
                                 <p class="m-0 text-info font-weight-bold">@(item.PaymentId != null?item.Payments.Name:"Chưa thanh toán")</p>
                             </td>
@@ -92,7 +92,7 @@
                                     </p>
 
                                 }
-                                else if (item.Status == OrderStatus.Cencelled)
+                                else if (item.Status == OrderStatus.Cancelled)
                                 {
                                     <a href="@Url.Action("Edit", new { orderId = item.OrderId })" class="badge badge-warning" data-toggle="tooltip" title="Chi tiết đơn hàng">
                                         <i class="mdi mdi-eye"></i>

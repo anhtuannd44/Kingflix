@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.SMSTemplate>
+
+<div class="form-group" id="smsTemplateList" style="display: none;">
+    <label for="SMSTemplateId" class="control-label">Chọn Mẫu SMS</label>
+    <select class="form-control select2" id="SMSTemplateId" name="SMSTemplateId" required>
+        @foreach (var item in Model)
+        {
+            <option value="@item.Id">@item.Title</option>
+        }
+    </select>
+</div>

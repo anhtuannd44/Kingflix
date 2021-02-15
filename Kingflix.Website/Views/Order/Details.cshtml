@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "Thông tin đơn hàng";
-    Layout = "~/Views/Shared/_ShopLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     string base64 = "", imgSrc = "";
     if (Model.Payments.Logo != null)
     {
@@ -27,107 +27,129 @@
     </div>
     <div class="container mb-4">
         <div class="row">
-            <div class="col-md-7 col-xs-12">
+            <div class="col-md-8 col-xs-12">
                 <div class="card card-shadow mb-4">
                     <div class="card-body">
                         <h4 class="mb-4">Thông tin đơn hàng <span id="OrderId" class="font-weight-bold small mr-3 text-primary" style="font-size:1rem;">#@Model.OrderId</span></h4>
                         <p class="m-0">
                             Trạng thái:
-                            @if (Model.stat == "p")
+                            @switch (Model.Status)
                             {
-                                <span class="badge badge-warning"> Chưa thanh toán </span>
-                            }
-                            else if (Model.Status == OrderStatus.Done)
-                            {
-                                <span class="badge badge-success">@OrderStatus.Done.GetEnumDisplayName()</span>
-                            }
-                            else if (Model.Status == OrderStatus.Pending)
-                            {
-                                <span class="badge badge-warning">@OrderStatus.Pending.GetEnumDisplayName()</span>
-                            }
-                            else if (Model.Status == OrderStatus.Cencelled)
-                            {
-                                <span class="badge badge-danger">@OrderStatus.Cencelled.GetEnumDisplayName()</span>
+                                case OrderStatus.WaitingForPay:
+                                    {
+                                        <span class="badge badge-danger">@OrderStatus.WaitingForPay.GetEnumDisplayName()</span>
+                                        break;
+                                    }
+                                case OrderStatus.Paid:
+                                    {
+                                        <span class="badge badge-warning">@OrderStatus.Paid.GetEnumDisplayName()</span>
+                                        break;
+                                    }
+                                case OrderStatus.Done:
+                                    {
+                                        <span class="badge badge-success">@OrderStatus.Done.GetEnumDisplayName()</span>
+                                        break;
+                                    }
+                                case OrderStatus.Cancelled:
+                                    {
+                                        <span class="badge badge-dark">@OrderStatus.Cancelled.GetEnumDisplayName()</span>
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        break;
+                                    }
                             }
                         </p>
                         <hr />
-                        @if (Model.TypeOfCategory == TypeOfCategory.Orther)
-                        {
-                            <table class="table table-hover"
-                                   data-toggle="table"
-                                   data-search="true"
-                                   data-sort-name="name"
-                                   data-sort-order="desc"
-                                   data-pagination="true"
-                                   data-page-size="10">
-                                <thead class="">
+                        <table class="table table-hover"
+                                data-toggle="table"
+                                data-sort-name="name"
+                                data-sort-order="desc"
+                                data-pagination="true"
+                                data-page-size="10">
+                            <thead class="">
+                                <tr>
+                                    <th class="text-left font-weight-bold" data-sortable="true"> Pic </th>
+                                    <th class="text-center font-weight-bold" data-sortable="true"> Gói đăng ký </th>
+                                    <th class="text-center font-weight-bold" data-sortable="true"> Bảo hành </th>
+                                    <th class="text-center font-weight-bold" data-sortable="true"> Số lượng </th>
+                                    <th class="text-center font-weight-bold" data-sortable="true"> Tài khoản </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.OrderDetails)
+                                {
                                     <tr>
-                                        <th class="text-left font-weight-bold" data-sortable="true"> Pic </th>
-                                        <th class="text-center font-weight-bold" data-sortable="true"> Gói đăng ký </th>
-                                        <th class="text-center font-weight-bold" data-sortable="true"> Số lượng </th>
+                                        <td class="text-success">
+                                            @if (string.IsNullOrEmpty(item.ImageId))
+                                            {
+                                                <img class="img-fluid image rounded" src="~/Content/image/No_Picture.jpg">
+                                            }
+                                            else
+                                            {
+                                                <img class="img-fluid image rounded" src="~/Content/Upload/Images/@item.ImageId">
+                                            }
+                                        </td>
+                                        <td class="text-center">
+                                            @item.CategoryName (@item.Month tháng)
+                                        </td>
+                                        <td>
+                                            @(item.IsGuarantee?"Có":"Không")
+                                        </td>
+                                        <td class="text-center">
+                                            @item.Count
+                                        </td>
+                                        <td class="text-center">
+                                            <p class="small m-0">@(item.IsKingflixAccount?"Kingflix Cấp":"Tài khoản của bạn")</p>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.OrderDetails)
-                                    {
-                                        <tr>
-                                            <td class="text-success">
-                                                @if (string.IsNullOrEmpty(item.ImageId))
-                                                {
-                                                    <img class="img-fluid image rounded" src="~/Content/image/No_Picture.jpg">
-                                                }
-                                                else
-                                                {
-                                                    <img class="img-fluid image rounded" src="~/Content/Upload/Images/@item.ImageId">
-                                                }
-                                            </td>
-                                            <td class="text-center">
-                                                @item.CategoryName (@item.Month tháng)
-                                            </td>
-                                            <td class="text-center">
-                                                @item.Count
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card card-shadow mb-4">
+                    <div class="card-body">
+                        <h4 class="mb-4">Thông tin thanh toán</h4>
+                        @if (Model.Payments.Logo != null)
+                        {
+                            <div class="text-center">
+                                <img width="80" src="@imgSrc" />
+                            </div>
                         }
-                        else
+                        <hr />
+                        <p>
+                            Hình thức thanh toán: <strong id="Name">@Model.Payments.Name</strong>
+                        </p>
+                        <p>
+                            Số tài khoản: <strong id="AccountNumber">@Model.Payments.AccountNumber</strong>
+                            <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#AccountNumber" data-toggle="tooltip" data-title="Sao chép"></i>
+                        </p>
+                        <p>
+                            Chủ tài khoản: <strong id="AccountName">@Model.Payments.AccountName</strong>
+                            <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#AccountName" data-toggle="tooltip" data-title="Sao chép"></i>
+                        </p>
+                         <p>
+                            Nội dung chuyển khoản: <strong id="Content">Thanh toan don hang @Model.OrderId</strong>
+                            <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#Content" data-toggle="tooltip" data-title="Sao chép"></i>
+                        </p>
+                        @if (Model.Payments.Type == PaymentType.EWallet)
                         {
-                            <table class="table table-hover"
-                                   data-toggle="table"
-                                   data-search="true"
-                                   data-sort-name="name"
-                                   data-sort-order="desc"
-                                   data-pagination="true"
-                                   data-page-size="10">
-                                <thead class="">
-                                    <tr>
-                                        <th class="text-center font-weight-bold" data-sortable="true"> Gói đăng ký </th>
-                                        <th class="text-center font-weight-bold" data-sortable="true"> Số Profile </th>
-                                        <th class="text-center font-weight-bold" data-sortable="true"> Số tháng </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                    <div class="text-center">
+                        <img src="~/Content/Upload/Images/@Model.Payments.ImageId" width="400" />
+                    </div> }
+                else
+                {
+                    <p>
+                        Chi nhánh: <strong id="AccountAddress">@Model.Payments.AccountAddress</strong>
+                        <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#AccountAddress" data-toggle="tooltip" data-title="Sao chép"></i>
+                    </p>}
 
-                                    <tr>
-                                        <td class="text-center">
-                                            @Model.Categories.Name
-                                        </td>
-                                        <td class="text-center">
-                                            @Model.Profile
-                                        </td>
-                                        <td class="text-center">
-                                            @Model.Month
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        }
                     </div>
                 </div>
             </div>
-            <div class="col-md-5 col-xs-12">
+            <div class="col-md-4 col-xs-12">
                 <div class="card card-shadow mb-4">
                     <div class="card-body box-payment" id="cartTotal">
                         <table style="width: 100%">
@@ -137,7 +159,7 @@
                                 </tr>
                                 <tr>
                                     <td class="py-1" width="50%">Tạm tính (Chưa VAT):</td>
-                                    <td id="totalListedPrice" class="py-1 text-right" width="50%">@string.Format("{0:0,0 đ}", Model.Price)</td>
+                                    <td id="totalListedPrice" class="py-1 text-right" width="50%">@string.Format("{0:C0}", Model.Price)</td>
                                 </tr>
                                 <tr>
                                     <td class="py-1" width="50%">Phương thức thanh toán:</td>
@@ -152,7 +174,7 @@
                                 <tr style="border-top:solid 1px #e7e7e7; line-height: 45px;">
                                     <td>Thành tiền:</td>
                                     <td style="font-size:20px; color:#e82429;font-weight:bold" id="preTotalPrice" class=" text-right">
-                                        @string.Format("{0:0,0 đ}", Model.Price)
+                                        @string.Format("{0:C0}", Model.Price)
                                     </td>
                                 </tr>
                                 <tr class="chonhinhthuc">
@@ -167,68 +189,73 @@
                         </table>
                     </div>
                 </div>
-                @if (Model.stat == "p" && !string.IsNullOrEmpty(Model.PaymentUrl))
-                {
-                    <div class="mb-4 text-right rounded">
-                        <a href="@Model.PaymentUrl" class="btn btn-success btn-block h4 py-3" style="font-size: 1.2rem">
-                            Thanh toán ngay
-                            <i class="fas fa-arrow-circle-right ml-3"></i>
-                        </a>
+                <div class="card card-shadow">
+                    <div class="card-body">
+                        <h6 class="mb-4">Cập nhật bằng chứng thanh toán</h6>
+                        <hr />
+                        <div class="text-center">
+                            @if (Model.Status == OrderStatus.WaitingForPay && Model.ApiOrderId != null)
+                            {
+
+                                if (Model.File == null)
+                                {
+                                    using (Html.BeginForm("UploadImageOrder", "Order", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.HiddenFor(model => model.OrderId)
+                                        <div class="text-center">
+                                            <label for="PaymentImage" class="btn btn-success btn-sm">Chọn hình</label>
+                                            <input type="file" id="PaymentImage" name="PaymentImage" class="payment-accept-image" hidden="" accept="image/*">
+                                            <div class="preview-image">
+                                                <img id="previewImage" class="" src="/Content/image/No_Picture.jpg" alt="your image" style="width: 100%">
+                                            </div>
+                                            <button class="btn btn-primary btn-sm px-4 payment-other mt-3" type="submit">XÁC NHẬN ĐÃ THANH TOÁN</button>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    var base64s = Convert.ToBase64String(Model.File);
+                                    var imgSrcs = String.Format("data:image/gif;base64,{0}", base64s);
+                                    <img id="previewImage" class="" src="@imgSrcs" alt="your image" style="width: 100%">
+
+                                }
+                            }
+                        </div>
                     </div>
-                }
-                else
-                {
-                    <div class="mb-4 text-right rounded">
-                        <a href="@Url.Action("CreateNewPaymentAPI","Order", new {orderId = Model.OrderId })" class="btn btn-success btn-block h4 py-3" style="font-size: 1.2rem">
-                            Thanh toán ngay
-                            <i class="fas fa-arrow-circle-right ml-3"></i>
-                        </a>
+                </div>
+                <div class="card card-shadow">
+                    <div class="card-body">
+                        <h6 class="mb-4">Hướng dẫn</h6>
+                        <hr />
+                        @Html.Raw(Model.Payments.Content)
                     </div>
-                }
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 @section scripts {
-    <script>
-        $(function () {
-    var isSendEmail = "@Model.IsSendMail";
-    if (isSendEmail == "False")
-        sendEmail();
-})
-
-function sendEmail() {
-    $.ajax({
-        method: "POST",
-        url: "/Gmail/SendEmailOrderSuccess",
-        data: { orderId: "@Model.OrderId" },
-        success: function (data) {
-            if (data == "True")
-                toastr.success("Kingflix đã gửi thư order đến Email của bạn!")
-            else
-                toastr.error("Email thông tin order chưa được gửi!")
-        },
-        error: function () {
-        }
-    })
-        }
-        $("#file").change(function () {
-            readURL(this);
-            var file = $("#file").val();
-            if (file != undefined) {
-                $("#buttonSubmit").show();
-            }
-        });
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#previewAvatar').attr('src', e.target.result);
+    <script type="text/javascript">
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#previewAvatar').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
                 }
-                reader.readAsDataURL(input.files[0]);
             }
-        }
-
+            $(".payment-accept-image").change(function () {
+                var elm = $(this);
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        elm.parent().children(".preview-image").first().children('img').attr("src", e.target.result)
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
     </script>
 } 

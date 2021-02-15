@@ -23,7 +23,7 @@
                 <hr />
                 <div class="form-group">
                     @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })
-                    <input disabled value="@string.Format("{0:0,0 ₫}", Model.Price)" type="text" class="form-control" />
+                    <input disabled value="@string.Format("{0:C0}", Model.Price)" type="text" class="form-control" />
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.PaymentId, htmlAttributes: new { @class = "control-label" })

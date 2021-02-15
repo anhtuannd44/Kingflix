@@ -1,0 +1,20 @@
+﻿@using Microsoft.Owin.Security
+
+@{
+    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+    if (loginProviders.Count() != 0)
+    {
+        using (Html.BeginForm("ExternalLogin", "Account"))
+        {
+            @Html.AntiForgeryToken()
+            <div id="socialLoginList">
+                @foreach (AuthenticationDescription p in loginProviders)
+                {
+                    <button type="submit" class="btn btn-block btn-@(p.AuthenticationType == "Facebook" ? "facebook" : "google") auth-form-btn btn-rounded px-1" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">
+                        <i class="mdi mdi-@p.AuthenticationType mr-2"></i>Đăng nhập bằng @p.AuthenticationType
+                    </button>
+                }
+            </div>
+        }
+    }
+}

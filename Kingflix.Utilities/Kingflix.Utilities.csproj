@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Const\CategoriesConst.cs" />
+    <Compile Include="Const\SMSConst.cs" />
     <Compile Include="Const\PaymentConst.cs" />
     <Compile Include="ConvertPostedFile.cs" />
     <Compile Include="Extensions\EnumHelpers.cs" />

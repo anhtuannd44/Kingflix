@@ -14,6 +14,20 @@ namespace Kingflix.Domain.Enumerables
         [Display(Name = "Thùng rác")]
         Trash = 2,
     }
+    public enum EmailStatus
+    {
+        [Display(Name = "Đã gửi")]
+        Success = 0,
+        [Display(Name = "Thất bại")]
+        Failure = 1,
+    }
+    public enum SMSStatus
+    {
+        [Display(Name = "Đã gửi")]
+        Success = 0,
+        [Display(Name = "Thất bại")]
+        Failure = 1,
+    }
     public enum ReviewStatus
     {
         [Display(Name = "Đã duyệt")]
@@ -72,7 +86,7 @@ namespace Kingflix.Domain.Enumerables
         [Display(Name = "Đang xử lý")]
         Pending = 1,
         [Display(Name = "Đã hủy")]
-        Cencelled = 2,
+        Cancelled = 2,
     }
     public enum CoinStatus
     {
@@ -81,7 +95,7 @@ namespace Kingflix.Domain.Enumerables
         [Display(Name = "Đang xử lý")]
         Pending = 1,
         [Display(Name = "Đã hủy")]
-        Cencelled = 2,
+        Cancelled = 2,
     }
     public enum VoucherType
     {
@@ -110,7 +124,7 @@ namespace Kingflix.Domain.Enumerables
         [Display(Name = "Ví Bảo Kim API")]
         BaoKim = 0,
         [Display(Name = "ATM các thẻ ngân hàng API")]
-        InternetBanking = 1,
+        InternetBanking = 295,
         [Display(Name = "Visa/MasterCard API")]
         Visa = 128,
         [Display(Name = "QR Code API")]
@@ -269,40 +283,6 @@ namespace Kingflix.Domain.Enumerables
         Exprired = 1,
         [Display(Name = "Tùy chỉnh")]
         Custom = 2
-    }
-    public enum EmailTypeHistory
-    {
-        [Display(Name = "Sắp hết hạn (Nhắc gia hạn)")]
-        PreExpired = 0,
-        [Display(Name = "Hết hạn")]
-        Exprired = 1,
-        [Display(Name = "Tùy chỉnh")]
-        Custom = 2,
-        [Display(Name = "Đặt hàng thành công")]
-        OrderSuccess = 3,
-        [Display(Name = "Duyệt đơn thành công")]
-        OrderAccept = 4,
-        [Display(Name = "Hủy đơn")]
-        OrderCancel = 5,
-        [Display(Name = "Gia hạn thành công")]
-        ExtendSuccess = 6,
-        [Display(Name = "Chấp nhận gia hạn")]
-        ExtendAccept = 7,
-        [Display(Name = "Hủy gia hạn")]
-        ExtendCancel = 8,
-        [Display(Name = "Nạp tiền")]
-        KingCoinSuccess = 9,
-        [Display(Name = "Chấp nhận nạp tiền")]
-        KingCoinAccept = 10,
-        [Display(Name = "Hủy nạp tiền")]
-        KingCoinCancel = 11,
-        [Display(Name = "Đăng ký tài khoản thành công")]
-        AccountRegister = 12,
-        [Display(Name = "Hủy tư cách thành viên")]
-        AccouctRemove = 13,
-        [Display(Name = "Hủy tư cách thành viên")]
-        ChangeProfile = 14
-
     }
 
     public enum PictureHomeType

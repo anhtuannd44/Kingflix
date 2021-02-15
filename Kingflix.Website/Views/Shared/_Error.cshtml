@@ -1,25 +1,28 @@
 ﻿@model IEnumerable<string>
 @{ ViewBag.Title = "Lỗi";}
-<div class="alert alert-danger my-2">
-    @switch (Model.Count())
-    {
-        case 0:
-            @: Something went wrong. Please try again
-            break;
-        case 1:
-            @Model.First();
-            break;
-        default:
-            @: The following errors were encountered:
-            <ul>
-                @foreach (string error in Model)
-                {
-                    <li>@error</li>
-                }
-            </ul>
-            break;
-    }
-</div>
-<div class="text-center">
-    @Html.ActionLink("OK", "Index", "Home", null, new { @class = "btn btn-primary" })
+
+<div class="container vh-100">
+    <div class="alert alert-danger my-2">
+        @switch (Model.Count())
+        {
+            case 0:
+                @: Có lỗi xảy ra, vui lòng liên hệ quản trị viên
+                break;
+            case 1:
+                @Model.First();
+                break;
+            default:
+                @: Chi tiết:
+                <ul>
+                    @foreach (string error in Model)
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+                break;
+        }
+    </div>
+    <div class="text-center">
+        @Html.ActionLink("Trang chủ", "Index", "Home", null, new { @class = "btn btn-primary btn-sm" })
+    </div>
 </div>

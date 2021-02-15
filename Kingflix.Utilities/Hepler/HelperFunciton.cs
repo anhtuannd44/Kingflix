@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Kingflix.Utilities
 {
-    public class HelperFunction : Controller
+    public class HelperFunction
     {
         public static string ConvertToNonUTF(string s)
         {
@@ -112,30 +112,6 @@ namespace Kingflix.Utilities
             byte[] bytes = Encoding.UTF8.GetBytes(toEncode);
             string encodedString = Convert.ToBase64String(bytes);
             return encodedString.Replace("=", "").Replace("/", "_").Replace("+", "-");
-        }
-    }
-    public static class ViewToStringRenderer
-    {
-        public static string RenderViewToString<TModel>(ControllerContext controllerContext, string viewName, TModel model)
-        {
-
-            ViewEngineResult viewEngineResult = ViewEngines.Engines.FindView(controllerContext, viewName, null);
-            if (viewEngineResult.View == null)
-            {
-                throw new Exception("Could not find the View file. Searched locations:\r\n" + viewEngineResult.SearchedLocations);
-            }
-            else
-            {
-                IView view = viewEngineResult.View;
-
-                using (var stringWriter = new StringWriter())
-                {
-                    var viewContext = new ViewContext(controllerContext, view, new ViewDataDictionary<TModel>(model), new TempDataDictionary(), stringWriter);
-                    view.Render(viewContext, stringWriter);
-
-                    return stringWriter.ToString();
-                }
-            }
         }
     }
 }

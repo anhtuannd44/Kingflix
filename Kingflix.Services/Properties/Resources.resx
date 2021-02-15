@@ -118,10 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="OneButtonTemplateMail" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\EmailTemplates\OneButtonTemplateMail.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="AccountList" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\EmailTemplates\AccountList.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="OnlyTextTemplateMail" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\EmailTemplates\OnlyTextTemplateMail.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="ChangeProfile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\EmailTemplates\ChangeProfile.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="ExpriedProfile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\EmailTemplates\ExpriedProfile.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="ForgotPassword" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\EmailTemplates\ForgotPassword.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Order" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\EmailTemplates\Order.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="OrderDetails" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\EmailTemplates\OrderDetails.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

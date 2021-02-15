@@ -21,7 +21,7 @@ namespace Kingflix.Website.Controllers
             filterContext.ExceptionHandled = true;
 
             _logger.Log(LogLevel.Error, filterContext.Exception, filterContext.Exception.Message);
-            string msg = "We're sorry. Something unexpected happend! Please try again later or contact us.";
+            string msg = "Có lỗi xảy ra, vui lòng thử lại hoặc liên hệ quản trị viên.";
 
             if (filterContext.IsChildAction)
             {

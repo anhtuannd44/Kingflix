@@ -1,0 +1,35 @@
+﻿@model Kingflix.Domain.DomainModel.EmailTemplate
+@{
+    ViewBag.Title = "Thêm Email Template";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using (Html.BeginForm("CreateEmailTemplate", "Email", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-white mb-4">Tạo Email Template mới</h5>
+                    <div class="form-group mb-4 mt-0">
+                        <label for="Title" class="control-form-label">Tiêu đề Email</label>
+                        @Html.TextBoxFor(model => model.Title, new { @class = "form-control bg-white", @placeholder = "Tiêu đề" })
+                        <div class="mt-1">
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group mt-0">
+                        <label for="Content" class="control-form-label">Nội dung Email</label>
+                        @Html.TextAreaFor(model => model.Content, new { @class = "form-control" })
+
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-rounded btn-success" type="submit">Hoàn tất</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

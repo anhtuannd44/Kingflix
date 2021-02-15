@@ -48,9 +48,8 @@
                             <i class="mdi mdi-arrow-down-drop-circle-outline ml-1"></i>
                         </a>
                         <div class="dropdown-menu navbar-dropdown mr-3" aria-labelledby="profileDropdown">
-                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            @using (Html.BeginForm("LogOut", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                             {
-                                @Html.AntiForgeryToken()
                                 <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
                                     <i class="mdi mdi-logout mr-2 text-primary"></i> Đăng xuất
                                 </a>

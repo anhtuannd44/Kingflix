@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Mvc;
 using Kingflix.Domain.DomainModel.IdentityModel;
 using Kingflix.Services.Data.Identity;
 using Microsoft.AspNet.Identity;
@@ -13,6 +14,7 @@ namespace Kingflix.Website.App_Start
     {
         public void ConfigureAuth(IAppBuilder app)
         {
+            //app.CreatePerOwinContext(() => DependencyResolver.Current.GetService<AppUserManager>());
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
@@ -26,6 +28,13 @@ namespace Kingflix.Website.App_Start
                 }
             });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            app.UseFacebookAuthentication(
+               appId: "977819312687491",
+               appSecret: "9af3b1101c4e3eca017b45afa19bd5f0");
+            app.UseGoogleAuthentication(
+               clientId: "610851523183-osh0vfe1hqm0nl955dpj0t5lqjvmnfth.apps.googleusercontent.com",
+               clientSecret: "-M8oLEQPgRwiEMGX1jrK1HXk"
+            );
         }
     }
 }

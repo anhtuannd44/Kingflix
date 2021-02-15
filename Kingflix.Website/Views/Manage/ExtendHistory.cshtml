@@ -49,15 +49,15 @@
                                 @item.Month
                             </td>
                             <td class="text-right">
-                                @string.Format("{0:0,0 ₫}", item.Price)
+                                @string.Format("{0:C0}", item.Price)
                             </td>
                             <td class="text-center">
                                 @string.Format("{0:dd/MM/yyyy HH:mm}", item.DateCreated)
                             </td>
                             <td class="text-center">
-                                @if (item.Status == OrderStatus.Cencelled)
+                                @if (item.Status == OrderStatus.Cancelled)
                                 {
-                                    <p class="m-0 badge badge-dark">@OrderStatus.Cencelled.GetEnumDisplayName()</p>
+                                    <p class="m-0 badge badge-dark">@OrderStatus.Cancelled.GetEnumDisplayName()</p>
                                 }
                                 else if (item.Status == OrderStatus.Done)
                                 {

@@ -7,28 +7,39 @@ using System.Web.Mvc;
 using Kingflix.Domain.Enumerables;
 using Kingflix.Services.Interfaces;
 using Kingflix.Domain.ViewModel;
+using Kingflix.Domain.Abstract;
+using Kingflix.Domain.DomainModel.IdentityModel;
 
 namespace Kingflix.Website.Areas.Admin.Controllers
 {
     public class EmailController : Controller
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailService _emailService;
-        private readonly IUserService _userService;
-        private readonly IProductService _productService;
+        private readonly IRepository<AppUser> _userRepository;
+        private readonly IRepository<EmailHistory> _emailHistoryRepository;
+        private readonly IRepository<EmailTemplate> _emailTemplateRepository;
+        private readonly IRepository<Profile> _profileRepository;
         public EmailController(
+            IUnitOfWork unitOfWork,
             IEmailService emailService,
-            IUserService userService,
-            IProductService productService
+            IRepository<AppUser> userRepository,
+            IRepository<EmailHistory> emailHistoryRepository,
+            IRepository<EmailTemplate> emailTemplateRepository,
+            IRepository<Profile> profileRepository
             )
         {
+            _unitOfWork = unitOfWork;
             _emailService = emailService;
-            _userService = userService;
-            _productService = productService;
+            _userRepository = userRepository;
+            _emailHistoryRepository = emailHistoryRepository;
+            _emailTemplateRepository = emailTemplateRepository;
+            _profileRepository = profileRepository;
         }
 
         public ActionResult Index()
         {
-            var userList = _userService.GetUserList();
+            var userList = _userRepository.GetAll();
             var model = new EmailViewModel
             {
                 EmailList = new string[userList.Count()]
@@ -40,18 +51,18 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         [HttpPost]
         public PartialViewResult GetUserEmail(EmailType Type)
         {
-            var userList = _userService.GetUserList();
+            var userList = _userRepository.GetAll();
             var emailList = new string[userList.Count()];
             switch (Type)
             {
                 case EmailType.PreExpired:
                     {
-                        emailList = _productService.GetProfileList().Where(a => a.DateEnd.Date <= DateTime.Today.AddDays(7).Date && !string.IsNullOrEmpty(a.UserInformation.Email)).Select(a => a.UserInformation.Email).ToArray();
+                        emailList = _profileRepository.GetAll().Where(a => a.DateEnd.Date <= DateTime.Today.AddDays(7).Date && !string.IsNullOrEmpty(a.UserInformation.Email)).Select(a => a.UserInformation.Email).ToArray();
                         break;
                     }
                 case EmailType.Exprired:
                     {
-                        emailList = _productService.GetProfileList().Where(a => a.DateEnd.Date < DateTime.Today.Date && !string.IsNullOrEmpty(a.UserInformation.Email)).Select(a => a.UserInformation.Email).ToArray();
+                        emailList = _profileRepository.GetAll().Where(a => a.DateEnd.Date < DateTime.Today.Date && !string.IsNullOrEmpty(a.UserInformation.Email)).Select(a => a.UserInformation.Email).ToArray();
                         break;
                     }
                 default:
@@ -70,7 +81,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
 
         public ActionResult GetEmailTemplateList()
         {
-            var model = _emailService.GetEmailTemplateList();
+            var model = _emailTemplateRepository.GetAll();
             return PartialView("_EmailTemplateListPartial", model);
         }
 
@@ -84,63 +95,26 @@ namespace Kingflix.Website.Areas.Admin.Controllers
             {
                 try
                 {
-                    var user = _userService.GetUserList(a => a.Email == item).FirstOrDefault();
+                    var user = _userRepository.Get(a => a.Email == item).FirstOrDefault();
+                    var emailHistoryItem = new EmailHistory();
                     switch (email.Type)
                     {
                         case EmailType.PreExpired:
-                            {
-                                try
-                                {
-                                    var profile = _productService.GetProfileList().Where(a => a.UserId == user.Id && a.DateEnd.AddDays(-7).Date <= DateTime.Today.Date && a.DateEnd.Date >= DateTime.Today).ToList();
-                                    var send = _emailService.SendExpired(item, user.FullName, profile, EmailType.PreExpired);
-                                    if (send)
-                                    _emailService.AddEmailHistory(EmailTypeHistory.PreExpired, item);
-                                    successCount++;
-                                }
-                                catch
-                                {
-                                    errorCount++;
-                                }
-                                break;
-                            }
+                            var profilePreExpried = _profileRepository.GetAll().Where(a => a.UserId == user.Id && a.DateEnd.AddDays(-7).Date <= DateTime.Today.Date && a.DateEnd.Date >= DateTime.Today).ToList();
+                            emailHistoryItem = _emailService.SendExpired(item, user.FullName, profilePreExpried, EmailType.PreExpired);
+                            break;
                         case EmailType.Exprired:
-                            {
-                                try
-                                {
-                                    var profile = _productService.GetProfileList().Where(a => a.UserId == user.Id && a.DateEnd.Date < DateTime.Today).ToList();
-                                    var send = _emailService.SendExpired(item, user.FullName, profile, EmailType.PreExpired);
-                                    if (send)
-                                        _emailService.AddEmailHistory(EmailTypeHistory.PreExpired, item);
-                                    _emailService.SendExpired(item, user.FullName, profile, EmailType.Exprired);
-                                    successCount++;
-                                }
-                                catch
-                                {
-                                    errorCount++;
-                                }
-                                break;
-                            }
+                            var profileExpried = _profileRepository.GetAll().Where(a => a.UserId == user.Id && a.DateEnd.Date < DateTime.Today).ToList();
+                            emailHistoryItem = _emailService.SendExpired(item, user.FullName, profileExpried, EmailType.PreExpired);
+                            break;
                         default:
-                            {
-                                try
-                                {
-                                    var emailTemplate = _emailService.GetEmailtemplateById(email.EmailTemplateId);
-                                    var send = _emailService.SendEmailCustom(item, emailTemplate);
-                                    if (send)
-                                    {
-                                        _emailService.AddEmailHistory(EmailTypeHistory.Custom, item);
-                                        successCount++;
-                                    }
-                                    else
-                                        errorCount++;
-                                }
-                                catch
-                                {
-                                    errorCount++;
-                                }
-                                break;
-                            }
+                            var emailTemplate = _emailTemplateRepository.GetById(email.EmailTemplateId);
+                            emailHistoryItem = _emailService.SendEmailCustom(item, emailTemplate);
+                            break;
+
                     }
+                    _ = emailHistoryItem.Status == EmailStatus.Success ? successCount++ : errorCount++;
+                    _emailHistoryRepository.Create(emailHistoryItem);
 
                 }
                 catch
@@ -153,7 +127,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         }
         public ActionResult EmailTemplate()
         {
-            var model = _emailService.GetEmailTemplateList();
+            var model = _emailTemplateRepository.GetAll();
             return View(model);
         }
         public ActionResult CreateEmailTemplate()
@@ -166,7 +140,8 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _emailService.CreateEmailTemplate(email);
+                _emailTemplateRepository.Create(email);
+                _unitOfWork.SaveChanges();
                 return RedirectToAction("EmailTemplate");
             }
             return View(email);
@@ -176,7 +151,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         {
             if (id == null)
                 return HttpNotFound();
-            var model = _emailService.GetEmailtemplateById(id);
+            var model = _emailTemplateRepository.GetById(id);
             if (model == null)
                 return HttpNotFound();
             return View(model);
@@ -188,7 +163,8 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _emailService.UpdateEmailTemplate(email);
+                _emailTemplateRepository.Update(email);
+                _unitOfWork.SaveChanges();
                 return RedirectToAction("EmailTemplate");
             }
             return View(email);
@@ -200,7 +176,9 @@ namespace Kingflix.Website.Areas.Admin.Controllers
             var result = new ResultViewModel();
             try
             {
-                _emailService.DeleteEmailTemplate(id);
+                var item = _emailTemplateRepository.GetById(id);
+                _emailTemplateRepository.Delete(item);
+                _unitOfWork.SaveChanges();
                 result.status = "success";
                 result.message = "Thành công! Đã xóa mẫu email";
             }

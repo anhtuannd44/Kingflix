@@ -111,18 +111,18 @@ namespace Kingflix.Services
                         profileAvailable.ForEach(a => _profileRepository.Update(a));
                         order.Status = OrderStatus.Done;
                         order.IsSendMail = false;
-                        var sendMail = _emailService.SendOrderSuccess(order);
-                        if (sendMail)
-                        {
-                            order.IsSendMail = true;
-                            var emailHistory = new EmailHistory()
-                            {
-                                Email = order.UserInformation.Email,
-                                DateSend = DateTime.Now,
-                                Type = EmailTypeHistory.OrderAccept
-                            };
-                            _emailHistoryRepository.Create(emailHistory);
-                        }
+                        //var sendMail = _emailService.SendOrderSuccess(order);
+                        //if (sendMail)
+                        //{
+                        //    order.IsSendMail = true;
+                        //    var emailHistory = new EmailHistory()
+                        //    {
+                        //        Email = order.UserInformation.Email,
+                        //        DateSend = DateTime.Now,
+                        //        Type = EmailTypeHistory.OrderAccept
+                        //    };
+                        //    _emailHistoryRepository.Create(emailHistory);
+                        //}
                         result.status = "success";
                         result.message = "Thành công! Đơn đã được cập nhật!";
                     }
@@ -155,11 +155,11 @@ namespace Kingflix.Services
         }
         public List<Profile> GetProfileAvailable(string categoryId)
         {
-            return _profileRepository.GetAll().Where(a => a.Products.CategoryId == categoryId
-                                                                     && a.Products.DateEnd.AddDays(-a.Products.Categories.DateOrderAccept.GetValueOrDefault(0)) > DateTime.Today //Check ngày được phép duyệt
-                                                                     && string.IsNullOrEmpty(a.UserId)                 //Profile không có người dùng là Profile trống
-                                                                     && a.Products.Status == ProductStatus.Active)     //Trạng thái tài khoản đang hoạt động
-                                                                         .ToList();
+            return _profileRepository.Get(a => !string.IsNullOrEmpty(a.ProductId)).AsEnumerable().Where(a => a.Products.CategoryId == categoryId
+                                                                       && a.Products.DateEnd.AddDays(-a.Products.Categories.DateOrderAccept.GetValueOrDefault(0)) > DateTime.Today //Check ngày được phép duyệt
+                                                                       && string.IsNullOrEmpty(a.UserId)                 //Profile không có người dùng là Profile trống
+                                                                       && a.Products.Status == ProductStatus.Active)     //Trạng thái tài khoản đang hoạt động
+                                                                       .ToList();
         }
         public List<Profile> GetAndAddUserToProfile(List<OrderDetails> detail, string userId)
         {
@@ -393,7 +393,7 @@ namespace Kingflix.Services
                                 CategoryName = netflix.Categories.Name,
                                 OrderId = orderItem.OrderId,
                                 Month = netflix.Month,
-                                Count = order.Profile,
+                                Count = order.Count,
                                 ImageId = netflix.Categories.ImageId,
                                 IsGuarantee = true,
                                 IsKingflixAccount = true,
@@ -438,7 +438,7 @@ namespace Kingflix.Services
                             });
                         }
                     }
-                    order.Price = CheckPromotion(order.VoucherId, order.CategoryId, order.Month, order.Profile, listCombo, userId, true).Total;
+                    orderItem.Price = CheckPromotion(order.VoucherId, order.CategoryId, order.Month, order.Count, listCombo, userId, true).Total;
 
                     if (amount < order.Price && PaymentType == PaymentType.Card)
                     {
@@ -475,12 +475,17 @@ namespace Kingflix.Services
                     else if (PaymentType == PaymentType.Card)
                     {
                         result = await _apiService.PaymentCard(orderItem.OrderId, telco, amount, code, serial);
+                        if (result.status == "success") //Hoan xu
+                        {
+                            user.KinCoin = amount - orderItem.Price;
+                            _userRepository.Update(user);
+                        }
                     }
                     else if (PaymentType == PaymentType.EWallet || PaymentType == PaymentType.Bank)
                     {
                         result.status = "success";
                         result.message = "Thành công! Đơn hàng đã được xác nhận";
-                        result.redirect_url = "/Order/PaymentOther?orderId=" + orderItem.OrderId;
+                        result.redirect_url = "/Order/Details?orderId=" + orderItem.OrderId;
                     }
                     //Lưu thông tin Order và chi tiết
                     if (result.status == "success")

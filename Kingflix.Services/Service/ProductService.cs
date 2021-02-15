@@ -15,7 +15,7 @@ using System.Web.WebPages;
 
 namespace Kingflix.Services
 {
-    public class ProductService : Controller, IProductService
+    public class ProductService : IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<Category> _categoryRepository;
@@ -23,6 +23,7 @@ namespace Kingflix.Services
         private readonly IRepository<Profile> _profileRepository;
         private readonly IRepository<CategoryNetflixDetails> _categoryNetflixDetailsRepository;
         private readonly IRepository<Price> _priceRepository;
+        private readonly IRepository<EmailHistory> _emailHistoryRepository;
         private readonly IEmailService _emailService;
         public ProductService(
             IUnitOfWork unitOfWork,
@@ -31,6 +32,7 @@ namespace Kingflix.Services
             IRepository<Profile> profileRepository,
             IRepository<CategoryNetflixDetails> categoryNetflixDetailsRepository,
             IRepository<Price> priceRepository,
+            IRepository<EmailHistory> emailHistoryRepository,
             IEmailService emailService
             )
         {
@@ -40,6 +42,7 @@ namespace Kingflix.Services
             _profileRepository = profileRepository;
             _categoryNetflixDetailsRepository = categoryNetflixDetailsRepository;
             _priceRepository = priceRepository;
+            _emailHistoryRepository = emailHistoryRepository;
             _emailService = emailService;
         }
         public Category GetCategoryById(string categoryId)
@@ -528,10 +531,23 @@ namespace Kingflix.Services
 
                 if (currentUserId != editItem.UserId && editItem.UserId != null)
                 {
-                    var emailBody = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Emails/ChangeProfile.cshtml", editItem);
-                    var sendEmail = _emailService.SendEmailCustom(editItem.UserInformation.Email, new EmailTemplate() { Title = "Kingflix - Thay đổi tài khoản", Content = emailBody });
-                    if (sendEmail)
-                        _emailService.AddEmailHistory(EmailTypeHistory.AccountRegister, editItem.UserInformation.Email);
+                    try
+                    {
+                        var emailBody = Properties.Resources.ChangeProfile
+                                        .Replace("{FullName}", editItem.UserInformation.FullName ?? editItem.UserInformation.Email)
+                                        .Replace("{ProductId}", editItem.ProductId)
+                                        .Replace("ProductPassword", editItem.Products.Password)
+                                        .Replace("ProfileName", editItem.Name)
+                                        .Replace("ProfilePin", editItem.Pincode)
+                                        .Replace("DateEnd", editItem.DateEnd.ToString("dd/MM/yyyy"));
+
+                        var sendEmail = _emailService.SendEmailCustom(editItem.UserInformation.Email, new EmailTemplate() { Title = "Kingflix - Thay đổi tài khoản", Content = emailBody });
+                        _emailHistoryRepository.Create(sendEmail);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
                 }
                 _unitOfWork.SaveChanges();
             }
@@ -586,18 +602,24 @@ namespace Kingflix.Services
             newItem.DateEnd = item.DateEnd;
             newItem.DateModified = DateTime.Now;
             newItem.DateStart = DateTime.Now;
-
             _profileRepository.Update(newItem);
-            _unitOfWork.SaveChanges();
 
-            var emailBody = ViewToStringRenderer.RenderViewToString(this.ControllerContext, "~/Views/Emails/ChangeProfile.cshtml", newItem);
-            var sendEmail = _emailService.SendEmailCustom(item.UserInformation.Email, new EmailTemplate() { Title = "Kingfix - Thông báo tài khoản NETFLIX mới", Content = emailBody });
-
-            if (sendEmail)
+            try
             {
-                _emailService.AddEmailHistory(EmailTypeHistory.ChangeProfile, item.UserInformation.Email);
-                _unitOfWork.SaveChanges();
+                var emailBody = Properties.Resources.ChangeProfile
+                                           .Replace("{FullName}", newItem.UserInformation.FullName ?? newItem.UserInformation.Email)
+                                           .Replace("{ProductId}", newItem.ProductId)
+                                           .Replace("ProductPassword", newItem.Products.Password)
+                                           .Replace("ProfileName", newItem.Name)
+                                           .Replace("ProfilePin", newItem.Pincode)
+                                           .Replace("DateEnd", newItem.DateEnd.ToString("dd/MM/yyyy"));
+                var sendEmail = _emailService.SendEmailCustom(newItem.UserInformation.Email, new EmailTemplate() { Title = "Kingflix - Thay đổi tài khoản", Content = emailBody });
+                _emailHistoryRepository.Create(sendEmail);
             }
+            catch
+            {
+            }
+            _unitOfWork.SaveChanges();
             result.status = "success";
             result.message = "Thành công! Người dùng đã được đổi tài khoản";
             return result;

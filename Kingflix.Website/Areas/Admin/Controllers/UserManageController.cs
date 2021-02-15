@@ -8,6 +8,7 @@ using Kingflix.Domain.Enumerables;
 using Kingflix.Services.Interfaces;
 using Kingflix.Domain.ViewModel;
 using Kingflix.Models.ViewModel;
+using Kingflix.Domain.Abstract;
 
 namespace Kingflix.Website.Areas.Admin.Controllers
 {
@@ -21,17 +22,23 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly IEmailService _emailService;
         private readonly ISupportService _supportService;
+        private readonly IRepository<EmailHistory> _emailHistoryRepository;
+        private readonly IRepository<EmailTemplate> _emailTemplateRepository;
         public UserManageController(
             IUserService userService,
             IProductService productService,
             IEmailService emailService,
-            ISupportService supportService
+            ISupportService supportService,
+            IRepository<EmailHistory> emailHistoryRepository,
+            IRepository<EmailTemplate> emailTemplateRepository
             )
         {
             _userService = userService;
             _productService = productService;
             _emailService = emailService;
             _supportService = supportService;
+            _emailHistoryRepository = emailHistoryRepository;
+            _emailTemplateRepository = emailTemplateRepository;
         }
         public ActionResult Index(string categoryId = Const.NETFLIX0, Cycle? cycle = null, string targetAccount = null)
         {
@@ -277,14 +284,14 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         public ActionResult SendEmail(string email)
         {
             ViewBag.Email = email;
-            ViewBag.EmailTemplate = _emailService.GetEmailTemplateList();
+            ViewBag.EmailTemplate = _emailTemplateRepository.GetAll();
             return PartialView("_EmailPartial");
         }
 
         [HttpPost]
         public ActionResult EmailHistory(string email)
         {
-            var model = _emailService.GetEmailHistoryList(a => a.Email == email).OrderByDescending(a => a.DateSend);
+            var model = _emailHistoryRepository.Get(a => a.Email == email).OrderByDescending(a => a.TimeSend);
             return PartialView("_EmailHistoryPartial", model);
         }
 

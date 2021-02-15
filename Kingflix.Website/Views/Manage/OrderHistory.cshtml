@@ -22,9 +22,7 @@
                 <thead class="">
                     <tr>
                         <th class="text-left font-weight-bold" data-sortable="true"> Mã đơn hàng </th>
-                        <th class="text-center font-weight-bold" data-sortable="true"> Gói đăng ký </th>
-                        <th class="text-center font-weight-bold" data-sortable="true"> Số Profile </th>
-                        <th class="text-center font-weight-bold" data-sortable="true"> Số tháng </th>
+                        <th class="text-center font-weight-bold" data-sortable="true"> Chi tiết </th>
                         <th class="text-center font-weight-bold" data-sortable="true"> Tổng cộng </th>
                         <th class="text-center font-weight-bold" data-sortable="true"> Ngày tạo </th>
                         <th class="text-center font-weight-bold" data-sortable="true"> Trạng thái </th>
@@ -35,36 +33,55 @@
                     {
                         <tr>
                             <td class="text-success">
-                                @Html.DisplayFor(modelItem => item.OrderId)
+                                <a href="@Url.Action("Details","Order", new { orderId = item.OrderId })">
+                                    @Html.DisplayFor(modelItem => item.OrderId)
+                                </a>
                             </td>
                             <td class="text-center">
-                                @item.Categories.Name
-                            </td>
-                            <td class="text-center">
-                                @item.Profile
-                            </td>
-                            <td class="text-center">
-                                @item.Month
+                                <p class="m-0">
+                                    @foreach (var details in item.OrderDetails)
+                                    {
+                                <span>- @details.CategoryName (@details.Month tháng)</span><br />}
+                                </p>
                             </td>
                             <td class="text-right">
-                                @string.Format("{0:0,0 ₫}", item.Price)
+                                @string.Format("{0:C0}", item.Price)
                             </td>
                             <td class="text-center">
                                 @string.Format("{0:dd/MM/yyyy HH:mm}", item.DateCreated)
                             </td>
                             <td class="text-center">
-                                @if (item.Status == OrderStatus.Cencelled)
-                                {
-                                    <p class="m-0 badge badge-dark">@OrderStatus.Cencelled.GetEnumDisplayName()</p>
-                                }
-                                else if (item.Status == OrderStatus.Done)
-                                {
-                                    <p class="m-0 badge badge-success">@OrderStatus.Done.GetEnumDisplayName()</p>
-                                }
-                                else
-                                {
-                                    <p class="m-0 badge badge-danger">@OrderStatus.Pending.GetEnumDisplayName()</p>
-                                }
+                                @if (item.Type == OrderType.GiftCode)
+                                    {
+                                        if (item.IsUserGiftCode)
+                                        {
+                                            <span class="badge badge-success"> Đã sử dụng </span>
+                                        }
+                                        else if (item.Status == OrderStatus.Done)
+                                        {
+                                            <span class="badge badge-success">@OrderStatus.Done.GetEnumDisplayName()</span> 
+                                        }
+                                        else if (item.Status == OrderStatus.Cancelled)
+                                        {
+                                            <span class="badge badge-danger">@OrderStatus.Cancelled.GetEnumDisplayName()</span> 
+                                        }
+                                    }
+                                    else if (item.Status == OrderStatus.Done)
+                                    {
+                                        <span class="badge badge-success">@OrderStatus.Done.GetEnumDisplayName()</span> 
+                                    }
+                                    else if (item.Status == OrderStatus.WaitingForPay)
+                                    {
+                                        <span class="badge badge-warning">@OrderStatus.WaitingForPay.GetEnumDisplayName()</span> 
+                                    }
+                                    else if (item.Status == OrderStatus.Paid)
+                                    {
+                                        <span class="badge badge-warning">@OrderStatus.Paid.GetEnumDisplayName()</span>
+                                    }
+                                    else if (item.Status == OrderStatus.Cancelled)
+                                    {
+                                        <span class="badge badge-danger">@OrderStatus.Cancelled.GetEnumDisplayName()</span>
+                                    }
                             </td>
                         </tr>
                     }

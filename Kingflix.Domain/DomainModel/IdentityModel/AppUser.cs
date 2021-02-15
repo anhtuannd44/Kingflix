@@ -53,6 +53,7 @@ namespace Kingflix.Domain.DomainModel.IdentityModel
         public virtual ICollection<Profile> Profiles { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<Support> Supports { get; set; }
+        public virtual ICollection<SMSHistory> SMSHistory { get; set; }
 
        
         [NotMapped]

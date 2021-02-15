@@ -41,7 +41,7 @@
                                 @item.Payments.Name
                             </td>
                             <td class="text-left">
-                                @string.Format("{0:0,0 ₫}", item.Price)
+                                @string.Format("{0:C0}", item.Price)
                             </td>
                             <td class="text-left">
                                 @item.UserInformation.Email
@@ -55,7 +55,7 @@
                                 {
                                     <p class="badge badge-warning m-0">Đang xử lý</p>
                                 }
-                                else if (item.Status == CoinStatus.Cencelled)
+                                else if (item.Status == CoinStatus.Cancelled)
                                 {
                                     <p class="badge badge-dard m-0">Đã hủy</p>
                                 }
@@ -98,7 +98,7 @@
         $(document).on("click", ".kingcoin-cancel", function(){
             loadSpinner();
             var id = $(this).val();
-            actionWithOrder(id, "@OrderStatus.Cencelled");
+            actionWithOrder(id, "@OrderStatus.Cancelled");
         })
 
         function actionWithOrder(id, status) {

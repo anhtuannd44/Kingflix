@@ -40,17 +40,17 @@ namespace Kingflix.Website.App_Start
             builder.RegisterType<AppDbContext>().AsSelf().InstancePerRequest();
 
             // Identity config
+            builder.RegisterType<AppUserManager>().AsSelf().InstancePerRequest();
             builder.RegisterType<AppSignInManager>().AsSelf().InstancePerRequest();
             builder.Register<IAuthenticationManager>(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
             builder.Register<IDataProtectionProvider>(c => app.GetDataProtectionProvider()).InstancePerRequest();
-            builder.RegisterType<AppUserManager>().As<IAppUserManager>().InstancePerRequest();
             builder.RegisterType<AppRoleManager>().AsSelf().InstancePerRequest();
             builder.Register(c => new RoleStore<AppRole>(c.Resolve<AppDbContext>())).As<IRoleStore<AppRole, string>>().InstancePerRequest();
             builder.Register(c => new AppUserStore(c.Resolve<IAppDbContext>())).As<IUserStore<AppUser>>().InstancePerRequest();
 
+
             // Types config
             builder.RegisterGeneric(typeof(Repository<>)).As((typeof(IRepository<>))).InstancePerRequest();
-            builder.RegisterType<MailingService>().As<IMailingService>().InstancePerRequest();
             builder.RegisterType<APIService>().As<IAPIService>().InstancePerRequest();
             builder.RegisterType<BlogService>().As<IBlogService>().InstancePerRequest();
             builder.RegisterType<EmailService>().As<IEmailService>().InstancePerRequest();
@@ -65,6 +65,7 @@ namespace Kingflix.Website.App_Start
             builder.RegisterType<SettingService>().As<ISettingService>().InstancePerRequest();
             builder.RegisterType<SupportService>().As<ISupportService>().InstancePerRequest();
             builder.RegisterType<UserService>().As<IUserService>().InstancePerRequest();
+            builder.RegisterType<SMSAPIService>().As<ISMSAPIService>().InstancePerRequest();
 
             // Register controllers
             builder.RegisterControllers(typeof(MvcApplication).Assembly);

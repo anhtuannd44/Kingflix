@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.IdentityModel.AppUser>
+
+<label for="UserId" class="control-label">Chọn người dùng</label>
+<select class="form-control select2" multiple="multiple" id="UserId" name="UserId" required>
+    @foreach (var item in Model)
+    {
+        <option value="@item.Id">@item.Email (@item.PhoneNumber)</option>
+    }
+</select>
+
+<script>
+    $('#SMSList').select2({
+        language: "vi"
+    });
+</script>

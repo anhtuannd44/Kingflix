@@ -61,34 +61,183 @@ namespace Kingflix.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
-        ///&lt;html style=&quot;width:100%;font-family:arial, &apos;helvetica neue&apos;, helvetica, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;&quot;&gt;
-        ///&lt;head&gt;
-        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
-        ///    &lt;meta content=&quot;width=device-width, initial-scale=1&quot; name=&quot;viewport&quot;&gt;
-        ///    &lt;meta name=&quot;x-apple-disable-message-reformatting&quot;&gt;
-        ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
-        ///    &lt;meta [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to &lt;div style=&quot;border-bottom: 1px solid #e6e6e6;&quot;&gt;
+        ///    &lt;div style=&quot;padding: 30px 35px;&quot;&gt;
+        ///        &lt;p style=&quot;font-weight: bold; color: #ed343d; margin-bottom: 0&quot;&gt;THÔNG TIN TÀI KHOẢN&lt;/p&gt;
+        ///        &lt;table&gt;
+        ///            &lt;thead&gt;
+        ///                &lt;tr&gt;
+        ///                    &lt;th&gt;Gói&lt;/th&gt;
+        ///                    &lt;th&gt;Tên đăng nhập&lt;/th&gt;
+        ///                    &lt;th&gt;Mật khẩu&lt;/th&gt;
+        ///                    &lt;th&gt;Profile&lt;/th&gt;
+        ///                    &lt;th&gt;Mã PIN&lt;/th&gt;
+        ///                    &lt;th&gt;Ngày hết hạn&lt;/th&gt;
+        ///                &lt;/tr&gt;
+        ///            &lt;/thead&gt;
+        ///   [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string OneButtonTemplateMail {
+        internal static string AccountList {
             get {
-                return ResourceManager.GetString("OneButtonTemplateMail", resourceCulture);
+                return ResourceManager.GetString("AccountList", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
-        ///&lt;html style=&quot;width:100%;font-family:arial, &apos;helvetica neue&apos;, helvetica, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;&quot;&gt;
+        ///   Looks up a localized string similar to &lt;html&gt;
         ///&lt;head&gt;
-        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
-        ///    &lt;meta content=&quot;width=device-width, initial-scale=1&quot; name=&quot;viewport&quot;&gt;
-        ///    &lt;meta name=&quot;x-apple-disable-message-reformatting&quot;&gt;
-        ///    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
-        ///    &lt;meta [rest of string was truncated]&quot;;.
+        ///    &lt;style&gt;
+        ///        @media screen and (max-width: 768px) {
+        ///            #body {
+        ///                width: 100%;
+        ///            }
+        ///            .display {
+        ///                display: block;
+        ///            }
+        ///            .flex-mid {
+        ///                width: 100%;
+        ///            }
+        ///        }
+        ///        @media screen and (min-width: 768px) {
+        ///            #body {
+        ///                width: 80%;
+        ///            }
+        ///            .display {
+        ///                display: flex;
+        ///            }
+        ///            .flex-mid {
+        ///                width: 50%;
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string OnlyTextTemplateMail {
+        internal static string ChangeProfile {
             get {
-                return ResourceManager.GetString("OnlyTextTemplateMail", resourceCulture);
+                return ResourceManager.GetString("ChangeProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html&gt;
+        ///&lt;head&gt;
+        ///    &lt;style&gt;
+        ///        @media screen and (max-width: 768px) {
+        ///            #body {
+        ///                width: 100%;
+        ///            }
+        ///
+        ///            .display {
+        ///                display: block;
+        ///            }
+        ///
+        ///            .flex-mid {
+        ///                width: 100%;
+        ///            }
+        ///        }
+        ///
+        ///        @media screen and (min-width: 768px) {
+        ///            #body {
+        ///                width: 80%;
+        ///            }
+        ///
+        ///            .display {
+        ///                display: flex;
+        ///            }
+        ///
+        ///            .flex-mid  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ExpriedProfile {
+            get {
+                return ResourceManager.GetString("ExpriedProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html&gt;
+        ///&lt;head&gt;
+        ///    &lt;style&gt;
+        ///        #body {
+        ///            font: small/ 1.5 Arial,Helvetica,sans-serif;
+        ///        }
+        ///        @media screen and (max-width: 768px) {
+        ///            #body {
+        ///                width: 100%;
+        ///            }
+        ///
+        ///            .display {
+        ///                display: block;
+        ///            }
+        ///
+        ///            .flex-mid {
+        ///                width: 100%;
+        ///            }
+        ///        }
+        ///
+        ///        @media screen and (min-width: 768px) {
+        ///            #body {
+        ///                width: 80%;
+        ///            }
+        ///
+        ///            .display {
+        ///            [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ForgotPassword {
+            get {
+                return ResourceManager.GetString("ForgotPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;html&gt;
+        ///&lt;head&gt;
+        ///    &lt;style&gt;
+        ///        @media screen and (max-width: 768px) {
+        ///            #body {
+        ///                width: 100%;
+        ///            }
+        ///            .display {
+        ///                display: block;
+        ///            }
+        ///            .flex-mid {
+        ///                width: 100%;
+        ///            }
+        ///        }
+        ///        @media screen and (min-width: 768px) {
+        ///            #body {
+        ///                width: 80%;
+        ///            }
+        ///            .display {
+        ///                display: flex;
+        ///            }
+        ///            .flex-mid {
+        ///                width: 50%;
+        ///  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Order {
+            get {
+                return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;div style=&quot;border-bottom: 1px solid #e6e6e6;&quot;&gt;
+        ///    &lt;div style=&quot;padding: 30px 35px;&quot;&gt;
+        ///        &lt;p style=&quot;font-weight: bold; color: #ed343d; margin-bottom: 0&quot;&gt;THÔNG TIN TÀI KHOẢN&lt;/p&gt;
+        ///        &lt;table&gt;
+        ///            &lt;thead&gt;
+        ///                &lt;tr&gt;
+        ///                    &lt;th&gt;Loại gói&lt;/th&gt;
+        ///                    &lt;th&gt;Số tháng&lt;/th&gt;
+        ///                    &lt;th&gt;Bảo hành&lt;/th&gt;
+        ///                    &lt;th&gt;Loại tài khoản&lt;/th&gt;
+        ///                &lt;/tr&gt;
+        ///            &lt;/thead&gt;
+        ///            &lt;tbody&gt;
+        ///                {OrderDetails}
+        ///            &lt;/tbody&gt;
+        ///  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OrderDetails {
+            get {
+                return ResourceManager.GetString("OrderDetails", resourceCulture);
             }
         }
     }

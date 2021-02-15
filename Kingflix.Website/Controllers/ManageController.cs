@@ -23,28 +23,26 @@ using AutoMapper;
 using Kingflix.Domain.Abstract;
 using Kingflix.Services.Data.Identity.Abstraction;
 using NLog;
+using Kingflix.Services.Data.Identity;
 
 namespace Kingflix.Controllers
 {
     [Authorize]
     public class ManageController : BaseExtendedController
     {
-        private readonly IAuthenticationManager _authManager;
         private readonly AppDbContext db;
         private readonly IAPIService _apiService;
 
         public ManageController(
-            IAppUserManager userManager,
-             IAuthenticationManager authManager,
              IUnitOfWork unitOfWork,
              IMapper mapper,
             AppDbContext db,
+            AppSignInManager signInManager,
             IAPIService apiService
-            ) : base(unitOfWork, userManager, mapper)
+            ) : base(unitOfWork, signInManager, mapper)
         {
             this.db = db;
             _apiService = apiService;
-            _authManager = authManager;
             _logger = LogManager.GetCurrentClassLogger();
         }
 
@@ -343,7 +341,7 @@ namespace Kingflix.Controllers
             var result = new ResultViewModel();
             try
             {
-                var item = db.KingCoin.Find(id).Status = CoinStatus.Cencelled;
+                var item = db.KingCoin.Find(id).Status = CoinStatus.Cancelled;
                 db.SaveChanges();
                 result.status = "success";
                 result.message = "Thành công! Đã hủy đơn nạp tiền của bạn";
@@ -376,7 +374,7 @@ namespace Kingflix.Controllers
         {
             var userId = User.Identity.GetUserId();
             var user = db.Users.Find(userId);
-            return string.Format("{0:0,0 ₫}", user.KinCoin);
+            return string.Format("{0:C0}", user.KinCoin);
         }
 
         [HttpPost]
@@ -907,19 +905,19 @@ namespace Kingflix.Controllers
             AppUser user = GetCurrentUser();
             if (user != null)
             {
-                bool correctPass = await _userManager.CheckPasswordAsync(user, model.OldPassword);
+                bool correctPass = await _signInManager.UserManager.CheckPasswordAsync(user, model.OldPassword);
                 if (!correctPass)
                 {
                     ModelState.AddModelError("", GetErrorMessage.PasswordNotValid);
                     return View(model);
                 }
 
-                IdentityResult validPass = await _userManager.PasswordValidator.ValidateAsync(model.NewPassword);
+                IdentityResult validPass = await _signInManager.UserManager.PasswordValidator.ValidateAsync(model.NewPassword);
                 if (validPass.Succeeded)
                 {
-                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(model.NewPassword);
+                    user.PasswordHash = _signInManager.UserManager.PasswordHasher.HashPassword(model.NewPassword);
 
-                    IdentityResult result = await _userManager.UpdateAsync(user);
+                    IdentityResult result = await _signInManager.UserManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
                         //_mailingRepository.PasswordChangedMail(user.Email);

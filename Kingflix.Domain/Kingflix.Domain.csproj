@@ -82,7 +82,10 @@
     <Compile Include="DomainModel\CardTemplate.cs" />
     <Compile Include="DomainModel\Category.cs" />
     <Compile Include="DomainModel\CategoryNetflixDetails.cs" />
+    <Compile Include="DomainModel\IdentityModel\AppUserManager.cs" />
+    <Compile Include="DomainModel\SMSHistory.cs" />
     <Compile Include="DomainModel\EmailHistory.cs" />
+    <Compile Include="DomainModel\SMSTemplate.cs" />
     <Compile Include="DomainModel\EmailTemplate.cs" />
     <Compile Include="DomainModel\ExtendProfile.cs" />
     <Compile Include="DomainModel\FlashSale.cs" />
@@ -118,7 +121,6 @@
     <Compile Include="DomainModel\Product.cs" />
     <Compile Include="Enumerables\Enums.cs" />
     <Compile Include="Abstract\IAppDbContext.cs" />
-    <Compile Include="Abstract\IMailingService.cs" />
     <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="Abstract\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

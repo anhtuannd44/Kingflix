@@ -41,7 +41,7 @@
                                     @item.Id
                                 </td>
                                 <td class="text-center">
-                                    @string.Format("{0:0,0 ₫}", item.Price)
+                                    @string.Format("{0:C0}", item.Price)
                                 </td>
                                 <td class="text-center">
                                     @item.DateCreated.ToString("dd/MM/yyyy HH:mm")
@@ -55,7 +55,7 @@
                                     {
                                         <p class="badge badge-danger">Đang xử lý</p>
                                     }
-                                    else if (item.Status == Kingflix.Domain.Enumerables.CoinStatus.Cencelled)
+                                    else if (item.Status == Kingflix.Domain.Enumerables.CoinStatus.Cancelled)
                                     {
                                         <p class="badge badge-danger">Từ chối hoặc hủy</p>
                                     }

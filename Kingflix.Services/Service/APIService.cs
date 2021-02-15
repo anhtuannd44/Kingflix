@@ -12,6 +12,8 @@ using Microsoft.Ajax.Utilities;
 using JsonWebToken;
 using Kingflix.Services.Interfaces;
 using Kingflix.Domain.Models;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace Kingflix.Services
 {
@@ -28,15 +30,15 @@ namespace Kingflix.Services
                     { "total_amount", data.total_amount },           // Tổng tiền
                     { "description", data.description },             // Tóm tắt đơn hàng
                     { "url_success", data.url_success },             // Link trả về khi hoàn thanh toán thành công
-                    { "merchant_id", Const.merchant_id },       // Mã Merchant
+                    { "merchant_id", Const.MERCHANT_ID },            // Mã Merchant
                     { "url_detail", data.url_detail },               // Url chi tiết đơn hàng (redirect lại khi khách hủy đơn)
-                    { "accept_bank", 1 },                       // Chấp nhận thanh toán bằng thẻ ATM ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
-                    { "accept_cc", 1 },                         // Chấp nhận thanh toán bằng thẻ Tín dụng ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
-                    { "accept_qrpay", 1 },                      // Chấp nhận thanh toán bằng QR code ? (Chấp nhận: 1, Không chấp nhận: 0, default: 0)
-                    { "accept_e_wallet", 1 },                   // Chấp nhận thanh toán bằng Ví điện tử ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
+                    { "accept_bank", 1 },                            // Chấp nhận thanh toán bằng thẻ ATM ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
+                    { "accept_cc", 1 },                              // Chấp nhận thanh toán bằng thẻ Tín dụng ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
+                    { "accept_qrpay", 1 },                           // Chấp nhận thanh toán bằng QR code ? (Chấp nhận: 1, Không chấp nhận: 0, default: 0)
+                    { "accept_e_wallet", 1 },                        // Chấp nhận thanh toán bằng Ví điện tử ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
                     { "url_cancel", data.url_cancel },               //Url dùng để gửi thông báo cho website bán hàng, chat, ... khi đơn hàng thanh toán thành công, cho phép notify đến nhiều url, cách nhau bởi dấu ,
                     { "customer_email", data.customer_email },
-                    { "webhooks", Const.webook_success },
+                    { "webhooks", Const.WEBHOOK_SUCCESS },
                     { "customer_phone", data.customer_phone },
                     { "customer_name", data.customer_name },
                     { "customer_address", data.customer_address }
@@ -57,7 +59,7 @@ namespace Kingflix.Services
             payload.Add("jwt", checksum);
 
             //Tạo url redirect
-            string redirect_url = Const.baokim_url;
+            string redirect_url = Const.BAOKIM_URL;
 
             if (redirect_url.IndexOf("?") == -1)
                 redirect_url += "?";
@@ -112,7 +114,7 @@ namespace Kingflix.Services
             payload.Add("jwt", checksum);
 
             //Tạo url redirect
-            string redirect_url = Const.card_payment_url;
+            string redirect_url = Const.CARD_PAYMENT_URL;
 
             if (redirect_url.IndexOf("?") == -1)
                 redirect_url += "?";
@@ -175,16 +177,15 @@ namespace Kingflix.Services
                 HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.PostAsync(redirect_url, null);
                 HttpContent content = response.Content;
-                var a = content.ReadAsStringAsync();
-                var dataResponsed = await content.ReadAsAsync<PaymentAPIResult>();
+                JObject dataResponsed = JObject.Parse(await content.ReadAsStringAsync());
 
                 //Nếu thành công!
-                if (dataResponsed.code == 0)
+                if ((int)dataResponsed["code"] == 0)
                 {
                     result.status = "success";
                     result.message = "Thành công! Đơn hàng của bạn được giữ trong 60 phút. Hãy hoàn thành thanh toán của bạn!";
-                    result.redirect_url = dataResponsed.data.payment_url;
-                    result.APIOrderId = dataResponsed.data.order_id;
+                    result.redirect_url = (string)dataResponsed["data"]["payment_url"];
+                    result.APIOrderId = (string)dataResponsed["data"]["order_id"];
                 }
                 else
                 {

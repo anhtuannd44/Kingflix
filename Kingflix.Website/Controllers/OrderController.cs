@@ -69,10 +69,10 @@ namespace Kingflix.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfirmStep1(string categoryId, double month, int profile, string promoCode, List<OrderDetailsInputViewModel> combo)
+        public ActionResult ConfirmStep1(string categoryId, double month, int profile, List<OrderDetailsInputViewModel> combo, string promoCode = null)
         {
             var price = _productService.GetCategoryPrice(categoryId, month);
-            if (price == null)
+            if (price == null || Session["order"] == null)
                 return Json(Url.Action("Step1", new { promoCode }));
 
             OrderViewModel order = Session["order"] as OrderViewModel;
@@ -80,7 +80,7 @@ namespace Kingflix.Controllers
             order.VoucherId = promoCode;
             order.CategoryId = categoryId;
             order.Month = month;
-            order.Profile = profile;
+            order.Count= profile;
             order.OrderType = OrderType.Order;
 
             if (combo != null)
@@ -89,7 +89,7 @@ namespace Kingflix.Controllers
                 {
                     var comboItem = _productService.GetCategoryPrice(item.CategoryId, item.Month);
                     if (comboItem != null)
-                        order.OrderDetails.Add(new OrderDetails()
+                        order.OrderDetails.Add(new OrderDetailsInputViewModel()
                         {
                             CategoryId = item.CategoryId,
                             Month = item.Month,
@@ -158,7 +158,7 @@ namespace Kingflix.Controllers
                     });
                 }
             }
-            orders.Price = _orderService.CheckPromotion(orders.VoucherId, orders.CategoryId, orders.Month, orders.Profile, listCombo, userId, true).Total;
+            orders.Price = _orderService.CheckPromotion(orders.VoucherId, orders.CategoryId, orders.Month, orders.Count, listCombo, userId, true).Total;
             ViewBag.Total = orders.Price;
             return View(model);
         }

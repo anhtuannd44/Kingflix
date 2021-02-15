@@ -2,24 +2,32 @@
 
 namespace Kingflix.Website.Models
 {
-    public class UserResetPasswordViewModel
+    public class ResetPasswordViewModel
     {
-        [Required]
-        [DataType(DataType.EmailAddress)]
+        [Required(ErrorMessage = "Bạn chưa nhập Email")]
+        [EmailAddress(ErrorMessage = "Chưa đúng định dạng Email")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
-        [Display(Name = "New Password")]
-        [StringLength(200, MinimumLength = 6)]
+        [Required(ErrorMessage = "Bạn chưa nhập mật khẩu mới")]
+        [StringLength(100, ErrorMessage = "Mật khẩu phải từ 6 ký tự trở lên.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        public string NewPassword { get; set; }
+        [Display(Name = "Mật khẩu mới")]
+        public string Password { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
-        [Display(Name = "Confirm New Password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password does not match.")]
         [DataType(DataType.Password)]
-        public string NewPasswordCopy { get; set; }
+        [Display(Name = "Xác nhận mật khẩu")]
+        [Compare("Password", ErrorMessage = "Mật khẩu xác nhận chưa đúng.")]
+        public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
+    }
+
+    public class ForgotPasswordViewModel
+    {
+        [Required(ErrorMessage = "Bạn chưa nhập Email")]
+        [EmailAddress(ErrorMessage = "Chưa đúng định dạng Email")]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
     }
 }

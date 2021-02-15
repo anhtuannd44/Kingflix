@@ -132,7 +132,7 @@
                 </div>
                 <div class="card-body">
                     <p>Hình thức thanh toán: <span class="font-weight-bold">@Model.Payments.Name</span></p>
-                    <p>Số tiền thanh toán: <span class="font-weight-bold">@string.Format("{0:0,0 ₫}", Model.Price)</span></p>
+                    <p>Số tiền thanh toán: <span class="font-weight-bold">@string.Format("{0:C0}", Model.Price)</span></p>
                     <p>Bằng chứng thanh toán:</p>
                     @if (!string.IsNullOrEmpty(imgSrc))
                     {
@@ -162,7 +162,7 @@
                     <p class="font-italic" style="display: none;" id="cancelStatus">Sau khi xác nhận "Đã hủy". Bạn không thể chỉnh sửa lại đơn hàng này.</p>
                 </div>
             </div>
-            <div class="card" id="cancelNote" style="display: @(Model.Status == OrderStatus.Cencelled?"none":"block")">
+            <div class="card" id="cancelNote" style="display: @(Model.Status == OrderStatus.Cancelled?"none":"block")">
                 <div class="card-header">
                     <h6 class="">Thêm lý do hủy</h6>
                 </div>

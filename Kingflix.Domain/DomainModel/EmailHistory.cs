@@ -10,7 +10,7 @@ namespace Kingflix.Domain.DomainModel
     {
         public EmailHistory()
         {
-           
+
         }
 
         [Key]
@@ -18,9 +18,13 @@ namespace Kingflix.Domain.DomainModel
 
         public string Email { get; set; }
 
-        public DateTime DateSend { get; set; }
+        public DateTime TimeSend { get; set; }
 
-        public EmailTypeHistory Type { get; set; }
+        public string Title { get; set; }
+
+        public string Content { get; set; }
+
+        public EmailStatus Status { get; set; }
 
     }
 }

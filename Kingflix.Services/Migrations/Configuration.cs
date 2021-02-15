@@ -1,16 +1,13 @@
+using System;
+using System.Data.Entity.Migrations;
+using Kingflix.Domain.DomainModel.IdentityModel;
+using Kingflix.Services.Data;
+using Kingflix.Services.Data.Identity;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+
 namespace Kingflix.Services.Migrations
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-    using Kingflix.Domain.DomainModel;
-    using Kingflix.Domain.DomainModel.IdentityModel;
-    using Kingflix.Services.Data;
-    using Kingflix.Services.Data.Identity;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-
     internal sealed class Configuration : DbMigrationsConfiguration<AppDbContext>
     {
         public Configuration()
