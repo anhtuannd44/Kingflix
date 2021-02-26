@@ -20,8 +20,8 @@ namespace Kingflix.Domain.ViewModel
         {
             //GmailUsername = "support@kingflix.vn";
             //GmailPassword = "hhnhzdzesyvhbsrf";
-            GmailUsername = "anhtuan.nd44@gmail.com";
-            GmailPassword = "dmbavhoimsvurrgk";
+            GmailUsername = "support@kingflix.vn";
+            GmailPassword = "yowjozqrqtjlethf";
             GmailHost = "smtp.gmail.com";
             GmailPort = 587; // Gmail can use ports 25, 465 & 587; but must be 25 for medium trust environment.
             GmailSSL = true;

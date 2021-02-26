@@ -1,5 +1,5 @@
 ﻿@using Kingflix.Domain.Enumerables
-@model IEnumerable<Kingflix.Models.AppUser>
+@model IEnumerable<Kingflix.Domain.DomainModel.IdentityModel.AppUser>
 
 @{
     ViewBag.Title = "Danh sách người dùng";
@@ -99,12 +99,6 @@
                                     <a class="btn btn-warning p-1" data-toggle="tooltip" data-title="Chỉnh sửa" href="@Url.Action("Edit", new { id = item.Id })">
                                         <i class="mdi mdi-pencil"></i>
                                     </a>
-                                    @if (!item.IsAdmin)
-                                    {
-                                        <p class="m-0 btn btn-danger p-1 delete-user" data-toggle="tooltip" data-sort-name="@item.FullName" data-title="Xóa">
-                                            <i class="mdi mdi-delete"></i>
-                                        </p>
-                                    }
                                 </td>
                             </tr>
                         }

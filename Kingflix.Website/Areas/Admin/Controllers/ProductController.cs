@@ -185,7 +185,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
             var result = new ResultViewModel();
             try
             {
-                _productService.DeleteProduct(productId);
+                result = _productService.DeleteProduct(productId);
             }
             catch
             {

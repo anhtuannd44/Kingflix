@@ -1,5 +1,4 @@
-﻿using Kingflix.Domain.DomainModel;
-using Kingflix.Domain.Enumerables;
+﻿using Kingflix.Domain.Enumerables;
 using Kingflix.Domain.ViewModel;
 using Kingflix.Services.Interfaces;
 using Kingflix.Utilities;
@@ -199,19 +198,6 @@ namespace Kingflix.Controllers
             return Json(result, JsonRequestBehavior.DenyGet);
         }
 
-        public ActionResult PaymentOther(string orderId)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Login", "Account", new { returnUrl = Url.Action("PaymentOther", "Order", new { orderId }), IsRedirect = "True" });
-            var userId = User.Identity.GetUserId();
-            var model = _orderService.GetOrderById(orderId);
-            if (model == null)
-                return HttpNotFound();
-            if (model.UserId != userId)
-                return HttpNotFound();
-            return View(model);
-        }
-
         [HttpGet]
         public ActionResult Details(string orderId)
         {
@@ -274,7 +260,7 @@ namespace Kingflix.Controllers
         public ActionResult UploadImageOrder(HttpPostedFileBase PaymentImage, string orderId)
         {
             _orderService.UploadImageOrder(PaymentImage, orderId);
-            return RedirectToAction("PaymentOther", new { orderId });
+            return RedirectToAction("Details", new { orderId });
         }
 
 

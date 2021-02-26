@@ -446,7 +446,7 @@ namespace Kingflix.Services
         {
             var result = new ResultViewModel();
             //Chuyển Profile cho người dùng còn hạn
-            var allPofileList = _profileRepository.GetAll();
+            var allPofileList = _profileRepository.GetAll().ToList();
             var profileList = new List<Profile>(); //Danh sách profile có người dùng còn hạn mà tài khoản hết hạn
             foreach (var item in productList)
             {
@@ -454,9 +454,9 @@ namespace Kingflix.Services
                 if (profileListExpried.Count() != 0)
                     profileList.AddRange(profileListExpried);
             }
-            var profileAvailable = allPofileList.Where(a => string.IsNullOrEmpty(a.UserId) && a.Products.DateEnd > DateTime.Today).ToList(); //Danh sách Profile còn hạn và đang trống
             if (profileList.Count > 0) //Nếu tồn tại người dùng còn hạn mà tài khoản hết hạn
             {
+                var profileAvailable = allPofileList.Where(a => string.IsNullOrEmpty(a.UserId) && a.Products.DateEnd > DateTime.Today).ToList(); //Danh sách Profile còn hạn và đang trống
                 foreach (var item in profileList)
                 {
                     //Lấy danh sách những profile đang trống và còn hạn

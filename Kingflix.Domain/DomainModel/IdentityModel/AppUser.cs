@@ -58,6 +58,8 @@ namespace Kingflix.Domain.DomainModel.IdentityModel
        
         [NotMapped]
         public bool IsSelected { get; set; } = false;
+        [NotMapped]
+        public bool IsUsingService { get; set; } = false;
 
         [NotMapped]
         public string ReferralCode

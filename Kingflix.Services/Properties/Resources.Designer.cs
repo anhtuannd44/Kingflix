@@ -226,14 +226,13 @@ namespace Kingflix.Services.Properties {
         ///                &lt;tr&gt;
         ///                    &lt;th&gt;Loại gói&lt;/th&gt;
         ///                    &lt;th&gt;Số tháng&lt;/th&gt;
+        ///                    &lt;th&gt;Số Profile&lt;/th&gt;
         ///                    &lt;th&gt;Bảo hành&lt;/th&gt;
         ///                    &lt;th&gt;Loại tài khoản&lt;/th&gt;
         ///                &lt;/tr&gt;
         ///            &lt;/thead&gt;
         ///            &lt;tbody&gt;
-        ///                {OrderDetails}
-        ///            &lt;/tbody&gt;
-        ///  [rest of string was truncated]&quot;;.
+        ///              [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string OrderDetails {
             get {

@@ -492,6 +492,8 @@ namespace Kingflix.Services
                     {
                         orderItem.ApiOrderId = result.APIOrderId ?? string.Empty;
                         _orderRepository.Update(orderItem);
+                        var emailHistory = _emailService.SendOrder(orderItem); //Gửi và thêm vào lịch sử Email
+                        _emailHistoryRepository.Create(emailHistory);
                         _unitOfWork.SaveChanges();
                     }
                 }

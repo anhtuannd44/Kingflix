@@ -20,11 +20,11 @@ namespace Kingflix.Services.Data.Identity
 
             PasswordValidator = new PasswordValidator
             {
-                RequireDigit = true,
-                RequiredLength = 6,
-                RequireLowercase = true,
-                RequireUppercase = true,
-                RequireNonLetterOrDigit = true
+                RequireDigit = false,
+                RequiredLength = 4,
+                RequireLowercase = false,
+                RequireUppercase = false,
+                RequireNonLetterOrDigit = false
             };
 
             UserLockoutEnabledByDefault = false;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -10,7 +9,6 @@ using Kingflix.Domain.DomainModel.IdentityModel;
 using Kingflix.Domain.Enumerables;
 using Kingflix.Domain.ViewModel;
 using Kingflix.Services.Data.Identity;
-using Kingflix.Services.Data.Identity.Abstraction;
 using Kingflix.Services.Interfaces;
 using Kingflix.Services.Services;
 using Kingflix.Website.CustomFilters;
@@ -51,7 +49,7 @@ namespace Kingflix.Website.Controllers
             {
                 return View("_Error", new string[] { GetErrorMessage.NoAccess });
             }
-
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -93,13 +91,13 @@ namespace Kingflix.Website.Controllers
         // GET: /Account/Create
         [AllowAnonymous]
         [ReturnUrl]
-        public ActionResult Register()
+        public ActionResult Register(string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
                 return View("Index", "Home");
             }
-
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -107,7 +105,7 @@ namespace Kingflix.Website.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<ActionResult> Register(UserCreateViewModel model)
+        public async Task<ActionResult> Register(UserCreateViewModel model, string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -128,7 +126,7 @@ namespace Kingflix.Website.Controllers
                 {
                     var loginResult = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: false);
                     if (loginResult == SignInStatus.Success)
-                        return RedirectToAction("Index", "Home");
+                        return Redirect(returnUrl ?? "/");
                 }
                 else
                 {
@@ -317,7 +315,9 @@ namespace Kingflix.Website.Controllers
                     DateCreated = DateTime.Now,
                     TimeStep2 = DateTime.Now,
                     TimeLastLogin = DateTime.Now,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    FullName = model.FullName,
+                    PhoneNumber = model.PhoneNumber
                 };
 
                 var result = await _signInManager.UserManager.CreateAsync(user);
@@ -376,6 +376,6 @@ namespace Kingflix.Website.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-#endregion
+        #endregion
     }
 }

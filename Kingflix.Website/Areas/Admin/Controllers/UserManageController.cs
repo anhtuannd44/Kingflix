@@ -271,7 +271,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
                     result.message = "Thất bại! Bạn chưa chọn tài khoản thay thế";
                 }
                 else
-                    _productService.EditProductConfirm(product, newPassword, changePassRequired, currentParentId);
+                    result = _productService.EditProductConfirm(product, newPassword, changePassRequired, currentParentId);
             }
             catch
             {
@@ -284,7 +284,7 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         public ActionResult SendEmail(string email)
         {
             ViewBag.Email = email;
-            ViewBag.EmailTemplate = _emailTemplateRepository.GetAll();
+            ViewData["EmailTemplate"] = _emailTemplateRepository.GetAll();
             return PartialView("_EmailPartial");
         }
 

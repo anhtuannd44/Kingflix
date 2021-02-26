@@ -78,7 +78,7 @@
                             var date = (item.DateEnd.Date - DateTime.Today.Date).Days + 1;
                             <tr>
                                 <td>
-                                    @(item.Categories.Name+item.GroupId)
+                                    @(item.Categories.Name+" "+item.GroupId)
                                 </td>
                                 <td style="display: none">
                                     @item.ProductId
@@ -86,7 +86,7 @@
                                 <td style="cursor: pointer">
                                     <i class="mdi mdi-file-multiple clipboard mr-2" style="z-index: 10000; cursor: pointer" data-clipboard-target="#productCopy-@i"></i>
                                     <a href="#" class="edit-product text-success" data-id="@item.ProductId" data-toggle="modal" data-target="#EditProductModal" id="productCopy-@i">
-                                        @item.ProductId <br /> <span class="text-warning font-weight-light">@(item.Parent!=null?"("+item.Parent.ProductId+")":"")</span>
+                                        @item.ProductId <br /> <span class="text-warning font-weight-light"> @(item.Parent!=null?"("+item.Parent.ProductId+")":"")</span>
                                     </a>
                                 </td>
                                 <td>

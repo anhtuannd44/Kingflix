@@ -16,48 +16,17 @@
                 <td>Thời gian</td>
                 <td>Gửi đến Email</td>
                 <td>Loại Email gửi</td>
+                <td>Trạng thái</td>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.DateSend.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@item.TimeSend.ToString("dd/MM/yyyy HH:mm")</td>
                     <td class="text-success">@item.Email</td>
-                    <td>
-                        @if (item.Type == EmailTypeHistory.Exprired)
-                        {
-                            <p class="m-0">@EmailTypeHistory.Exprired.GetEnumDisplayName()</p>
-                        }
-                        else if (item.Type == EmailTypeHistory.PreExpired)
-                        {
-                            <p class="m-0">@EmailTypeHistory.PreExpired.GetEnumDisplayName()</p>
-                        }
-                        else if (item.Type == EmailTypeHistory.OrderSuccess)
-                        {
-                            <p class="m-0">@EmailTypeHistory.OrderSuccess.GetEnumDisplayName()</p>
-                        }
-                        else if (item.Type == EmailTypeHistory.Custom)
-                        {
-                            <p class="m-0">@EmailTypeHistory.Custom.GetEnumDisplayName()</p>
-                        }
-                        else if (item.Type == EmailTypeHistory.OrderCancel)
-                        {
-                            <p class="m-0">@EmailTypeHistory.OrderCancel.GetEnumDisplayName()</p>
-                        }
-                        else if (item.Type == EmailTypeHistory.OrderAccept)
-                        {
-                            <p class="m-0">@EmailTypeHistory.OrderAccept.GetEnumDisplayName()</p>
-                        }
-                        else if (item.Type == EmailTypeHistory.ExtendSuccess)
-                        {
-                            <p class="m-0">@EmailTypeHistory.ExtendSuccess.GetEnumDisplayName()</p>
-                        }
-                        else if (item.Type == EmailTypeHistory.ExtendAccept)
-                        {
-                            <p class="m-0">@EmailTypeHistory.ExtendAccept.GetEnumDisplayName()</p>
-                        }
-                    </td>
+                    <td>@item.Title</td>
+                    <td>@item.Status.GetEnumDisplayName()</td>
                 </tr>
             }
         </tbody>

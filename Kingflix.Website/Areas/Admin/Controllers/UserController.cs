@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Kingflix.Domain.Abstract;
+using Kingflix.Domain.DomainModel;
 using Kingflix.Domain.DomainModel.IdentityModel;
 using Kingflix.Domain.Enumerables;
 using Kingflix.Domain.ViewModel;
@@ -14,18 +17,28 @@ namespace Kingflix.Website.Areas.Admin.Controllers
         private readonly IUserService _userService;
         private readonly IProductService _productService;
         private readonly IOrderService _orderService;
+        private readonly IRepository<Profile> _profileService;
         public UserController(
             IUserService userService,
             IProductService productService,
+            IRepository<Profile> profileService,
             IOrderService orderService)
         {
             _userService = userService;
             _productService = productService;
+            _profileService = profileService;
             _orderService = orderService;
         }
         public ActionResult Index()
         {
-            var model = _userService.GetUserList();
+            var model = _userService.GetUserList().ToList();
+            var profileList = _profileService.Get(a => a.Products != null).ToList();
+            foreach (var item in model)
+            {
+                var checkProfile = profileList.Where(a => a.UserId == item.Id && a.DateEnd >= DateTime.Today && a.Products.DateEnd >= DateTime.Today);
+                if (checkProfile.Count() > 0)
+                    item.IsUsingService = true;
+            }
             return View(model);
         }
 
@@ -86,9 +99,9 @@ namespace Kingflix.Website.Areas.Admin.Controllers
             var result = new ResultViewModel();
             try
             {
-               
+
                 result.status = "success";
-                result.message= "Thành công! Thành viên đã được xóa.";
+                result.message = "Thành công! Thành viên đã được xóa.";
             }
             catch
             {

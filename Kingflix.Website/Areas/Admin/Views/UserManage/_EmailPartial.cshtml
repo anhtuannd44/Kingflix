@@ -1,5 +1,8 @@
-﻿@model Kingflix.Models.ViewModel.EmailViewModel
-
+﻿@using Kingflix.Domain.DomainModel
+@model Kingflix.Models.ViewModel.EmailViewModel
+@{ 
+    var emailTemplateList = (IEnumerable<EmailTemplate>)ViewData["EmailTemplate"];
+}
 
 <div class="modal-header border-0 pb-0">
     <h4 class="card-title font-weight-bold mb-0">Gửi Email</h4>
@@ -24,18 +27,25 @@
                     <label for="EmailList" class="control-label">Email người dùng</label>
                     <input type="text" required readonly value="@ViewBag.Email" class="form-control" id="EmailList" name="EmailList" />
                 </div>
-                <div class="form-group" id="emailTemplateList">
-                    <label for="EmailTemplateList" class="control-label">Chọn Mẫu Email</label>
-                    <select class="form-control select2" id="EmailTemplateId" name="EmailTemplateId" required>
-                        @foreach (var item in ViewBag.EmailTemplate)
-                        {
-                            <option value="@item.Id">@item.Title</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group text-center">
-                    <button class="btn btn-success btn-rounded" type="submit">Xác nhận gửi</button>
-                </div>
+                @if (emailTemplateList.Count() == 0)
+                {
+                    <p>Bạn chưa tạo mẫu Email nào để gửi, vui lòng tạo mẫu tại mục Email Template</p>
+                }
+                else
+                {
+                    <div class="form-group" id="emailTemplateList">
+                        <label for="EmailTemplateList" class="control-label">Chọn Mẫu Email</label>
+                        <select class="form-control select2" id="EmailTemplateId" name="EmailTemplateId" required>
+                            @foreach (var item in (IEnumerable<EmailTemplate>)ViewData["EmailTemplate"])
+                            {
+                                <option value="@item.Id">@item.Title</option>
+                            }
+                        </select>
+                    </div>
+                        <div class="form-group text-center">
+                        <button class="btn btn-success btn-sm" type="submit">Xác nhận gửi</button>
+                    </div>
+                }
             </div>
         </div>
 
