@@ -59,10 +59,11 @@ namespace Kingflix.Domain.ViewModel
         public string url_success { get; set; }
         public string url_cancel { get; set; }
         public string url_detail { get; set; }
+        public string webhooks { get; set; }
         public string customer_email { get; set; }
         public string customer_phone { get; set; }
         public string customer_name { get; set; }
         public string customer_address { get; set; }
-        public int? bpm_id { get; set; }
+        public PaymentType type { get; set; }
     }
 }

@@ -124,21 +124,21 @@ namespace Kingflix.Domain.Enumerables
         [Display(Name = "Ví Bảo Kim API")]
         BaoKim = 0,
         [Display(Name = "ATM các thẻ ngân hàng API")]
-        InternetBanking = 295,
+        InternetBanking = 1,
         [Display(Name = "Visa/MasterCard API")]
-        Visa = 128,
+        Visa = 2,
         [Display(Name = "QR Code API")]
-        QRCode = 297,
+        QRCode = 3,
         [Display(Name = "QR Ví điện tử API")]
-        QRVidientu = 15,
+        QRVidientu = 4,
         [Display(Name = "Card API")]
-        Card = 3,
+        Card = 5,
         [Display(Name = "Ví điện tử (Thủ công)")]
-        EWallet = 4,
+        EWallet = 6,
         [Display(Name = "Chuyển khoản (Thủ công)")]
-        Bank = 5,
+        Bank = 7,
         [Display(Name = "Khác")]
-        Orther = 6
+        Orther = 8
     }
     public enum UserProductStatus
     {

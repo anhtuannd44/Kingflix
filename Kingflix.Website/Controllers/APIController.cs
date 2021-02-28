@@ -22,11 +22,11 @@ namespace Kingflix.Controllers
 
             JObject json = JObject.Parse(data);
 
-            var notificationAPI = JsonConvert.DeserializeObject<NotificationAPI>(json.ToString());
+            string CodeResult = (string)json["order"]["stat"];
 
-            if (notificationAPI.order.stat == "c")
+            if (CodeResult == "c")
             {
-                _orderService.UpdateOrder(notificationAPI.order.mrc_order_id, OrderStatus.Done, null, false);
+                _orderService.UpdateOrder((string)json["order"]["mrc_order_id"], OrderStatus.Done, null, false);
             }
         }
 

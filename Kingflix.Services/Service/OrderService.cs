@@ -453,7 +453,6 @@ namespace Kingflix.Services
                     _unitOfWork.SaveChanges();
 
                     var user = _userRepository.GetById(userId);
-                    var paymentId = _paymentRepository.Find(paymentMethod).Type;
                     if (PaymentType == PaymentType.Visa || PaymentType == PaymentType.QRCode || PaymentType == PaymentType.InternetBanking)
                     {
                         var dataSendToBaoKim = new DataSendToBaoKim()
@@ -461,14 +460,15 @@ namespace Kingflix.Services
                             mrc_order_id = orderItem.OrderId,
                             total_amount = orderItem.Price,
                             description = "Thanh toán đơn hàng " + orderItem.OrderId,
-                            url_success = "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId,
-                            url_cancel = "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId,
-                            url_detail = "https://kingflix.vn/Order/Details?orderId=" + orderItem.OrderId,
+                            url_success = "https://8f169fc9bc86.ngrok.io/Order/Details?orderId=" + orderItem.OrderId,
+                            url_cancel = "https://8f169fc9bc86.ngrok.io/Order/Details?orderId=" + orderItem.OrderId,
+                            url_detail = "https://8f169fc9bc86.ngrok.io/Order/Details?orderId=" + orderItem.OrderId,
+                            webhooks = "https://8f169fc9bc86.ngrok.io/API/PaymentAPISuccess",
                             customer_email = user.Email,
                             customer_phone = user.PhoneNumber ?? "0000000000",
                             customer_name = user.FullName ?? user.Email,
                             customer_address = user.Address ?? "Không có thông tin",
-                            bpm_id = Convert.ToInt32(paymentId)
+                            type = PaymentType
                         };
                         result = await _apiService.SendOrderToBaoKim(dataSendToBaoKim);
                     }

@@ -14,6 +14,7 @@ using Kingflix.Services.Interfaces;
 using Kingflix.Domain.Models;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using Kingflix.Domain.Enumerables;
 
 namespace Kingflix.Services
 {
@@ -32,10 +33,10 @@ namespace Kingflix.Services
                     { "url_success", data.url_success },             // Link trả về khi hoàn thanh toán thành công
                     { "merchant_id", Const.MERCHANT_ID },            // Mã Merchant
                     { "url_detail", data.url_detail },               // Url chi tiết đơn hàng (redirect lại khi khách hủy đơn)
-                    { "accept_bank", 1 },                            // Chấp nhận thanh toán bằng thẻ ATM ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
-                    { "accept_cc", 1 },                              // Chấp nhận thanh toán bằng thẻ Tín dụng ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
-                    { "accept_qrpay", 1 },                           // Chấp nhận thanh toán bằng QR code ? (Chấp nhận: 1, Không chấp nhận: 0, default: 0)
-                    { "accept_e_wallet", 1 },                        // Chấp nhận thanh toán bằng Ví điện tử ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
+                    { "accept_bank", data.type == PaymentType.InternetBanking ? 1 : 0 },                            // Chấp nhận thanh toán bằng thẻ ATM ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
+                    { "accept_cc",  data.type == PaymentType.Visa ? 1 : 0  },                              // Chấp nhận thanh toán bằng thẻ Tín dụng ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
+                    { "accept_qrpay",  data.type == PaymentType.QRCode ? 1 : 0  },                           // Chấp nhận thanh toán bằng QR code ? (Chấp nhận: 1, Không chấp nhận: 0, default: 0)
+                    { "accept_e_wallet",  0 },                        // Chấp nhận thanh toán bằng Ví điện tử ? (Chấp nhận: 1, Không chấp nhận: 0, default: 1)
                     { "url_cancel", data.url_cancel },               //Url dùng để gửi thông báo cho website bán hàng, chat, ... khi đơn hàng thanh toán thành công, cho phép notify đến nhiều url, cách nhau bởi dấu ,
                     { "customer_email", data.customer_email },
                     { "webhooks", Const.WEBHOOK_SUCCESS },
@@ -43,8 +44,8 @@ namespace Kingflix.Services
                     { "customer_name", data.customer_name },
                     { "customer_address", data.customer_address }
                 };
-            if (data.bpm_id != null)
-                form_params.Add("bpm_id", data.bpm_id.Value);
+            if (data.type == PaymentType.Visa)
+                form_params.Add("bpm_id", 128);
 
             //Payload
             var payload = GetPayloadOfToken();
@@ -83,7 +84,7 @@ namespace Kingflix.Services
             redirect_url += "customer_name=" + form_params["customer_name"].Value + "&";
             redirect_url += "customer_address=" + form_params["customer_address"].Value + "&";
 
-            if (data.bpm_id != null)
+            if (data.type == PaymentType.Visa)
                 redirect_url += "bpm_id=" + form_params["bpm_id"].Value + "&";
 
             redirect_url += "jwt=" + payload["jwt"].Value;

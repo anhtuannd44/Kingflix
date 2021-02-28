@@ -94,7 +94,6 @@ namespace Kingflix.Domain.Models
         public int? accept_e_wallet { get; set; }
         public string email { get; set; }
         public string name { get; set; }
-        public string webhooks { get; set; }
         public string customer_name { get; set; }
         public string customer_email { get; set; }
         public string customer_phone { get; set; }

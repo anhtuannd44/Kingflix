@@ -4,6 +4,7 @@ using Kingflix.Domain.Enumerables;
 using Kingflix.Domain.ViewModel;
 using Kingflix.Services.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 
 namespace Kingflix.Services
@@ -22,7 +23,7 @@ namespace Kingflix.Services
         }
         public IEnumerable<Payment> GetPaymentList()
         {
-            return _paymentRepository.GetAll();
+            return _paymentRepository.Get(a=>a.Status == Status.Public).ToList();
         }
         public Payment GetPaymentById(int? id)
         {
