@@ -44,7 +44,7 @@ namespace Kingflix.Domain.DomainModel
             {
                 if (Prices.HasValue)
                 {
-                    return Math.Round(100 - SetPrice / Prices.Value * 100);
+                    return Math.Round(100 - Prices.Value / SetPrice* 100);
                 }
                 return null;
             }

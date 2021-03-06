@@ -1818,9 +1818,6 @@
     <Content Include="Areas\Admin\Views\OrderAdmin\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\OrderAdmin\Index.cshtml" />
     <Content Include="Areas\Admin\Views\OrderAdmin\_UserListPartial.cshtml" />
-    <Content Include="Areas\Admin\Views\PageAdmin\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\PageAdmin\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\PageAdmin\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Payment\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Payment\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Payment\Index.cshtml" />
@@ -1873,6 +1870,13 @@
     <Content Include="Areas\Admin\Views\SMS\EditSMSTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\SMS\SMSTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\SMS\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Setup\RefundSetting.cshtml" />
+    <Content Include="Areas\Manage\Views\web.config" />
+    <Content Include="Areas\Manage\Views\Information\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\OrderHistory\View.cshtml" />
+    <Content Include="Areas\Manage\Views\Renew\Index.cshtml" />
+    <Content Include="Areas\Manage\Views\Renew\_PriceListPartial.cshtml" />
+    <Content Include="Areas\Manage\Views\Renew\RenewConfirm.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1926,7 +1930,6 @@
     <Compile Include="Areas\Admin\Controllers\KingCoinController.cs" />
     <Compile Include="Areas\Admin\Controllers\NotificationController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrderAdminController.cs" />
-    <Compile Include="Areas\Admin\Controllers\PageAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\QuestionController.cs" />
@@ -1938,6 +1941,11 @@
     <Compile Include="Areas\Admin\Controllers\UserManageController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\VoucherController.cs" />
+    <Compile Include="Areas\Manage\Controllers\InformaitonController.cs" />
+    <Compile Include="Areas\Manage\Controllers\OrderHistoryController.cs" />
+    <Compile Include="Areas\Manage\Controllers\RenewController.cs" />
+    <Compile Include="Areas\Manage\Controllers\SupportBoxController.cs" />
+    <Compile Include="Areas\Manage\ManageAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\APIController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -1948,7 +1956,7 @@
     <Compile Include="Controllers\BaseExtendedController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\JobsController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ManagesController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PageController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
@@ -2012,35 +2020,33 @@
     <Content Include="Views\Jobs\Index.cshtml" />
     <Content Include="Views\Jobs\JobList.cshtml" />
     <Content Include="Views\Jobs\_CategoryListPartial.cshtml" />
-    <Content Include="Views\Manage\CreateSupport.cshtml" />
-    <Content Include="Views\Manage\EditSupport.cshtml" />
-    <Content Include="Views\Manage\ExtendHistory.cshtml" />
-    <Content Include="Views\Manage\Giftcode.cshtml" />
-    <Content Include="Views\Manage\GiftcodeList.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\KingCoin.cshtml" />
-    <Content Include="Views\Manage\KingCoinDetails.cshtml" />
-    <Content Include="Views\Manage\KingCoinHistory.cshtml" />
-    <Content Include="Views\Manage\MemberShip.cshtml" />
-    <Content Include="Views\Manage\OrderHistory.cshtml" />
-    <Content Include="Views\Manage\Promotion.cshtml" />
-    <Content Include="Views\Manage\ReferralSetting.cshtml" />
-    <Content Include="Views\Manage\Renew.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\Support.cshtml" />
-    <Content Include="Views\Manage\UserInformation.cshtml" />
-    <Content Include="Views\Manage\_CardTemplateDetailsPartial.cshtml" />
-    <Content Include="Views\Manage\_CategoryListPartial.cshtml" />
-    <Content Include="Views\Manage\_ExtendDetailsPartial.cshtml" />
-    <Content Include="Views\Manage\_ExtendPartial.cshtml" />
-    <Content Include="Views\Manage\_ExtendProfilePartial.cshtml" />
-    <Content Include="Views\Manage\_MonthListPartial.cshtml" />
-    <Content Include="Views\Manage\_PaymentDetailsPartial.cshtml" />
-    <Content Include="Views\Manage\_PolicyPartial.cshtml" />
-    <Content Include="Views\Manage\_ProductListPartial.cshtml" />
-    <Content Include="Views\Manage\_ProfileNetflixPartial.cshtml" />
-    <Content Include="Views\Manage\_ProfileSpotifyPartial.cshtml" />
-    <Content Include="Views\Manage\_ReferralPartial.cshtml" />
+    <Content Include="Areas\Manage\Views\SupportBox\CreateSupport.cshtml" />
+    <Content Include="Areas\Manage\Views\SupportBox\EditSupport.cshtml" />
+    <Content Include="Views\Manages\ExtendHistory.cshtml" />
+    <Content Include="Views\Manages\Giftcode.cshtml" />
+    <Content Include="Views\Manages\GiftcodeList.cshtml" />
+    <Content Include="Views\Manages\KingCoin.cshtml" />
+    <Content Include="Views\Manages\KingCoinDetails.cshtml" />
+    <Content Include="Views\Manages\KingCoinHistory.cshtml" />
+    <Content Include="Views\Manages\MemberShip.cshtml" />
+    <Content Include="Areas\Manage\Views\OrderHistory\Index.cshtml" />
+    <Content Include="Views\Manages\Promotion.cshtml" />
+    <Content Include="Views\Manages\ReferralSetting.cshtml" />
+    <Content Include="Areas\Manage\Views\Renew\Renew.cshtml" />
+    <Content Include="Views\Manages\SetPassword.cshtml" />
+    <Content Include="Areas\Manage\Views\SupportBox\Index.cshtml" />
+    <Content Include="Views\Manages\_CardTemplateDetailsPartial.cshtml" />
+    <Content Include="Views\Manages\_CategoryListPartial.cshtml" />
+    <Content Include="Views\Manages\_ExtendDetailsPartial.cshtml" />
+    <Content Include="Views\Manages\_ExtendPartial.cshtml" />
+    <Content Include="Views\Manages\_ExtendProfilePartial.cshtml" />
+    <Content Include="Views\Manages\_MonthListPartial.cshtml" />
+    <Content Include="Views\Manages\_PaymentDetailsPartial.cshtml" />
+    <Content Include="Areas\Manage\Views\Information\_PolicyPartial.cshtml" />
+    <Content Include="Views\Manages\_ProductListPartial.cshtml" />
+    <Content Include="Areas\Manage\Views\Information\_ProfileNetflixPartial.cshtml" />
+    <Content Include="Areas\Manage\Views\Information\_ProfileSpotifyPartial.cshtml" />
+    <Content Include="Views\Manages\_ReferralPartial.cshtml" />
     <Content Include="Views\Order\ChangePayment.cshtml" />
     <Content Include="Views\Order\Details.cshtml" />
     <Content Include="Views\Order\Payment.cshtml" />
@@ -2071,12 +2077,10 @@
     <Content Include="Views\Shared\ModalTemplate\_ModalImagePartial.cshtml" />
     <Content Include="Views\Shared\ModalTemplate\_ModalPartial.cshtml" />
     <Content Include="Views\Shared\ProductItem\_ProductItemPartial.cshtml" />
-    <Content Include="Views\Shared\_AdminLayout.cshtml" />
-    <Content Include="Views\Shared\_EmailPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Shared\_HomepageLayout.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\_ManageLayout.cshtml" />
+    <Content Include="Areas\Manage\Views\Shared\_ManageLayout.cshtml" />
     <Content Include="Views\Shared\_OrderLayout.cshtml" />
     <Content Include="Views\Shared\_PaymentMethodPartial.cshtml" />
     <Content Include="Views\Shared\_ShareSocialIconPartial.cshtml" />
@@ -2112,7 +2116,6 @@
     <TypeScriptCompile Include="Content\plugin\bootstrap-table\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="EmailTemplate\" />
   </ItemGroup>
   <PropertyGroup>

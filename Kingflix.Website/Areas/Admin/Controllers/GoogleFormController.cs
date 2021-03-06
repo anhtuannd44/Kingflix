@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Kingflix.Website.Areas.Admin.Controllers
 {
+    [Route("{action}")]
     public class GoogleFormController : Controller
     {
         private readonly AppDbContext db = new AppDbContext();

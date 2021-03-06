@@ -44,5 +44,11 @@ namespace Kingflix.Services
             _userRepository.Delete(AppUser);
             _unitOfWork.SaveChanges();
         }
+        public void Refund(string userId, double amount)
+        {
+            AppUser user = _userRepository.GetById(userId);
+            user.KinCoin += amount;
+            _unitOfWork.SaveChanges();
+        }
     }
 }

@@ -12,6 +12,7 @@ using Kingflix.Domain.DomainModel.IdentityModel;
 
 namespace Kingflix.Website.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class EmailController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

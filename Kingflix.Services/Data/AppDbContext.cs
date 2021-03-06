@@ -45,6 +45,7 @@ namespace Kingflix.Services.Data
         public virtual DbSet<CardTemplate> CardTemplates { get; set; }
         public virtual DbSet<SMSHistory> SMSHistory { get; set; }
         public virtual DbSet<SMSTemplate> SMSTemplates { get; set; }
+        public virtual DbSet<RefundSetting> RefundSetting { get; set; }
 
         public AppDbContext() : base("KingflixDb")
         {

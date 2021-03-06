@@ -1,0 +1,327 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.CardTemplate>
+@{
+    ViewBag.Title = "Mua Giftcode";
+    Layout = "~/Areas/Manage/Views/Shared/_ManageLayout.cshtml";
+}
+
+
+@Html.AntiForgeryToken()
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Chọn mua các sản phẩm</h4>
+                <hr />
+                <div id="categoryAreas">
+                    @Html.Action("GetCategoryList")
+                </div>
+                <div class="text-center mb-3">
+                    <button class="btn btn-primary btn-rounded add-category btn-sm" type="button">Thêm sản phẩm</button>
+                </div>
+            </div>
+        </div>
+        <div class="card order">
+            <div class="card-body">
+                <div class="clearfix">
+                    <h5 class="card-title mb-0 float-left">Bạn muốn gửi tặng thiệp đến tận nơi cho người nhận?</h5>
+                    <div class="float-right">
+                        <div class="form-check mt-1">
+                            <label class="form-check-label text-muted form-check-success">
+                                <input type="checkbox" class="form-check-input delivery" id="Delivery" name="Delivery" value="">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row" id="delivery" style="display: none">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="Name">Tên người nhận</label>
+                            <input class="form-control" placeholder="Nhập tên người nhận" type="text" required id="Name" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="PhoneNumber">Số điện thoại</label>
+                            <input class="form-control" placeholder="Số điện thoại người nhận" type="text" required id="PhoneNumber" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="TimeDelivery">Thời gian nhận quà</label>
+                            <input class="form-control" type="date" required id="TimeDelivery" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="Address">Địa chỉ người nhận</label>
+                            <input class="form-control" placeholder="Địa chỉ người nhận" type="text" required id="Address" />
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="CardTemplate">Tùy chỉnh hoặc chọn mẫu thiệp</label>
+                            <select class="form-control" id="CardTemplate">
+                                <option value="">Tùy chỉnh cá nhân</option>
+                                @foreach (var item in Model)
+                                {
+                                    <option value="@item.Id">@item.Title</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="rounded border-light mb-3" id="CardTemplateArea">
+
+                        </div>
+                        <div class="form-group" id="MessageCustom">
+                            <label for="Message">Nội dung lời nhắn gửi (Ghi trên thiệp)</label>
+                            <textarea rows="6" class="form-group textarea textarea-0" id="Message"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Thông tin đơn hàng</h4>
+                <hr />
+                <div class="clearfix">
+                    <p class="float-left">Tiền tạm tính</p>
+                    <p class="float-right price">0 đ</p>
+                </div>
+                <div class="clearfix">
+                    <p class="float-left">Giảm giá</p>
+                    <p class="float-right">0 đ</p>
+                </div>
+                <div class="clearfix text-white">
+                    <p class="float-left">TỔNG CỘNG</p>
+                    <p class="float-right price">0 đ</p>
+                </div>
+                <button type="button" class="btn btn-success btn-block brn-rounded order-submit">HOÀN TẤT ĐƠN HÀNG</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).on("change", ".category-id", function () {
+            var elm = $(this);
+            loadSpinner();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetMonthList")",
+                data: {
+                    categoryid: elm.val()
+                },
+                success: function (data) {
+                    elm.parent().parent().children(".month-id").first().children("select").html(data);
+                    checkPrice();
+                    exitSpinner();
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu, vui lòng thử lại")
+                }
+            })
+        })
+        $(".add-category").click(function () {
+            $.ajax({
+                method: "GET",
+                url: "@Url.Action("GetCategoryList")",
+                success: function (data) {
+                    $("#categoryAreas").append(data);
+                    exitSpinner();
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu, vui lòng thử lại")
+                }
+            })
+        })
+        $(document).on("click", ".remove-category-month", function () {
+            $(this).parent().parent().parent().remove();
+        })
+        $(document).on("change", ".month-category", function () {
+            checkPrice();
+        })
+        $(document).on("change", "#CardTemplate", function () {
+            var id = $(this).val();
+            if (id == "" || id == undefined) {
+                $("#MessageCustom").show();
+                $("#CardTemplateArea").html("");
+                $("#CardTemplateArea").removeClass("p-3 border");
+            }
+            else {
+                $("#MessageCustom").hide();
+                $("#CardTemplateArea").addClass("p-3 border");
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("GetCardTempate")",
+                    data: {
+                        id: id
+                    },
+                    success: function (data) {
+                        $("#CardTemplateArea").html(data);
+                    },
+                    beforeSend: function () {
+                        loadSpinner()
+                    },
+                    error: function () {
+                        toastr.error("Thất bại khi gửi dữ liệu! Vui lòng thử lại")
+                    },
+                    complete: function () {
+                        exitSpinner();
+                    }
+                })
+            }
+        })
+        function checkPrice() {
+            var categoryId = "";
+            $(".category-id").each(function () {
+                categoryId += $(this).val() + "-";
+            })
+            var monthId = "";
+            $(".month-category").each(function () {
+                monthId += $(this).val() + "-";
+            })
+            loadSpinner();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("CheckPriceGiftcode")",
+                data: {
+                    categoryId: categoryId,
+                    monthId: monthId
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        $(".price").each(function () {
+                            $(this).html(data.price);
+                        })
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu, vui lòng kiểm tra lại!")
+                },
+                complete: function () {
+                    exitSpinner();
+                }
+            })
+        }
+        $(document).on("click", ".order-submit", function () {
+             var categoryId = "";
+            $(".category-id").each(function () {
+                categoryId += $(this).val() + "-";
+            })
+            var monthId = "";
+            $(".month-category").each(function () {
+                monthId += $(this).val() + "-";
+            })
+            var isDelivery = false;
+            if ($("#Delivery").is(":checked")) {
+                isDelivery = true;
+            }
+            var Name = $("#Name").val();
+            var Address = $("#Address").val();
+            var PhoneNumber = $("#PhoneNumber").val();
+            var TimeDelivery = $("#TimeDelivery").val();
+            var CardTemplate = $("#CardTemplate").val();
+
+            loadSpinner();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("SubmitOrderGiftcode")",
+                data: {
+                    categoryId: categoryId,
+                    monthId: monthId,
+                    isDelivery: isDelivery,
+                    Name: Name,
+                    Address: Address,
+                    PhoneNumber: PhoneNumber,
+                    TimeDelivery: TimeDelivery,
+                    CardTemplate: CardTemplate,
+                    Message: Message
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        loadPayment(data.OrderId);
+                    }
+                    else {
+                        toastr.error(data.message);
+                        exitSpinner();
+                    }
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu, vui lòng kiểm tra lại!");
+                    exitSpinner();
+                }
+            })
+        })
+        function loadPayment(orderId) {
+            loadSpinner();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("LoadPaymentMethod")",
+                data: {
+                    orderId: orderId
+                },
+                success: function (data) {
+                    $("#modalContentLg").html(data);
+                    $("#ModalTemplateLg").modal("show");
+                },
+                error: function () {
+                    toastr.error("Có lỗi xảy ra, vui lòng thử lại")
+                },
+                complete: function () {
+                    exitSpinner();
+                }
+            })
+        }
+        $(document).on("click",".payment-api",function () {
+            var paymentMethod = $(this).data("payment");
+            var orderId = $("#orderId").val();
+            $.ajax({
+                method: "POST",
+                url: "/Manage/ConfirmPayment",
+                data: {
+                    paymentMethod: paymentMethod,
+                    orderId: orderId
+                },
+                beforeSend: function () {
+                    loadSpinner();
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                        window.location.href = data.redirect_url;
+                    }
+                    else {
+                        toastr.error(data.message)
+                    }
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu. Vui lòng thử lại.")
+                },
+                complete: function () {
+                    exitSpinner()
+                }
+            })
+        })
+        $("#ModalTemplateLg").on("hide.bs.modal", function () {
+            window.location.reload();
+        })
+        $("#Delivery").click(function(){
+            if ($(this).is(":checked")) {
+                $("#delivery").show()
+            }
+            else {
+                $("#delivery").hide()
+            }
+        })
+    </script>
+}

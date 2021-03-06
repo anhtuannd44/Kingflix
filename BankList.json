@@ -1,0 +1,182 @@
+﻿{
+  "code": 0,
+  "message": [],
+  "count": 44,
+  "data": [
+    {
+      "id": 0,
+      "name": "Ví Bảo Kim"
+    },
+    {
+      "id": 15,
+      "name": "Thẻ ATM Vietcombank"
+    },
+    {
+      "id": 293,
+      "name": "Thẻ ATM ShinhanBank"
+    },
+    {
+      "id": 302,
+      "name": "Ngân hàng TMCP Việt Á"
+    },
+    {
+      "id": 303,
+    },
+    {
+      "id": 304,
+      "name": "Ngân hàng TNHH MTV PUBLIC Việt Nam"
+    },
+    {
+      "id": 305,
+      "name": "Ngân hàng TMCP Đại Chúng Việt Nam"
+    },
+    {
+      "id": 306,
+      "name": "Ngân hàng TNHH MTV Xăng dầu Petrolimex"
+    },
+    {
+      "id": 307,
+      "name": "Ngân hàng TNHH MTV United Overseas Bank (Việt Nam)"
+    },
+    {
+      "id": 308,
+      "name": "Ngân hàng TNHH Indovina"
+    },
+    {
+      "id": 309,
+      "name": "Ngân hàng TNHH Woori bank"
+    },
+    {
+      "id": 310,
+      "name": "Ngân hàng TMCP Bản Việt"
+    },
+    {
+      "id": 311,
+      "name": "ATM Ngân hàng Việt Nam Thương Tín"
+    },
+    {
+      "id": 60,
+      "name": "Thẻ ATM Techcombank"
+    },
+    {
+      "id": 61,
+      "name": "Thẻ ATM Military Bank"
+    },
+    {
+      "id": 62,
+      "name": "Thẻ ATM VIB"
+    },
+    {
+      "id": 63,
+      "name": "Thẻ ATM Eximbank"
+    },
+    {
+      "id": 64,
+      "name": "Thẻ ATM ACB"
+    },
+    {
+      "id": 91,
+      "name": "Thẻ ATM Vietinbank"
+    },
+    {
+      "id": 94,
+      "name": "Thẻ ATM HDBank"
+    },
+    {
+      "id": 96,
+      "name": "Thẻ ATM Nam A Bank"
+    },
+    {
+      "id": 97,
+      "name": "Thẻ ATM Saigonbank"
+    },
+    {
+      "id": 98,
+      "name": "Thẻ ATM Sacombank"
+    },
+    {
+      "id": 101,
+      "name": "Thẻ ATM DongA Bank"
+    },
+    {
+      "id": 105,
+      "name": "Thẻ ATM Maritime Bank"
+    },
+    {
+      "id": 112,
+      "name": "Thẻ ATM Agribank"
+    },
+    {
+      "id": 113,
+      "name": "Thẻ ATM VPBank"
+    },
+    {
+      "id": 115,
+      "name": "Thẻ ATM GPBank"
+    },
+    {
+      "id": 124,
+      "name": "Thẻ ATM Ocean Bank"
+    },
+    {
+      "id": 129,
+      "name": "Thẻ ATM BACA"
+    },
+    {
+      "id": 130,
+      "name": "Thẻ ATM TienPhongBank"
+    },
+    {
+      "id": 131,
+      "name": "Thẻ ATM BIDV"
+    },
+    {
+      "id": 148,
+      "name": "Thẻ ATM SHB"
+    },
+    {
+      "id": 150,
+      "name": "Thẻ ATM BAOVIET Bank"
+    },
+    {
+      "id": 151,
+      "name": "Thẻ ATM OCB"
+    },
+    {
+      "id": 152,
+      "name": "Thẻ ATM LienVietBank"
+    },
+    {
+      "id": 153,
+      "name": "Thẻ ATM SeABank"
+    },
+    {
+      "id": 154,
+      "name": "Thẻ ATM ABBank"
+    },
+    {
+      "id": 157,
+      "name": "Thẻ ATM NCB"
+    },
+    {
+      "id": 158,
+      "name": "Thẻ ATM KienLongBank"
+    },
+    {
+      "id": 159,
+      "name": "Thẻ ATM SCB"
+    },
+    {
+      "id": 128,
+      "name": "Thẻ tín dụng"
+    },
+    {
+      "id": 295,
+      "name": "Chuyển khoản"
+    },
+    {
+      "id": 296,
+      "name": "Trả góp"
+    }
+  ]
+}

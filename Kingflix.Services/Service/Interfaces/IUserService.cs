@@ -11,5 +11,6 @@ namespace Kingflix.Services.Interfaces
         AppUser GetUserById(string userId);
         void UpdateUser(AppUser user);
         void DeleteUser(string userId);
+        void Refund(string userId, double amount);
     }
 }

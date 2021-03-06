@@ -1,8 +1,9 @@
-﻿@model IEnumerable<Kingflix.Domain.DomainModel.Category>
+﻿@using Kingflix.Utilities
+@model IEnumerable<Kingflix.Domain.DomainModel.Category>
 
 @{
     ViewBag.Title = "Loại tài khoản";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="card">
@@ -50,7 +51,7 @@
                                 <a href="@Url.Action("Edit", new { categoryId = item.CategoryId })" class="badge badge-warning" data-toggle="tooltip" title="Chỉnh sửa">
                                     <i class="mdi mdi-lead-pencil"></i>
                                 </a>
-                                @if (item.CategoryId != NETFLIX0 && item.CategoryId != NETFLIX1 && item.CategoryId != NETFLIX2 && item.CategoryId != NETFLIX3 && item.CategoryId != "SPOTIFY")
+                                @if (item.CategoryId != Const.NETFLIX0 && item.CategoryId != Const.NETFLIX1 && item.CategoryId != Const.NETFLIX2 && item.CategoryId != Const.NETFLIX3 && item.CategoryId != "SPOTIFY")
                                 {
                                     <a href="#" class="badge badge-danger delete" data-toggle="tooltip" data-id="@item.CategoryId" data-name="@item.Name" title="Xóa">
                                         <i class="mdi mdi-delete"></i>

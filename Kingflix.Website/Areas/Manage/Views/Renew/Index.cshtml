@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Profile>
+
+@{
+    ViewBag.Title = "Gia hạn";
+    Layout = "~/Areas/Manage/Views/Shared/_ManageLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-9 col-12">
+        <div class="card">
+            <div class="card-body">
+                @using (Html.BeginForm("RenewConfirm", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <label for="ProfileId" class="control-label">Chọn tài khoản muốn gia hạn</label>
+                        <select class="form-control select2" id="ProfileId" name="ProfileId">
+                            @foreach (var item in Model)
+                            {
+                                <option value="@item.ProfileId">Profile @item.Name -- (Tài khoản: @item.ProductId) | @item.Products.Categories.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div id="Price">
+
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" value="Tiếp tục" class="btn btn-gradient-success px-5" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            var profileId = @Model.FirstOrDefault().ProfileId;
+            GetPriceList(profileId);
+        })
+        $(document).on("change","#ProfileId",function () {
+            var profileId = $(this).val();
+            GetPriceList(profileId);
+        })
+        function GetPriceList(profileId) {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetPriceList")",
+                data: {
+                    profileId: profileId
+                },
+                success: function (data) {
+                    $("#Price").html(data)
+                },
+                error: function () {
+                    toastr.error("Có lỗi xảy ra khi gửi dữ liệu, vui lòng thử lại sau")
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Gia hạn";
+    Layout = "~/Areas/Manage/Views/Shared/_ManageLayout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-body">
+                @Html.Partial("_ExtendPartial")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).on("change", "#ProductId", function () {
+            var productId = $(this).val();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetProfileExtend","Manage")",
+                data: {
+                    productId: productId
+                },
+                beforeSend: function () {
+                    loadSpinner();
+                },
+                success: function (data) {
+                    $("#profileArea").html(data)
+                },
+                error: function () {
+                    toastr.error("Có lỗi khi gửi dữ liệu, vui lòng thử lại!")
+                },
+                complete: function () {
+                    exitSpinner();
+                }
+            })
+        })
+
+        $(document).on("change", "#Month", function () {
+            LoadPaymentDetail();
+        })
+        $(document).on("change", "#ProfileId", function () {
+            LoadPaymentDetail();
+        })
+        $(document).on("change","#PaymentId",function () {
+            LoadPaymentDetail();
+        })
+        function LoadPaymentDetail() {
+            var id = $("#PaymentId").val();
+            var profile = [];
+            $(".profile-id").each(function (index, el) {
+                if ($(this).is(":checked")) {
+                    profile[index] = $(this).val();
+                }
+            })
+            var month = $("#Month").val();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetPaymentDetails","Manage")",
+                data: {
+                    id: id,
+                    ProfileId: profile,
+                    Month: month
+                },
+                success: function (data) {
+                    $("#paymentDetails").html(data);
+                },
+                error: function (data) {
+                    toastr.error("Chưa đủ điều kiện: Chọn Profile, chọn tháng và phương thức thanh toán");
+                    $("#submitButton").html("");
+                }
+            })
+        }
+    </script>}

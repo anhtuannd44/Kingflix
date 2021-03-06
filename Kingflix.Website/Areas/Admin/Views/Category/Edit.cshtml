@@ -3,7 +3,7 @@
 
 @{
     ViewBag.Title = "Chỉnh sửa loại tài khoản";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
     var i = 1;
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css" integrity="sha512-wuFRnk4KiQftPmBWRd5TmmgnuMEMVSySF4EsQJ50FemRIHIF5JkwD57UdcWqtGwamThUWHgXf8tSiiJitWnD0w==" crossorigin="anonymous" />
@@ -46,10 +46,10 @@
                             <p class="text-center">Số tháng</p>
                         </div>
                         <div class="col-md-3 col-5">
-                            <p class="text-center">Số tiền</p>
+                            <p class="text-center">Giá bán</p>
                         </div>
                         <div class="col-md-2 col-5">
-                            <p class="text-center">Số tiền gốc</p>
+                            <p class="text-center">Giá khuyến mãi</p>
                         </div>
                         <div class="col-md-3 col-5">
                             <p class="text-center">Neo text</p>
@@ -133,7 +133,7 @@
                                 <div class="form-group">
                                     <label for="Color" class="text-white">Màu chính (Khi chọn)</label>
                                     <div id="Color" class="input-group color-picker">
-                                        <input type="text" class="form-control" name="Color" value="#ffffff" />
+                                        <input type="text" class="form-control" name="Color" value="@Model.Color" />
                                         <span class="input-group-append">
                                             <span class="input-group-text colorpicker-input-addon px-4 py-1"><i></i></span>
                                         </span>
@@ -143,7 +143,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="ColorSecondary" class="text-white">Màu khi không chọn</label>
-                                    <div id="ColorSecondary" class="input-group color-picker">
+                                    <div id="ColorSecondary" class="input-group color-picker" value="@Model.ColorSecondary">
                                         <input type="text" class="form-control" name="ColorSecondary" />
                                         <span class="input-group-append">
                                             <span class="input-group-text colorpicker-input-addon px-4 py-1"><i></i></span>
@@ -155,7 +155,7 @@
                                 <div class="form-group">
                                     <label for="ColorShadow" class="text-white">Màu đổ bóng</label>
                                     <div id="ColorShadow" class="input-group color-picker">
-                                        <input type="text" class="form-control" name="ColorShadow" />
+                                        <input type="text" class="form-control" name="ColorShadow" value="@Model.ColorShadow" />
                                         <span class="input-group-append">
                                             <span class="input-group-text colorpicker-input-addon px-4 py-1"><i></i></span>
                                         </span>

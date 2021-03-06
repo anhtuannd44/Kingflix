@@ -98,5 +98,20 @@ namespace Kingflix.Website.Areas.Admin.Controllers
             }
             return View(baotri);
         }
+        public ActionResult RefundSetting()
+        {
+            var model = _settingService.GetRefundItem();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateRefundSetting(double? Value)
+        {
+
+            var item = _settingService.GetRefundItem();
+            item.Value = Value;
+            _settingService.UpdateRefundSetting(item);
+            return RedirectToAction("RefundSetting");
+        }
     }
 }

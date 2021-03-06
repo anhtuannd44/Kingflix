@@ -1,7 +1,7 @@
 ﻿@model Kingflix.Domain.DomainModel.EmailTemplate
 @{
     ViewBag.Title = "Thêm Email Template";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 @using (Html.BeginForm("CreateEmailTemplate", "Email", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
 {

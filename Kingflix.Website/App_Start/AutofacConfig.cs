@@ -11,7 +11,6 @@ using Kingflix.Domain.DomainModel.IdentityModel;
 using Kingflix.Services;
 using Kingflix.Services.Data;
 using Kingflix.Services.Data.Identity;
-using Kingflix.Services.Data.Identity.Abstraction;
 using Kingflix.Services.Interfaces;
 using Kingflix.Services.Repositories;
 using Microsoft.AspNet.Identity;

@@ -1,7 +1,6 @@
 ﻿using Kingflix.Domain.ViewModel;
 using Kingflix.Domain.DomainModel;
 using Kingflix.Domain.Enumerables;
-using Kingflix.Domain.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,6 +25,7 @@ namespace Kingflix.Services.Interfaces
         List<Category> GetNetflixList();
         List<Category> GetUpsaleList();
         Price GetCategoryPrice(string categoryId, double month);
+        List<Price> GetPriceListByCategoryId(string categoryId);
 
         //Product - Tài khoản
         Product GetProductById(string productId);

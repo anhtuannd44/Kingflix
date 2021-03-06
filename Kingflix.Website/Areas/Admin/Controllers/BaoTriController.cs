@@ -3,6 +3,7 @@ using Kingflix.Services.Interfaces;
 
 namespace Kingflix.Website.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class BaoTriController : Controller
     {
         private readonly ISettingService _settingService;

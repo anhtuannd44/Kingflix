@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -10,6 +9,7 @@ using Kingflix.Services.Data;
 
 namespace Kingflix.Website.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class FlashSalesController : Controller
     {
         private AppDbContext db = new AppDbContext();

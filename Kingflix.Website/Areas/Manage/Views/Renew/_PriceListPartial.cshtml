@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Kingflix.Domain.DomainModel.Price>
+
+<div class="form-group">
+    <label for="Month" class="control-label">Chọn tài khoản muốn gia hạn</label>
+    <select class="form-control select2" id="Month" name="Month">
+        @foreach (var item in Model)
+        {
+            if (item.Prices.HasValue)
+            {
+                <option value="@item.Month">@string.Format("{0:C0}", item.Prices.Value) - @item.Month tháng - (Giá gốc: @string.Format("{0:C0}", item.SetPrice)) </option>
+            }
+            else
+            {
+                <option value="@item.Month">@string.Format("{0:C0}", item.SetPrice) - @item.Month tháng</option>
+            }
+        }
+    </select>
+</div>

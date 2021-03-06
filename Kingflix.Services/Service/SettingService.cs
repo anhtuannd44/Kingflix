@@ -16,11 +16,13 @@ namespace Kingflix.Services
         private readonly IRepository<Image> _imageRepository;
         private readonly IRepository<Question> _questionRepository;
         private readonly IRepository<Setting> _settingRepository;
+        private readonly IRepository<RefundSetting> _refundSettingRepository;
         public SettingService(
             IUnitOfWork unitOfWork,
             IRepository<Homepage> homepageRepository,
             IRepository<Image> imageRepository,
             IRepository<Question> questionRepository,
+            IRepository<RefundSetting> refundSettingRepository,
             IRepository<Setting> settingRepository
             )
         {
@@ -28,6 +30,7 @@ namespace Kingflix.Services
             _homepageRepository = homepageRepository;
             _imageRepository = imageRepository;
             _questionRepository = questionRepository;
+            _refundSettingRepository = refundSettingRepository;
             _settingRepository = settingRepository;
         }
         public List<Homepage> GetListHomepageSlider()
@@ -433,6 +436,32 @@ namespace Kingflix.Services
             item.Status = baotri.Status;
             item.Content = baotri.Content;
             _settingRepository.Update(item);
+            _unitOfWork.SaveChanges();
+        }
+        private RefundSetting CreateRefund()
+        {
+            var item = new RefundSetting()
+            {
+                ID = "REFUND",
+                Value = null,
+            };
+            _refundSettingRepository.Create(item);
+            _unitOfWork.SaveChanges();
+            return item;
+        }
+        public RefundSetting GetRefundItem()
+        {
+            RefundSetting item = new RefundSetting();
+            item = _refundSettingRepository.GetById("REFUND");
+            if (item == null)
+            {
+                item = CreateRefund();
+            }
+            return item;
+        }
+        public void UpdateRefundSetting(RefundSetting item)
+        {
+            _refundSettingRepository.Update(item);
             _unitOfWork.SaveChanges();
         }
     }

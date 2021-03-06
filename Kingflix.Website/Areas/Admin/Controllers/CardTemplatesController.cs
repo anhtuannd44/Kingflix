@@ -8,6 +8,7 @@ using Kingflix.Services.Data;
 
 namespace Kingflix.Website.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CardTemplatesController : Controller
     {
         private AppDbContext db = new AppDbContext();

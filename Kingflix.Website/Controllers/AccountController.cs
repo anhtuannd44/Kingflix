@@ -82,7 +82,7 @@ namespace Kingflix.Website.Controllers
         // GET: /Account/Logout
         [Authorize]
         [HttpPost]
-        public ActionResult Logout()
+        public ActionResult LogOut()
         {
             _signInManager.AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");

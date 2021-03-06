@@ -211,6 +211,10 @@ namespace Kingflix.Services
         {
             return _priceRepository.Find(categoryId, month);
         }
+        public List<Price> GetPriceListByCategoryId(string categoryId)
+        {
+            return _priceRepository.Filter(a => a.CategoryId == categoryId).ToList();
+        }
 
         //Product - Tài khoản
         public Product GetProductById(string productId)

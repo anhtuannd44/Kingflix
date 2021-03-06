@@ -1,15 +1,8 @@
 ﻿using Kingflix.Domain.DomainModel;
 using Kingflix.Services.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
 using System;
-using System.Threading.Tasks;
 using Kingflix.Domain.Abstract;
-using Kingflix.Domain.Enumerables;
-using Kingflix.Domain.ViewModel;
-using Kingflix.Domain.DomainModel.IdentityModel;
-using System.Web;
-using Kingflix.Utilities;
 using System.Linq.Expressions;
 
 namespace Kingflix.Services
@@ -29,6 +22,11 @@ namespace Kingflix.Services
         public IEnumerable<Support> GetSupportList(Expression<Func<Support, bool>> predicate = null)
         {
             return _supportRepository.Filter(predicate);
+        }
+        public void CreateSupport(Support item)
+        {
+            _supportRepository.Create(item);
+            _unitOfWork.SaveChanges();
         }
         public Support GetSupportById(int? id)
         {

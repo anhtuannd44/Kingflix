@@ -98,15 +98,14 @@
                                     @foreach (var price in item.Prices.Where(a => a.IsShow).OrderBy(a => a.Month))
                                     {
                                         <p class="price-list @(dem != 2 ? "" : j == 0 ? "select" : "") @(j>=2?"price-list-orther":"")" style="display:@(j>=2?"none":"block")" data-month="@price.Month" data-category="@item.CategoryId">
-                                            <span class="d-none d-md-block" style="font-size: 1rem">
-                                                @string.Format("{0:C0}", price.SetPrice)/
+                                            <span class="d-none d-md-block" style="font-size: 1rem;">
+                                                @string.Format("{0:C0}", price.Prices.HasValue?price.Prices:price.SetPrice)/
                                                 <span style="font-size: .85rem">@price.Month tháng</span>
-                                                
                                                 <br />
                                                 @if (price.Prices.HasValue)
                                                 {
-                                                    <del style="font-size: .65rem">@string.Format("{0:C0}", price.Prices)</del>
-                                                    <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
+                                                    <del style="font-size: .65rem">@string.Format("{0:C0}", price.SetPrice)</del>
+                                                    <span class="text-primary" style="font-size: .75rem">(-@price.PercentSale.Value%)</span>
                                                      <br />
                                                 }
                                                 @if (!string.IsNullOrEmpty(price.TextFixed))
@@ -114,16 +113,19 @@
                                                     <span class="badge badge-primary">@price.TextFixed</span>
                                                 }
                                             </span>
-                                            <span class="d-block d-md-none" style="font-size: 1rem; line-height: 1rem">
-                                                @string.Format("{0:C0}", price.SetPrice)
-                                                <br />
-                                                <span style="font-size: .75rem; color:#7e8082; font-weight: 400">(@price.Month tháng)</span>
-                                                <span class="text-primary" style="font-size: .95rem">@(price.PercentSale.HasValue?"(-"+price.PercentSale.Value+"%)":"")</span>
+                                            <span class="d-block d-md-none" style="font-size: 1rem; min-height: 100px;">
+                                                @string.Format("{0:C0}", price.Prices.HasValue?price.Prices:price.SetPrice)<br />
+                                                <span style="font-size: .85rem">@price.Month tháng</span>
                                                 <br />
                                                 @if (price.Prices.HasValue)
                                                 {
-                                                    <del style="font-size: .65rem">@string.Format("{0:C0}", price.Prices)</del>
-                                                    <br />
+                                                    <del style="font-size: .65rem">@string.Format("{0:C0}", price.SetPrice)</del>
+                                                    <span class="text-primary" style="font-size: .75rem">(-@price.PercentSale.Value%)</span>
+                                                     <br />
+                                                }
+                                                @if (!string.IsNullOrEmpty(price.TextFixed))
+                                                {
+                                                    <span class="badge badge-primary">@price.TextFixed</span>
                                                 }
                                             </span>
                                         </p>

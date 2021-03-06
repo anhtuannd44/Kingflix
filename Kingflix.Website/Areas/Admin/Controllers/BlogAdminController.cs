@@ -1,15 +1,14 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Kingflix.Domain.DomainModel;
 using Kingflix.Domain.Enumerables;
 using Kingflix.Domain.ViewModel;
 using Kingflix.Services.Interfaces;
-using Kingflix.Utilities;
 
 namespace Kingflix.Website.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class BlogAdminController : Controller
     {
         private readonly IBlogService _blogService;

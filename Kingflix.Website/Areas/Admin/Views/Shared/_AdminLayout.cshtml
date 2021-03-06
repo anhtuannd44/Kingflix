@@ -1,0 +1,495 @@
+﻿@using Kingflix.Domain.Enumerables
+@{ var link = "https://app.gitbook.com/@kingflix-1/s/kingflix/";}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="shortcut icon" href="~/Content/image/favicon.png" />
+    <title>@ViewBag.Title - Kingflix</title>
+    @Styles.Render("~/Content/template-css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("head", required: false)
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <style>
+        .toggle-handle {
+            background: #fff;
+        }
+    </style>
+</head>
+<body class="dark-mode dark-admin" id="bodyAdmin">
+    <div class="container-scroller">
+        <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row shadow bg-dark-admin">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo" href="~/Admin"><img src="~/Content/image/logo-light.png" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini p-2" href="~/Admin"><img src="~/Content/image/logo-light-mini.png" alt="logo" style="width: 100%; height:100%" /></a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-stretch">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item mr-5" id="darkModeArea">
+                        <input id="darkMode" checked type="checkbox" data-onstyle="dark" data-width="200" data-height="30" data-offstyle="light" data-on="Chuyển LightTheme" data-off="Chuyển DarkMode">
+                    </li>
+                    <li class="nav-item" id="baotriArea">
+                        <span>Trạng thái Website:</span> <input id="baoTri" checked type="checkbox" data-onstyle="success" data-width="150" data-height="30" data-offstyle="danger" data-on="Đang hoạt động" data-off="Đang bảo trì">
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+                            <i class="mdi mdi-bell-outline"></i>
+                            <span class="count-symbol bg-danger" style="display: none"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                            <h6 class="p-3 mb-0">Thông báo</h6>
+                            <div class="dropdown-divider"></div>
+                            @Html.Action("GetNotificationAdmin", "Notification")
+                            <h6 class="text-center p-3 mb-0">
+                                <a href="@*@Url.Action("Index","Notification")*@" class="text-center">Xem tất cả thông báo</a>
+                            </h6>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link count-indicator dropdown-toggle" id="account" href="#" data-toggle="dropdown">
+                            <i class="mdi mdi-account"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="account">
+                            <h6 class="p-3 mb-0">@User.Identity.Name</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item" href="@Url.Action("UserInformation","Manage",new { area = "" })">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-success">
+                                        <i class="mdi mdi-settings"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="preview-subject font-weight-normal mb-1">Chỉnh sửa tài khoản</h6>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            @using (Html.BeginForm("LogOut", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <a class="dropdown-item preview-item" href="javascript:document.getElementById('logoutForm').submit()">
+                                    <div class="preview-thumbnail">
+                                        <div class="preview-icon bg-warning">
+                                            <i class="mdi mdi-logout"></i>
+                                        </div>
+                                    </div>
+                                    <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                                        <h6 class="preview-subject font-weight-normal mb-1">Đăng xuất</h6>
+                                    </div>
+                                </a>
+                            }
+
+                        </div>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+            </div>
+        </nav>
+        <div class="container-fluid page-body-wrapper">
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="@Url.Action("Index","UserManage")">
+                            <i class="mdi mdi mdi-book-open menu-icon"></i>
+                            <span class="menu-title">Quản lý khách hàng</span>
+                        </a>
+                        <p class="position-absolute text-white bg-danger text-center" id="userManageNoti" style="top: 50%; right: 8px; transform: translate(-8px, -50%); font-size: 0.75rem; color: #fff; width: 22px; height: 22px; line-height: 22px; border-radius: 99%; font-weight: 600; display: none;"></p>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="@Url.Action("PreExtend","UserManage")">
+                            <i class="mdi mdi mdi-book-open menu-icon"></i>
+                            <span class="menu-title">Chờ gia hạn</span>
+                        </a>
+                        <p class="position-absolute text-white bg-danger text-center" id="userManageNoti" style="top: 50%; right: 8px; transform: translate(-8px, -50%); font-size: 0.75rem; color: #fff; width: 22px; height: 22px; line-height: 22px; border-radius: 99%; font-weight: 600; display: none;"></p>
+                    </li>
+                    <li class="nav-item position-relative" id="Order">
+                        <a class="nav-link" href="@Url.Action("Index","OrderAdmin", new { status = OrderStatus.WaitingForPay } )">
+                            <i class="mdi mdi-book menu-icon"></i>
+                            <span class="menu-title">Đơn hàng - Gia hạn</span>
+                        </a>
+                        <p class="position-absolute text-dark bg-warning text-center" id="orderNoti" style="top: 50%; right: 8px; transform: translate(-8px, -50%); font-size: 0.75rem; color: #fff; width: 22px; height:22px; line-height: 22px; border-radius: 99%; font-weight: 600; display: none;"></p>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://dashboard.tawk.to/#/chat" target="_blank">
+                            <i class="mdi mdi-wechat menu-icon"></i>
+                            <span class="menu-title">Chat</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://analytics.google.com/analytics/web/#/report-home/a177844864w246117320p228726668" target="_blank">
+                            <i class="mdi mdi mdi-google menu-icon"></i>
+                            <span class="menu-title">Google Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://us2.admin.mailchimp.com/" target="_blank">
+                            <i class="mdi mdi mdi-contact-mail menu-icon"></i>
+                            <span class="menu-title">Mailchimp</span>
+                        </a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="@Url.Action("Index","Supports")">
+                            <i class="mdi mdi-headset menu-icon"></i>
+                            <span class="menu-title">Hộp thư hỗ trợ</span>
+                        </a>
+                        <p class="position-absolute text-white bg-danger text-center" id="supportsNoti" style="top: 50%; right: 8px; transform: translate(-8px, -50%); font-size: 0.75rem; color: #fff; width: 22px; height: 22px; line-height: 22px; border-radius: 99%; font-weight: 600; display: none;"></p>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","FlashSales")">
+                            <i class="mdi mdi mdi-flash menu-icon"></i>
+                            <span class="menu-title">FlashSale</span>
+                        </a>
+                    </li>
+                    <li class="nav-item position-relative" id="reviews">
+                        <a class="nav-link" href="@Url.Action("Index","Reviews", new { status = "Pending" })">
+                            <i class="mdi mdi-star menu-icon"></i>
+                            <span class="menu-title">Review - Feedback</span>
+                        </a>
+                        <p class="position-absolute text-dark bg-success text-center" id="reviewCount" style="top: 50%; right: 8px; transform: translate(-8px, -50%); font-size: 0.75rem; color: #fff; width: 22px; height:22px; line-height: 22px; border-radius: 99%; font-weight: 600; display: none;"></p>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","UserProduct")">
+                            <i class="mdi mdi mdi-book-open menu menu-icon"></i>
+                            <span class="menu-title">Thống kê</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","User")">
+                            <i class="mdi mdi-human-greeting menu-icon"></i>
+                            <span class="menu-title">Thông tin khách hàng</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#emailArea" aria-expanded="false" aria-controls="emailArea">
+                            <i class="mdi mdi-email-variant menu-icon"></i>
+                            <span class="menu-title">Hệ thống Email</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="emailArea">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index","Email")">Gửi Email</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("EmailTemplate","Email")">Mẫu Email</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#categoryArea" aria-expanded="false" aria-controls="categoryArea">
+                            <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                            <span class="menu-title">Loại tài khoản</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="categoryArea">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Create","Category")">Thêm mới</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index","Category")">Danh sách loại tài khoản</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("EditCategoryDetails","Category")">Chỉnh Content Netflix</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#productArea" aria-expanded="false" aria-controls="productArea">
+                            <i class="mdi mdi-bulletin-board menu-icon"></i>
+                            <span class="menu-title">Tài khoản</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="productArea">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Create","Product")">Thêm mới</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index","Product")">Danh sách tài khoản</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#comboArea" aria-expanded="false" aria-controls="comboArea">
+                            <i class="mdi mdi-checkbox-multiple-marked-outline menu-icon"></i>
+                            <span class="menu-title">Tài khoản bán kèm</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="comboArea">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Create","Combo")">Thêm mới Combo</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index","Combo")">Danh sách Combo</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","Payment")">
+                            <i class="mdi mdi-credit-card-multiple menu-icon"></i>
+                            <span class="menu-title">Phương thức thanh toán</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","Voucher")">
+                            <i class="mdi mdi-tag menu-icon"></i>
+                            <span class="menu-title">Voucher</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","Referral")">
+                            <i class="mdi mdi-account-switch menu-icon"></i>
+                            <span class="menu-title">Cài đặt Referral</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index","KingCoin")">
+                            <i class="mdi mdi-coin menu-icon"></i>
+                            <span class="menu-title">KingCoin</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#cardTemplate" aria-expanded="false" aria-controls="cardTemplate">
+                            <i class="mdi mdi-book-open-page-variant menu-icon"></i>
+                            <span class="menu-title">Thiệp Template</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="cardTemplate">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Create","CardTemplates")">Thêm mẫu mới</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index","CardTemplates")">Tất cả mẫu thiệp</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#researchArea" aria-expanded="false" aria-controls="researchArea">
+                            <i class="mdi mdi-book-open-page-variant menu-icon"></i>
+                            <span class="menu-title">Khảo sát (Google Form)</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="researchArea">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Create","GoogleForm")">Thêm khảo sát</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index","GoogleForm")">Tất cả khảo sát</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("SetupShop","Homepages")">
+                            <i class="mdi mdi-image menu-icon"></i>
+                            <span class="menu-title">Cài đặt Banner</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#blogArea" aria-expanded="false" aria-controls="blogArea">
+                            <i class="mdi mdi-book-open-page-variant menu-icon"></i>
+                            <span class="menu-title">Tin tức</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="blogArea">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Create","BlogAdmin")">Thêm bài viết</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index","BlogAdmin")">Tất cả bài viết</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Category","BlogAdmin")">Chuyên mục</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#recruitmentArea" aria-expanded="false" aria-controls="recruitmentArea">
+                            <i class="mdi mdi-human-greeting menu-icon"></i>
+                            <span class="menu-title">Tuyển dụng</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="recruitmentArea">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Create","Recruitment")">Thêm tin</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index","Recruitment")">Tất cả tuyển dụng</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Category","Recruitment")">Vị trí tuyển dụng</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#informationArea" aria-expanded="false" aria-controls="informationArea">
+                            <i class="mdi mdi-page-layout-body menu-icon"></i>
+                            <span class="menu-title">Cài đặt khác</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="informationArea">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("RefundSetting","Setup")">Cài đặt hoàn tiền</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index","Question")">Câu hỏi thường gặp</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Slider","HomePages")">Slider</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("TopText","Setup")">Content TOP Page</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("SmallPicture","HomePages")">SmallPicture</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Social","HomePages")">Social Footer</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("BaoTri","Setup")">Cài đặt bảo trì</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@link" target="_blank">Trang</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="@Url.Action("Policy","Setup")">Quy định sử dụng</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="spinnerLoading" class="spinner-loading" style="display: none;">
+        <img src="~/Content/image/logo.png" style="opacity: .15" />
+        <img src="~/Content/image/loading.svg" alt="Loading..." />
+    </div>
+
+    <div class="modal fade" id="ModalTemplate-Img" aria-hidden="true" tabindex='-1'>
+        <div class="modal-dialog modal-xl mb-0" style="min-height: 100px; max-width: 90%">
+            <div class="modal-content">
+                <div id="modalContent-Img">
+
+                </div>
+                <div class="modal-footer p-3 bg-light">
+                    <div class="">
+                        <a class="btn btn-gradient-success btn-rounded btn-sm" id="submitModalImage" data-is-multi="" data-textarea="">Hoàn tất</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.Partial("ModalTemplate/_ModalImagePartial")
+
+    @Html.Partial("ModalTemplate/_ModalPartial")
+
+    @Scripts.Render("~/bundles/template-js")
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(function () {
+            $('.lazy').lazyload();
+
+            $('form').each(function () {
+                if ($(this).data('validator'))
+                    $(this).data('validator').settings.ignore = ".note-editor *";
+            });
+
+            $('.select2').select2({
+                language: "vi"
+            });
+
+            $('.select2-hidden-search').select2({
+                minimumResultsForSearch: -1,
+                language: "vi"
+            });
+
+            var clipboard = new ClipboardJS('.clipboard');
+            clipboard.on('success', function (e) {
+                toastr.success("Đã sao chép vào bộ nhớ tạm");
+            });
+
+            //Check Notification Order
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetOrderNoti","Notification")",
+                success: function (data) {
+                    if (data != 0) {
+                        $("#orderNoti").html(data);
+                        $("#orderNoti").show();
+                        $(".count-symbol").show();
+                    }
+                }
+            })
+
+            //Check Notification UserManage
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetUserManageNoti", "Notification")",
+                success: function (data) {
+                    if (data != 0) {
+                        $("#userManageNoti").html(data);
+                        $("#userManageNoti").show();
+                        $("#supportsNoti").html(data);
+                        $("#supportsNoti").show();
+                        $(".count-symbol").show();
+                    }
+                }
+            })
+            //Check new Review
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetNotiReview", "Notification")",
+                success: function (data) {
+                    if (data != 0) {
+                        $("#reviewCount").html(data);
+                        $("#reviewCount").show();
+                        $("#reviewCount").html(data);
+                        $("#reviewCount").show();
+                        $(".count-symbol").show();
+                    }
+                }
+            })
+        })
+
+        NProgress.start();
+
+        var interval = setInterval(function () { NProgress.inc(); }, 2000);
+
+        // Trigger finish when page fully loaded
+        $(window).on("load", function () {
+            clearInterval(interval);
+            NProgress.done();
+        });
+        jQuery(window).on("unload", function () {
+            NProgress.start();
+        });
+
+        $(function () {
+            $('#baoTri').bootstrapToggle();
+            $('#darkMode').bootstrapToggle();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("GetDownPage", "Setup")",
+                success: function (data) {
+                    if (data == "True") {
+                        $('#baoTri').prop('checked', false).change()
+                    }
+                    else {
+                        $('#baoTri').prop('checked', true).change()
+                    }
+                }
+            })
+        })
+
+        $(document).on("click", "#baotriArea .toggle-group", function () {
+            var check = $('#baoTri').prop('checked');
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("Downpage", "Setup")",
+                data: {
+                    isDownPage: check
+                },
+                success: function (data) {
+                    if (data.status == "success") {
+                        toastr.success(data.message);
+                    }
+                    else {
+                        toastr.error(data.message);
+                        if (check) {
+                            $('#baoTri').prop('checked', false).change()
+                        }
+                        else {
+                            $('#baoTri').prop('checked', true).change()
+                        }
+                    }
+                }
+            })
+        })
+        $(document).on("click", "#darkModeArea .toggle-group", function () {
+            var check = $('#darkMode').prop('checked');
+            if (check) {
+                $("#bodyAdmin").removeClass("dark-mode dark-admin");
+            }
+            else {
+                $("#bodyAdmin").addClass("dark-mode dark-admin");
+            }
+        })
+    </script>
+</body>
+</html>

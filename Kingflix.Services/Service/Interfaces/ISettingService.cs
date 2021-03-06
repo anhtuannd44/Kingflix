@@ -45,5 +45,7 @@ namespace Kingflix.Services.Interfaces
         Setting CreateBaoTriPageIfNull();
         Setting GetBaoTriPage();
         void UpdateBaoTriPage(Setting baotri);
+        RefundSetting GetRefundItem();
+        void UpdateRefundSetting(RefundSetting item);
     }
 }

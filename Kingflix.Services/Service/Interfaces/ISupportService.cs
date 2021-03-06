@@ -14,6 +14,7 @@ namespace Kingflix.Services.Interfaces
     public interface ISupportService
     {
         IEnumerable<Support> GetSupportList(Expression<Func<Support, bool>> predicate = null);
+        void CreateSupport(Support item);
         Support GetSupportById(int? id);
         void UpdateSupport(Support item);
     }

@@ -2,7 +2,7 @@
 @model Kingflix.Domain.DomainModel.Blog
 @{
     ViewBag.Title = "Thêm tin tuyển dụng";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 @using (Html.BeginForm("Create", "Recruitment", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
 {

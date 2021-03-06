@@ -12,9 +12,6 @@ using Kingflix.Domain.Abstract;
 
 namespace Kingflix.Website.Areas.Admin.Controllers
 {
-    [RouteArea("Admin", AreaPrefix = "Admin")]
-    [RoutePrefix("Account")]
-    [Route("{action}")]
     [Authorize(Roles = "Admin")]
     public class UserManageController : Controller
     {

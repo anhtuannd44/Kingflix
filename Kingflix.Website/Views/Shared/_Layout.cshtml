@@ -53,14 +53,13 @@
                         <li class="nav-item"><a href="~/blog" class="nav-link text-uppercase font-weight-bold">Tin tức</a></li>
                         <li class="nav-item"><a href="https://help.kingflix.vn/bao-hanh/lien-he-ho-tro" class="nav-link text-uppercase font-weight-bold">Liên hệ</a></li>
                         <li class="nav-item">
-
                             @if (!User.Identity.IsAuthenticated)
                             {
                                 <a href="@Url.Action("Login", "Account")" class="nav-link text-uppercase font-weight-bold">Đăng nhập</a>
                             }
                             else
                             {
-                                <a href="@Url.Action("UserInformation", "Manage")" class="nav-link text-uppercase font-weight-bold">Thông tin tài khoản</a>
+                                <a href="@Url.Action("Index", "Information", new { area="Manage" })" class="nav-link text-uppercase font-weight-bold">Thông tin tài khoản</a>
                             }
                         </li>
                     </ul>

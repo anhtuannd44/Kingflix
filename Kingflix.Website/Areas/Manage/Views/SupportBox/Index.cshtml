@@ -1,0 +1,77 @@
+﻿@using Kingflix.Domain.Enumerables
+@model IEnumerable<Kingflix.Domain.DomainModel.Support>
+
+@{
+    ViewBag.Title = "Yêu cầu hỗ trợ";
+    Layout = "~/Areas/Manage/Views/Shared/_ManageLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="clearfix">
+            <h3 class="float-left mb-0 card-title">@ViewBag.Title</h3>
+            <div class="float-right">
+                <a href="@Url.Action("CreateSupport")" class="btn btn-primary mb-0 btn-sm btn-rounded px-2">Thêm yêu cầu mới</a>
+            </div>
+        </div>
+        <hr/>
+        <div>
+            @if (Model.Count() != 0)
+            {
+                <table class="table table-hover"
+                       data-toggle="table"
+                       data-search="true"
+                       data-sort-name="name"
+                       data-sort-order="desc"
+                       data-pagination="true"
+                       data-page-size="10">
+                    <thead class="">
+                        <tr>
+                            <th class="text-left font-weight-bold" data-sortable="true"> Tiêu đề </th>
+                            <th class="text-center font-weight-bold" data-sortable="true"> Tài khoản lỗi </th>
+                            <th class="text-center font-weight-bold" data-sortable="true"> Ngày tạo </th>
+                            <th class="text-center font-weight-bold" data-sortable="true"> Trạng thái </th>
+                            <th class="text-center font-weight-bold" data-sortable="true"> Hành động </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-success">
+                                    @item.Title
+                                </td>
+                                <td class="text-center">
+                                    @item.Products.ProductId
+                                </td>
+                                <td class="text-center">
+                                    @item.DateCreate.ToString("dd/MM/yyyy")
+                                </td>
+                                <td class="text-center">
+                                    @if (item.Status == SupportStatus.Success)
+                                    {
+                                        <p class="badge badge-success">Hoàn tất</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="badge badge-danger">Đang xử lý</p>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("EditSupport",new { id= item.SupportId })" class="btn btn-sm btn-primary p-1">
+                                        <i class="mdi mdi-eye"></i> Xem
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-light text-center">Bạn chưa có yêu cầu hỗ trợ</p>
+
+            }
+        </div>
+    </div>
+</div>

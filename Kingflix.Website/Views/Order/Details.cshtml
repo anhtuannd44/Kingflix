@@ -127,25 +127,26 @@
                             <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#AccountNumber" data-toggle="tooltip" data-title="Sao chép"></i>
                         </p>
                         <p>
-                            Chủ tài khoản: <strong id="AccountName">@Model.Payments.AccountName</strong>
-                            <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#AccountName" data-toggle="tooltip" data-title="Sao chép"></i>
-                        </p>
-                         <p>
                             Nội dung chuyển khoản: <strong id="Content">THANH TOAN @Model.OrderId</strong>
                             <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#Content" data-toggle="tooltip" data-title="Sao chép"></i>
                         </p>
+                        <p>
+                            Chủ tài khoản: <strong id="AccountName">@Model.Payments.AccountName</strong>
+                            <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#AccountName" data-toggle="tooltip" data-title="Sao chép"></i>
+                        </p>
                         @if (Model.Payments.Type == PaymentType.EWallet)
                         {
-                    <div class="text-center">
-                        <img src="~/Content/Upload/Images/@Model.Payments.ImageId" width="400" />
-                    </div> }
-                else
-                {
-                    <p>
-                        Chi nhánh: <strong id="AccountAddress">@Model.Payments.AccountAddress</strong>
-                        <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#AccountAddress" data-toggle="tooltip" data-title="Sao chép"></i>
-                    </p>}
-
+                            <div class="text-center">
+                                <img src="~/Content/Upload/Images/@Model.Payments.ImageId" width="400" />
+                            </div> 
+                        }
+                        else
+                        {
+                            <p>
+                                Chi nhánh: <strong id="AccountAddress">@Model.Payments.AccountAddress</strong>
+                                <i class="mdi mdi-file-multiple clipboard ml-2 text-success d-inline-block" style="right: 0" data-clipboard-target="#AccountAddress" data-toggle="tooltip" data-title="Sao chép"></i>
+                            </p>
+                        }
                     </div>
                 </div>
             </div>

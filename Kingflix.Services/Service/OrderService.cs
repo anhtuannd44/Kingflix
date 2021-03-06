@@ -224,7 +224,8 @@ namespace Kingflix.Services
         {
             var result = new OrderInformationViewModel();
             var voucher = new VoucherResultViewModel();
-            result.Price = _priceRepository.Find(categoryId, month).SetPrice;
+            var priceItem = _priceRepository.Find(categoryId, month);
+            result.Price = priceItem.Prices ?? priceItem.SetPrice;
             result.PriceSale = 0;
             //Check Referral
             var userReferral = _userRepository.GetAll().Where(a => a.ReferralCode == code).FirstOrDefault();
@@ -460,10 +461,10 @@ namespace Kingflix.Services
                             mrc_order_id = orderItem.OrderId,
                             total_amount = orderItem.Price,
                             description = "Thanh toán đơn hàng " + orderItem.OrderId,
-                            url_success = "https://8f169fc9bc86.ngrok.io/Order/Details?orderId=" + orderItem.OrderId,
-                            url_cancel = "https://8f169fc9bc86.ngrok.io/Order/Details?orderId=" + orderItem.OrderId,
-                            url_detail = "https://8f169fc9bc86.ngrok.io/Order/Details?orderId=" + orderItem.OrderId,
-                            webhooks = "https://8f169fc9bc86.ngrok.io/API/PaymentAPISuccess",
+                            url_success = Const.URL_DETAILS + orderItem.OrderId,
+                            url_cancel = Const.URL_DETAILS + orderItem.OrderId,
+                            url_detail = Const.URL_DETAILS + orderItem.OrderId,
+                            webhooks = Const.WEBHOOK_SUCCESS,
                             customer_email = user.Email,
                             customer_phone = user.PhoneNumber ?? "0000000000",
                             customer_name = user.FullName ?? user.Email,

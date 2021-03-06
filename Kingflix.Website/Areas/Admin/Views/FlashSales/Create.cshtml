@@ -2,7 +2,7 @@
 @model Kingflix.Domain.DomainModel.FlashSale
 @{
     ViewBag.Title = "Thêm Flash Sale";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 @using (Html.BeginForm("Create", "FlashSales", FormMethod.Post, new { enctype = "multipart/form-data", @id = "BlogForm" }))
 {
