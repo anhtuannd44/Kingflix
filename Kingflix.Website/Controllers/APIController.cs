@@ -39,21 +39,21 @@ namespace Kingflix.Controllers
             {
                 var order = _orderService.GetOrderById(orderId);
                 double refundAmount = 0; 
-                if (bpm_id == 128)
-                {
-                    refundAmount = amount * 2.4 + 2000;
-                }
-                else
-                {
-                    foreach (var item in Const.ATM_BAOKIM_ID_LIST)
-                    {
-                        if (item == bpm_id)
-                        {
-                            refundAmount = amount * 1.1 + 1250;           
-                            break;
-                        }
-                    }
-                }
+                //if (bpm_id == 128)
+                //{
+                //    refundAmount = amount * 2.4 + 2000;
+                //}
+                //else
+                //{
+                //    foreach (var item in Const.ATM_BAOKIM_ID_LIST)
+                //    {
+                //        if (item == bpm_id)
+                //        {
+                //            refundAmount = amount * 1.1 + 1250;           
+                //            break;
+                //        }
+                //    }
+                //}
                 if (refundAmount >0)
                 {
                     var refundItem = _settingService.GetRefundItem();

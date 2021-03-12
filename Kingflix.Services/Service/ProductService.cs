@@ -89,7 +89,7 @@ namespace Kingflix.Services
         }
         public List<CategoryNetflixDetails> GetCategoryNetflixDetails(bool justPublic = true)
         {
-            var result = _categoryNetflixDetailsRepository.Get();
+            var result = _categoryNetflixDetailsRepository.Get().AsEnumerable();
             if (justPublic)
                 result = result.Where(a => a.IsShow);
             return result.OrderBy(a => a.OrderBy).ToList();

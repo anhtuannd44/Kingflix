@@ -673,13 +673,13 @@ body.dark-mode {
     color: #64fc0a !important;
 }
 .dark-mode .sidebar .nav .nav-item.active > .nav-link .menu-title {
-    color: #e50914
+    color: #64fc0a
 }
 .dark-mode .sidebar .nav .nav-item.active > .nav-link {
     background: #464647;
 }
 .dark-mode .sidebar .nav .nav-item.active > .nav-link i {
-    color: #e50914;
+    color: #64fc0a;
     background: #fff;
 }
 .dark-mode .sidebar .nav .nav-item.active > .nav-link i.menu-arrow {

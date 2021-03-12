@@ -1,9 +1,11 @@
 ﻿@using Kingflix.Domain.Enumerables
 @using Kingflix.Utilities
 @model Kingflix.Domain.ViewModel.Step1ViewModel
-@{ ViewBag.Title = "Đăng ký gói";
-                Layout = "~/Views/Shared/_OrderLayout.cshtml";
-                var i = 1; }
+@{
+    ViewBag.Title = "Đăng ký gói";
+    Layout = "~/Views/Shared/_OrderLayout.cshtml";
+    var i = 1;
+}
 @foreach (var item in Model.NetflixList)
 {
     var dem = item.CategoryId == Const.NETFLIX0 ? 0 : item.CategoryId == Const.NETFLIX1 ? 1 : item.CategoryId == Const.NETFLIX2 ? 2 : item.CategoryId == Const.NETFLIX3 ? 3 : 4;
@@ -159,13 +161,21 @@
                                 {
                                     var dem = category.CategoryId == Const.NETFLIX0 ? 0 : category.CategoryId == Const.NETFLIX1 ? 1 : category.CategoryId == Const.NETFLIX2 ? 2 : category.CategoryId == Const.NETFLIX3 ? 3 : 4;
                                     <div class="col text-center plan plan-@dem" data-plan="plan-@dem">
-                                        @if (item.CheckNetflix1.Value)
+                                        @if (dem == 0)
                                         {
-                                            <i class="mdi mdi-check"></i> 
+                                            <i class="mdi mdi-@(item.CheckNetflix1.Value?"check":"close")"></i> 
                                         }
-                                        else
+                                        else if(dem == 1)
                                         {
-                                            <i class="mdi mdi-close"></i>
+                                            <i class="mdi mdi-@(item.CheckNetflix2.Value?"check":"close")"></i> 
+                                        }
+                                        else if(dem == 2)
+                                        {
+                                            <i class="mdi mdi-@(item.CheckNetflix3.Value?"check":"close")"></i> 
+                                        }
+                                        else if(dem == 3)
+                                        {
+                                            <i class="mdi mdi-@(item.CheckNetflix4.Value?"check":"close")"></i> 
                                         }
                                     </div>
                                 }
@@ -176,17 +186,65 @@
                                 {
                                     var dem = category.CategoryId == Const.NETFLIX0 ? 0 : category.CategoryId == Const.NETFLIX1 ? 1 : category.CategoryId == Const.NETFLIX2 ? 2 : category.CategoryId == Const.NETFLIX3 ? 3 : 4;
                                     <div class="col text-center plan plan-@dem" data-plan="plan-@dem">
-                                        @if (item.ContentNetflix1 == "True")
+                                        @if (dem == 0)
                                         {
-                                            <i class="mdi mdi-check"></i> 
+                                            if (item.ContentNetflix1 == "True")
+                                            {
+                                                <i class="mdi mdi-check"></i> 
+                                            }
+                                            else if (item.ContentNetflix1 == "False")
+                                            {
+                                                <i class="mdi mdi-close"></i> 
+                                            }
+                                            else
+                                            {
+                                                <p class="mt-2 mb-0 check-text">@item.ContentNetflix1</p>
+                                            }
                                         }
-                                        else if (item.ContentNetflix1 == "False")
+                                        else if (dem == 1)
                                         {
-                                            <i class="mdi mdi-close"></i> 
+                                            if (item.ContentNetflix2 == "True")
+                                            {
+                                                <i class="mdi mdi-check"></i> 
+                                            }
+                                            else if (item.ContentNetflix2 == "False")
+                                            {
+                                                <i class="mdi mdi-close"></i> 
+                                            }
+                                            else
+                                            {
+                                                <p class="mt-2 mb-0 check-text">@item.ContentNetflix2</p>
+                                            }
                                         }
-                                        else
+                                        else if (dem == 2)
                                         {
-                                            <p class="mt-2 mb-0 check-text">@item.ContentNetflix1</p>
+                                            if (item.ContentNetflix3 == "True")
+                                            {
+                                                <i class="mdi mdi-check"></i> 
+                                            }
+                                            else if (item.ContentNetflix3 == "False")
+                                            {
+                                                <i class="mdi mdi-close"></i> 
+                                            }
+                                            else
+                                            {
+                                                <p class="mt-2 mb-0 check-text">@item.ContentNetflix3</p>
+                                            }
+                                        }
+                                        else if (dem == 3)
+                                        {
+                                            if (item.ContentNetflix4 == "True")
+                                            {
+                                                <i class="mdi mdi-check"></i> 
+                                            }
+                                            else if (item.ContentNetflix4 == "False")
+                                            {
+                                                <i class="mdi mdi-close"></i> 
+                                            }
+                                            else
+                                            {
+                                                <p class="mt-2 mb-0 check-text">@item.ContentNetflix4</p>
+                                            }
                                         }
                                     </div>
                                 }
