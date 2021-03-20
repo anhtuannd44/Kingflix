@@ -1751,10 +1751,6 @@
     <Content Include="Content\theme\scss\_widget-grid.scss" />
     <Content Include="Content\theme\vendors\js\bootstrap.min.js.map" />
     <Content Include="Content\theme\vendors\mdi\css\materialdesignicons.min.css.map" />
-    <Content Include="Content\theme\vendors\mdi\font\materialdesignicons-webfont.eot" />
-    <Content Include="Content\theme\vendors\mdi\font\materialdesignicons-webfont.ttf" />
-    <Content Include="Content\theme\vendors\mdi\font\materialdesignicons-webfont.woff" />
-    <Content Include="Content\theme\vendors\mdi\font\materialdesignicons-webfont.woff2" />
     <Content Include="Font\materialdesignicons-webfont.eot" />
     <Content Include="Font\materialdesignicons-webfont.ttf" />
     <Content Include="Font\materialdesignicons-webfont.woff" />
@@ -1877,6 +1873,10 @@
     <Content Include="Areas\Manage\Views\Renew\Index.cshtml" />
     <Content Include="Areas\Manage\Views\Renew\_PriceListPartial.cshtml" />
     <Content Include="Areas\Manage\Views\Renew\RenewConfirm.cshtml" />
+    <Content Include="Content\theme\vendors\mdi\font\materialdesignicons-webfont.eot" />
+    <Content Include="Content\theme\vendors\mdi\font\materialdesignicons-webfont.ttf" />
+    <Content Include="Content\theme\vendors\mdi\font\materialdesignicons-webfont.woff" />
+    <Content Include="Content\theme\vendors\mdi\font\materialdesignicons-webfont.woff2" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
